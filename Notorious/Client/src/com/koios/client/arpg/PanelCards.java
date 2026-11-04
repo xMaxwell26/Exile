@@ -35,13 +35,13 @@ public final class PanelCards {
  public String actionAt(int x,int y){if(!active)return null;for(Card c:cards)if(x>=c.x&&x<c.x+c.w&&y>=c.y&&y<c.y+c.h)return c.action.isEmpty()?null:c.action;return null;}
  public void draw(TextDrawingArea font,int mouseX,int mouseY){
   text(font,28,62,title,ExileTheme.HEADING);String d=detail;while(font.getTextWidth(d)>444&&d.length()>3)d=d.substring(0,d.length()-4)+"...";text(font,28,77,d,ExileTheme.MUTED);
-  for(Card c:cards){boolean hover=!c.action.isEmpty()&&mouseX>=c.x&&mouseX<c.x+c.w&&mouseY>=c.y&&mouseY<c.y+c.h;DrawingArea.drawPixels(c.h,c.y,c.x,hover?ExileTheme.HOVER:c.action.isEmpty()?ExileTheme.SURFACE_DARK:ExileTheme.SURFACE,c.w);DrawingArea.fillPixels(c.x,c.w,c.h,hover?ExileTheme.GOLD:c.action.isEmpty()?ExileTheme.BORDER_SUBTLE:ExileTheme.BORDER,c.y);int x=c.x+10;if(c.glyph>=0){Sprite icon=SkillGlyphs.icon(c.glyph,c.support,28);if(icon!=null)icon.drawSprite(x,c.y+8);x+=36;}
+  for(Card c:cards){boolean hover=!c.action.isEmpty()&&mouseX>=c.x&&mouseX<c.x+c.w&&mouseY>=c.y&&mouseY<c.y+c.h;ExileTheme.inset(c.x,c.y,c.w,c.h,hover?ExileTheme.GOLD:c.action.isEmpty()?ExileTheme.BORDER_SUBTLE:ExileTheme.BORDER,hover?ExileTheme.HOVER:c.action.isEmpty()?ExileTheme.SURFACE_DARK:ExileTheme.SURFACE);int x=c.x+10;if(c.glyph>=0){Sprite icon=SkillGlyphs.icon(c.glyph,c.support,28);if(icon!=null)icon.drawSprite(x,c.y+8);x+=36;}
    String label=c.label;if(c.action.startsWith("open ")){int at=label.indexOf(": ");if(at>=0)label=label.substring(at+2);}if(c.action.startsWith("learn ")){label=label.replace("Upgrade ","").replace("Claim a ","").replace(" support gem","").replace(" gem","");}
    if(c.mapId>=0){Sprite icon=ArtSprites.icon(c.mapId);if(icon!=null)icon.drawSprite(c.x+6,c.y+6);x=c.x+43;String title=label;while(font.getTextWidth(title)>c.w-51&&title.length()>3)title=title.substring(0,title.length()-4)+"...";int color=c.detail.startsWith("RARE")?0xE6CD84:c.detail.startsWith("MAGIC")?0xA5A5E8:0xB7CBD8;text(font,x,c.y+18,title,color);text(font,x,c.y+33,c.detail,ExileTheme.MUTED);}
    else{java.util.List<String> wrapped=ChatWrap.lines(label,c.w-(x-c.x)-8,font::getTextWidth);int baseline=c.y+(c.h<=30?19:wrapped.size()>1?18:27);for(int i=0;i<wrapped.size()&&i<2;i++)text(font,x,baseline+i*13,wrapped.get(i),hover?0xF0DEB2:0xB7CBD8);}
   }
  }
- private static void text(TextDrawingArea font,int x,int y,String value,int color){font.method389(true,x,color,value,y);}
+ private static void text(TextDrawingArea font,int x,int y,String value,int color){ExileTheme.label(font,x,y,value,color);}
 }
 
 

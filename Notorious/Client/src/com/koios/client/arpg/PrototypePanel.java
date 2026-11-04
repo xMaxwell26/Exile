@@ -20,9 +20,8 @@ public final class PrototypePanel {
  }
  public int hoverInventorySlot(int x,int y){if(!cardLayout)return -1;String action=cards.actionAt(x,y);if(action==null||!action.startsWith("open "))return -1;try{return Integer.parseInt(action.substring(5));}catch(NumberFormatException ex){return -1;}}
  public void draw(TextDrawingArea font,int mouseX,int mouseY){
-  DrawingArea.drawPixels(306,16,16,ExileTheme.PANEL,480);DrawingArea.fillPixels(16,480,306,ExileTheme.GOLD,16);
-  String[] tabs={"Guide","Passives","Crafting","Maps","House base"};for(int i=0;i<tabs.length;i++)text(font,27+i*92,36,tabs[i],ExileTheme.HEADING);
-  DrawingArea.method339(44,ExileTheme.BORDER_SUBTLE,464,24);
+  ExileTheme.panel(16,16,480,306,ExileTheme.GOLD,ExileTheme.PANEL);
+  String[] tabs={"GUIDE","PASSIVES","CRAFTING","MAPS","BASE"};int active=lines[0].startsWith("tree|")?1:lines[0].startsWith("craft")?2:lines[0].startsWith("maps")?3:lines[0].startsWith("home")?4:0;for(int i=0;i<tabs.length;i++){ExileTheme.inset(22+i*93,20,89,24,i==active?ExileTheme.GOLD:ExileTheme.BORDER_SUBTLE,i==active?ExileTheme.SELECTED:ExileTheme.SURFACE_DARK);text(font,29+i*93,36,tabs[i],i==active?ExileTheme.HEADING:ExileTheme.MUTED);}
   if(cardLayout){cards.draw(font,mouseX,mouseY);return;}
   if(lines[0].startsWith("tree|")){
    String[] head=lines[0].split("\\|");String[][] nodes=new String[22][];boolean[] owned=new boolean[22];
@@ -43,5 +42,5 @@ public final class PrototypePanel {
    text(font,27,309,"Click an option. P / Escape closes. Enter opens chat.",ExileTheme.MUTED);
   }
  }
- private void text(TextDrawingArea font,int x,int y,String text,int color){font.method389(true,x,color,text,y);}
+ private void text(TextDrawingArea font,int x,int y,String text,int color){ExileTheme.label(font,x,y,text,color);}
 }

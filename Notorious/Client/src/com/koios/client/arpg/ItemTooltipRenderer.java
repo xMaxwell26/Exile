@@ -9,7 +9,7 @@ public final class ItemTooltipRenderer {
   int height=Math.min(rows*14+24,DrawingArea.height-12),x=Math.max(6,Math.min(mouseX-width-16,DrawingArea.width-width-6)),y=Math.max(6,Math.min(mouseY-20,DrawingArea.height-height-6));return new Layout(wrapped,x,y,width,height,columns,rows);
  }
  public static void draw(TextDrawingArea font,ItemTooltipCache.Entry entry,boolean advanced,int mouseX,int mouseY){
-  Layout box=layout(font,entry,advanced,mouseX,mouseY);DrawingArea.drawPixels(box.height,box.y,box.x,ExileTheme.PANEL,box.width);DrawingArea.fillPixels(box.x,box.width,box.height,entry.color,box.y);DrawingArea.drawPixels(2,box.y+2,box.x+2,entry.color,box.width-4);int columnWidth=(box.width-12)/box.columns;
-  for(int i=0;i<box.lines.size();i++){String line=box.lines.get(i);int column=i/box.rows,row=i%box.rows,baseline=box.y+20+row*box.lineHeight;if(baseline>=box.y+box.height-4)continue;int color=i==0?entry.color:line.startsWith("Hold Ctrl")?0x9397A3:line.contains(" / Tier ")?0xB2A18B:line.contains("orrupted")?0xDD6655:ExileTheme.TEXT;font.method389(true,box.x+12+column*columnWidth,color,line,baseline);}
+  Layout box=layout(font,entry,advanced,mouseX,mouseY);ExileTheme.panel(box.x,box.y,box.width,box.height,entry.color,ExileTheme.PANEL);DrawingArea.drawPixels(2,box.y+3,box.x+3,entry.color,box.width-6);int columnWidth=(box.width-12)/box.columns;
+  for(int i=0;i<box.lines.size();i++){String line=box.lines.get(i);int column=i/box.rows,row=i%box.rows,baseline=box.y+20+row*box.lineHeight;if(baseline>=box.y+box.height-4)continue;int color=i==0?entry.color:line.startsWith("Hold Ctrl")?0x9397A3:line.contains(" / Tier ")?0xB2A18B:line.contains("orrupted")?0xDD6655:ExileTheme.TEXT;ExileTheme.label(font,box.x+12+column*columnWidth,baseline,line,color);}
  }
 }

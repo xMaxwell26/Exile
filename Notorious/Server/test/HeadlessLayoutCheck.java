@@ -28,6 +28,7 @@ public final class HeadlessLayoutCheck {
             for (int[] size : sizes) {
                 boolean fixed = size[0] == 512;
                 double scale = ViewportScale.factor(size[0], size[1], fixed);
+                check(scale == 1, "Every display mode renders at native resolution");
                 int width = ViewportScale.logical(size[0], scale);
                 int height = ViewportScale.logical(size[1], scale);
                 check(scale >= 1 && width <= size[0] && height <= size[1], "Logical canvas fits physical display");

@@ -8,18 +8,16 @@ public final class ArpgTabs {
 
     public static void draw(TextDrawingArea font, int tab, int x, int y, String[] skills) {
         String title = tab == 2 ? "PASSIVE TREE" : tab == 5 ? "SUPPORTS" : "ACTIVE SKILLS";
-        font.method389(true, x + 8, ExileTheme.HEADING, title, y + 20);
-        DrawingArea.drawPixels(1, y + 30, x + 8, ExileTheme.BORDER_SUBTLE, 174);
+        ExileTheme.panel(x,y,190,260,ExileTheme.BORDER,ExileTheme.PANEL);ExileTheme.label(font,x+12,y+22,title,ExileTheme.HEADING);
+        DrawingArea.drawPixels(2, y + 31, x + 12, ExileTheme.CRIMSON, 166);
         String[] description = tab == 2
             ? new String[]{"Shape your character with", "connected passive upgrades.", "", "Allocate nodes in the tree.", "Ctrl-click a leaf to refund."}
             : tab == 5
             ? new String[]{"Modify your active skills.", "", "Splash", "Faster Attacks", "Brutality", "", "Drag supports onto skills", "in your loadout panel."}
             : new String[]{"Choose three active skills.", "", "Heavy Strike", "Cleave", "Whirlwind and more", "", "Drag skills to change slots", "in your loadout panel."};
-        for (int i = 0; i < description.length; i++)
-            font.method389(true, x + 8, ExileTheme.TEXT, description[i], y + 50 + i * 16);
-        DrawingArea.drawPixels(30, y + 198, x + 8, ExileTheme.SURFACE, 174);
-        DrawingArea.fillPixels(x + 8, 174, 30, ExileTheme.GOLD, y + 198);
-        font.method389(true, x + 22, ExileTheme.HEADING, tab == 2 ? "Open passive tree" : "Open skills & supports", y + 218);
+        for (int i = 0; i < description.length; i++)ExileTheme.label(font,x+12,y+52+i*16,description[i],description[i].isEmpty()?ExileTheme.DIM:ExileTheme.TEXT);
+        ExileTheme.panel(x+8,y+198,174,30,ExileTheme.GOLD,ExileTheme.OXBLOOD);
+        ExileTheme.label(font,x+22,y+218,tab == 2 ? "OPEN PASSIVE TREE" : "OPEN LOADOUT",ExileTheme.HEADING);
     }
 
     public static String action(int tab, int mouseX, int mouseY, int x, int y) {

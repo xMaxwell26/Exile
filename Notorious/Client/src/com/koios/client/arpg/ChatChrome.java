@@ -10,12 +10,12 @@ public final class ChatChrome {
 
     public static void backdrop(int y,int extension,boolean transparent){
         int top=y-extension;
-        if(transparent)alphaRect(0,top,519,143+extension,ExileTheme.PANEL,220);
+        if(transparent)alphaRect(0,top,519,143+extension,ExileTheme.PANEL,176);
         else DrawingArea.drawPixels(143+extension,top,0,ExileTheme.SURFACE_DARK,519);
         DrawingArea.method339(top,ExileTheme.BORDER,519,0);
         DrawingArea.method341(top,ExileTheme.BORDER_SUBTLE,143+extension,0);
         DrawingArea.method341(top,ExileTheme.BORDER_SUBTLE,143+extension,518);
-        DrawingArea.drawPixels(22,y+121,1,ExileTheme.PANEL,517);
+        if(transparent)alphaRect(1,y+121,517,22,ExileTheme.PANEL,218);else DrawingArea.drawPixels(22,y+121,1,ExileTheme.PANEL,517);
         DrawingArea.method339(y+121,ExileTheme.BORDER,517,1);
     }
 
