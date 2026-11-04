@@ -36,7 +36,7 @@ public final class ExileLauncher {
             if (!Files.isRegularFile(clientJar) || !sha256(clientJar).equalsIgnoreCase(sha)) throw new IOException("Client integrity check failed");
         }
         Files.write(HOME.resolve("current.properties"), Arrays.asList("version="+version,"host="+host,"port="+port), StandardCharsets.UTF_8);
-        Process process = new ProcessBuilder(javaBin(), "-Xmx1G", "-Darpg.serverHost="+host, "-Darpg.serverPort="+port, "-cp", clientJar.toString(), "com.koios.client.Client").directory(release.toFile()).inheritIO().start();
+        Process process = new ProcessBuilder(javaBin(), "-Xmx1G", "-Duser.home="+release.toAbsolutePath(), "-Darpg.serverHost="+host, "-Darpg.serverPort="+port, "-cp", clientJar.toString(), "com.koios.client.Client").directory(release.toFile()).inheritIO().start();
         if (Boolean.getBoolean("exile.wait")) process.waitFor();
     }
     private static String env(String key,String fallback){String v=System.getenv(key);return v==null||v.trim().isEmpty()?fallback:v.trim();}
