@@ -1,0 +1,100 @@
+[
+  {
+    "role": 0,
+    "id": "thrall",
+    "healthMultiplier": 1.2,
+    "damageBase": 1,
+    "damageGrowth": 1,
+    "attackTicks": 6,
+    "reach": 2,
+    "damageType": "PHYSICAL"
+  },
+  {
+    "role": 1,
+    "id": "sentinel",
+    "healthMultiplier": 1,
+    "damageBase": 1,
+    "damageGrowth": 1,
+    "attackTicks": 5,
+    "reach": 2,
+    "damageType": "PHYSICAL"
+  },
+  {
+    "role": 2,
+    "id": "fire_adept",
+    "healthMultiplier": 0.8,
+    "damageBase": 1,
+    "damageGrowth": 1,
+    "attackTicks": 6,
+    "reach": 6,
+    "damageType": "FIRE"
+  },
+  {
+    "role": 3,
+    "id": "crawler",
+    "healthMultiplier": 0.75,
+    "damageBase": 0,
+    "damageGrowth": 0.5,
+    "attackTicks": 3,
+    "reach": 2,
+    "damageType": "CHAOS"
+  },
+  {
+    "role": 4,
+    "id": "hound",
+    "healthMultiplier": 0.9,
+    "damageBase": 1,
+    "damageGrowth": 1,
+    "attackTicks": 4,
+    "reach": 2,
+    "damageType": "PHYSICAL"
+  },
+  {
+    "role": 5,
+    "id": "cold_wraith",
+    "healthMultiplier": 0.85,
+    "damageBase": 1,
+    "damageGrowth": 1,
+    "attackTicks": 6,
+    "reach": 6,
+    "damageType": "COLD"
+  },
+  {
+    "role": 6,
+    "id": "champion",
+    "healthMultiplier": 1,
+    "damageBase": 6,
+    "damageGrowth": 2,
+    "attackTicks": 5,
+    "reach": 2,
+    "damageType": "PHYSICAL"
+  },
+  {
+    "role": 1,
+    "npcId": 15001,
+    "id": "furnace_construct",
+    "healthMultiplier": 1.35,
+    "damageBase": 2,
+    "damageGrowth": 1,
+    "attackTicks": 7,
+    "reach": 2,
+    "damageType": "PHYSICAL",
+    "_comment": "Foundry15001 only. Heavy physical sentinel; seven ticks includes one dodgeable windup tick. Animation5487 verified on this original mesh.",
+    "attackAnimation": 5487,
+    "windupTicks": 1
+  },
+  {
+    "role": 1,
+    "npcId": 15007,
+    "id": "briar_warden",
+    "healthMultiplier": 1,
+    "damageBase": 1,
+    "damageGrowth": 1,
+    "attackTicks": 5,
+    "reach": 2,
+    "damageType": "PHYSICAL",
+    "attackAnimation": 5487,
+    "windupTicks": 1,
+    "_comment": "Courtyard15007 original bark creature. Existing role1 life/damage/cadence, with a verified branch punch and one tick to leave reach."
+  }
+]

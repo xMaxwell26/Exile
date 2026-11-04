@@ -1,0 +1,5 @@
+from pathlib import Path
+p=Path('Notorious/Client/src/com/koios/client/graphic/Sprite.java');s=p.read_text();idx=s.index('\tpublic Sprite() {');s=s[:idx]+''' public Sprite toned(int tint){Sprite item=new Sprite(myWidth,myHeight);item.drawOffsetX=drawOffsetX;item.drawOffsetY=drawOffsetY;item.maxWidth=maxWidth;item.maxHeight=maxHeight;for(int i=0;i<myPixels.length;i++){int color=myPixels[i];if(color==0||color==-1)continue;int light=(((color>>16)&255)*3+((color>>8)&255)*6+(color&255))/10;double amount=.35+light/255d*.65;item.myPixels[i]=((int)(((tint>>16)&255)*amount)<<16)|((int)(((tint>>8)&255)*amount)<<8)|(int)((tint&255)*amount);}return item;}
+'''+s[idx:];p.write_text(s)
+p=Path('Notorious/Client/src/com/koios/client/arpg/SidebarChrome.java');s=p.read_text();a=s.index(' public static Sprite icon(');b=s.index(' public static void slot',a);s=s[:a]+''' public static Sprite icon(Sprite source,boolean selected){if(source==null)return null;Sprite[] cached=ICONS.get(source);if(cached==null){cached=new Sprite[]{source.toned(0xAFBBC5),source.toned(0xDDC58C)};ICONS.put(source,cached);}return cached[selected?1:0];}
+'''+s[b:];p.write_text(s)

@@ -1,0 +1,21 @@
+Notorious/**/build/
+Notorious/**/bin/
+Notorious/**/bin-test/
+Notorious/**/target/
+logs/
+*.log
+*.class
+
+# Runtime accounts and server state are private machine data, not source.
+Notorious/koios-store/
+
+# Per-machine client identity, preferences and QA login state.
+Notorious/koios-cache/config*.dat
+Notorious/koios-cache/uid.dat
+
+# IDE and operating-system metadata.
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db

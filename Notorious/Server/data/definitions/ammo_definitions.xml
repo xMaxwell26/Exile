@@ -1,0 +1,728 @@
+<list>
+
+	<!-- Bronze Javelin -->
+
+	<projectileData>
+		<arrowId>
+		<int>825</int>
+		</arrowId>
+		<startGfx>206</startGfx>
+		<startGfx2>206</startGfx2>
+		<projectile>200</projectile>
+		<rangedStr>6</rangedStr>
+		<endGfx>-1</endGfx>
+	</projectileData>
+	
+	<!-- Iron Javelin -->
+
+	<projectileData>
+		<arrowId>
+		<int>826</int>
+		</arrowId>
+		<startGfx>207</startGfx>
+		<startGfx2>207</startGfx2>
+		<projectile>201</projectile>
+		<rangedStr>10</rangedStr>
+		<endGfx>-1</endGfx>
+	</projectileData>
+	
+	<!-- Steel Javelin -->
+
+	<projectileData>
+		<arrowId>
+		<int>827</int>
+		</arrowId>
+		<startGfx>208</startGfx>
+		<startGfx2>208</startGfx2>
+		<projectile>202</projectile>
+		<rangedStr>12</rangedStr>
+		<endGfx>-1</endGfx>
+	</projectileData>
+	
+	<!-- Mithril Javelin -->
+
+	<projectileData>
+		<arrowId>
+		<int>828</int>
+		</arrowId>
+		<startGfx>209</startGfx>
+		<startGfx2>209</startGfx2>
+		<projectile>203</projectile>
+		<rangedStr>18</rangedStr>
+		<endGfx>-1</endGfx>
+	</projectileData>
+	
+	<!-- Adamant Javelin -->
+
+	<projectileData>
+		<arrowId>
+		<int>829</int>
+		</arrowId>
+		<startGfx>210</startGfx>
+		<startGfx2>210</startGfx2>
+		<projectile>204</projectile>
+		<rangedStr>28</rangedStr>
+		<endGfx>-1</endGfx>
+	</projectileData>
+	
+	<!-- Rune Javelin -->
+
+	<projectileData>
+		<arrowId>
+		<int>830</int>
+		</arrowId>
+		<startGfx>211</startGfx>
+		<startGfx2>211</startGfx2>
+		<projectile>205</projectile>
+		<rangedStr>42</rangedStr>
+		<endGfx>-1</endGfx>
+	</projectileData>
+	
+	<!-- Bronze Dart -->
+
+	<projectileData>
+		<arrowId>
+		<int>806</int>
+		</arrowId>
+		<startGfx>1235</startGfx>
+		<startGfx2>1235</startGfx2>
+		<projectile>226</projectile>
+		<rangedStr>1</rangedStr>
+		<endGfx>-1</endGfx>
+	</projectileData>
+	
+	<!-- Iron Dart -->
+
+	<projectileData>
+		<arrowId>
+		<int>807</int>
+		</arrowId>
+		<startGfx>1236</startGfx>
+		<startGfx2>1236</startGfx2>
+		<projectile>227</projectile>
+		<rangedStr>3</rangedStr>
+		<endGfx>-1</endGfx>
+	</projectileData>
+	
+	<!-- Steel Dart -->
+
+	<projectileData>
+		<arrowId>
+		<int>808</int>
+		</arrowId>
+		<startGfx>1237</startGfx>
+		<startGfx2>1237</startGfx2>
+		<projectile>228</projectile>
+		<rangedStr>4</rangedStr>
+		<endGfx>-1</endGfx>
+	</projectileData>
+	
+	<!-- Mithril Dart -->
+
+	<projectileData>
+		<arrowId>
+		<int>809</int>
+		</arrowId>
+		<startGfx>1238</startGfx>
+		<startGfx2>1238</startGfx2>
+		<projectile>229</projectile>
+		<rangedStr>7</rangedStr>
+		<endGfx>-1</endGfx>
+	</projectileData>
+	
+	<!-- Adamant Dart -->
+
+	<projectileData>
+		<arrowId>
+		<int>810</int>
+		</arrowId>
+		<startGfx>1239</startGfx>
+		<startGfx2>1239</startGfx2>
+		<projectile>230</projectile>
+		<rangedStr>10</rangedStr>
+		<endGfx>-1</endGfx>
+	</projectileData>
+
+	<!-- Rune Dart -->
+
+	<projectileData>
+		<arrowId>
+		<int>811</int>
+		</arrowId>
+		<startGfx>1240</startGfx>
+		<startGfx2>1240</startGfx2>
+		<projectile>231</projectile>
+		<rangedStr>14</rangedStr>
+		<endGfx>-1</endGfx>
+	</projectileData>
+	
+	<!-- Bronze Knife -->
+
+	<projectileData>
+		<arrowId>
+		<int>864</int>
+		</arrowId>
+		<startGfx>220</startGfx>
+		<startGfx2>220</startGfx2>
+		<projectile>213</projectile>
+		<rangedStr>3</rangedStr>
+		<endGfx>-1</endGfx>
+	</projectileData>
+	
+	<!-- Iron Knife -->
+
+	<projectileData>
+		<arrowId>
+		<int>863</int>
+		</arrowId>
+		<startGfx>219</startGfx>
+		<startGfx2>219</startGfx2>
+		<projectile>212</projectile>
+		<rangedStr>4</rangedStr>
+		<endGfx>-1</endGfx>
+	</projectileData>
+	
+	<!-- Steel Knife -->
+
+	<projectileData>
+		<arrowId>
+		<int>865</int>
+		</arrowId>
+		<startGfx>221</startGfx>
+		<startGfx2>221</startGfx2>
+		<projectile>214</projectile>
+		<rangedStr>7</rangedStr>
+		<endGfx>-1</endGfx>
+	</projectileData>
+	
+	<!-- Black Knife -->
+
+	<projectileData>
+		<arrowId>
+		<int>869</int>
+		</arrowId>
+		<startGfx>222</startGfx>
+		<startGfx2>222</startGfx2>
+		<projectile>215</projectile>
+		<rangedStr>8</rangedStr>
+		<endGfx>-1</endGfx>
+	</projectileData>
+	
+	<!-- Mithril Knife -->
+
+	<projectileData>
+		<arrowId>
+		<int>866</int>
+		</arrowId>
+		<startGfx>223</startGfx>
+		<startGfx2>223</startGfx2>
+		<projectile>216</projectile>
+		<rangedStr>10</rangedStr>
+		<endGfx>-1</endGfx>
+	</projectileData>
+	
+	<!-- Adamant Knife -->
+
+	<projectileData>
+		<arrowId>
+		<int>867</int>
+		</arrowId>
+		<startGfx>224</startGfx>
+		<startGfx2>224</startGfx2>
+		<projectile>217</projectile>
+		<rangedStr>14</rangedStr>
+		<endGfx>-1</endGfx>
+	</projectileData>
+	
+	<!-- Rune Knife -->
+
+	<projectileData>
+		<arrowId>
+		<int>868</int>
+		</arrowId>
+		<startGfx>225</startGfx>
+		<startGfx2>225</startGfx2>
+		<projectile>218</projectile>
+		<rangedStr>24</rangedStr>
+		<endGfx>-1</endGfx>
+	</projectileData>
+	
+	<!-- Toktz Xil Ul -->
+
+	<projectileData>
+		<arrowId>
+		<int>6522</int>
+		</arrowId>
+		<startGfx>-1</startGfx>
+		<startGfx2>-1</startGfx2>
+		<projectile>442</projectile>
+		<rangedStr>0</rangedStr>
+		<endGfx>-1</endGfx>
+	</projectileData>
+	
+	<!-- Chimchompa -->
+
+	<projectileData>
+		<arrowId>
+		<int>10033</int>
+		</arrowId>
+		<startGfx>-1</startGfx>
+		<startGfx2>-1</startGfx2>
+		<projectile>908</projectile>
+		<rangedStr>0</rangedStr>
+		<endGfx>160</endGfx>
+	</projectileData>
+	
+	<!-- Red Chimchompa -->
+
+	<projectileData>
+		<arrowId>
+		<int>10034</int>
+		</arrowId>
+		<startGfx>-1</startGfx>
+		<startGfx2>-1</startGfx2>
+		<projectile>909</projectile>
+		<rangedStr>15</rangedStr>
+		<endGfx>157</endGfx>
+	</projectileData>
+	
+	<!-- Bronze Arrow -->
+	
+	<projectileData>
+		<arrowId>
+		<int>598</int>
+		<int>882</int>
+		<int>883</int>
+		<int>5616</int>
+		<int>5622</int>
+		<int>942</int>
+		</arrowId>
+		<startGfx>19</startGfx>
+		<startGfx2>1104</startGfx2>
+		<projectile>10</projectile>
+		<rangedStr>7</rangedStr>
+		<endGfx>-1</endGfx>
+	</projectileData>  
+	
+	<!-- Iron Arrow -->
+	
+	<projectileData>
+		<arrowId>
+		<int>884</int>
+		<int>885</int>
+		<int>5617</int>
+		<int>5623</int>
+		<int>2532</int>
+		<int>2533</int>
+		</arrowId>
+		<startGfx>18</startGfx>
+		<startGfx2>1105</startGfx2>
+		<projectile>9</projectile>
+		<rangedStr>10</rangedStr>
+		<endGfx>-1</endGfx>
+	</projectileData>  
+
+	<!-- Steel Arrow -->
+	
+	<projectileData>
+		<arrowId>
+		<int>886</int>
+		<int>887</int>
+		<int>5618</int>
+		<int>5624</int>
+		<int>2534</int>
+		<int>2535</int>
+		</arrowId>
+		<startGfx>20</startGfx>
+		<startGfx2>1106</startGfx2>
+		<projectile>11</projectile>
+		<rangedStr>16</rangedStr>
+		<endGfx>-1</endGfx>
+	</projectileData>  
+	
+	<!-- Mithril Arrow -->
+	
+	<projectileData>
+		<arrowId>
+		<int>888</int>
+		<int>889</int>
+		<int>5618</int>
+		<int>5625</int>
+		<int>2536</int>
+		<int>2537</int>
+		</arrowId>
+		<startGfx>21</startGfx>
+		<startGfx2>1107</startGfx2>
+		<projectile>12</projectile>
+		<rangedStr>22</rangedStr>
+		<endGfx>-1</endGfx>
+	</projectileData>  
+	
+	<!-- Adamant Arrow -->
+	
+	<projectileData>
+		<arrowId>
+		<int>890</int>
+		<int>891</int>
+		<int>5620</int>
+		<int>5626</int>
+		<int>2538</int>
+		<int>2539</int>
+		</arrowId>
+		<startGfx>22</startGfx>
+		<startGfx2>1108</startGfx2>
+		<projectile>13</projectile>
+		<rangedStr>31</rangedStr>
+		<endGfx>-1</endGfx>
+	</projectileData>  
+
+	<!-- Rune Arrow -->
+	
+	<projectileData>
+		<arrowId>
+		<int>892</int>
+		<int>893</int>
+		<int>5621</int>
+		<int>5627</int>
+		<int>2540</int>
+		<int>2541</int>
+		</arrowId>
+		<startGfx>24</startGfx>
+		<startGfx2>1109</startGfx2>
+		<projectile>15</projectile>
+		<rangedStr>49</rangedStr>
+		<endGfx>-1</endGfx>
+	</projectileData>
+
+	<!-- Dragon Arrow -->
+	
+	<projectileData>
+		<arrowId>
+		<int>11212</int>
+		<int>11217</int>
+		<int>11222</int>
+		<int>11227</int>
+		<int>11228</int>
+		<int>11229</int>
+		</arrowId>
+		<startGfx>1111</startGfx>
+		<startGfx2>1111</startGfx2>
+		<projectile>1120</projectile>
+		<rangedStr>60</rangedStr>
+		<endGfx>-1</endGfx>
+	</projectileData>  
+	
+	<!-- Bronze Bolt -->
+	
+	<projectileData>
+		<arrowId>
+		<int>877</int>
+		<int>878</int>
+		<int>6061</int>
+		<int>6062</int>
+		</arrowId>
+		<startGfx>955</startGfx>
+		<startGfx2>-1</startGfx2>
+		<projectile>27</projectile>
+		<rangedStr>46</rangedStr>
+		<endGfx>-1</endGfx>
+	</projectileData> 
+	
+	<!-- Iron Bolt -->
+	
+	<projectileData>
+		<arrowId>
+		<int>9140</int>
+		<int>9287</int>
+		<int>9294</int>
+		<int>9301</int>
+		</arrowId>
+		<startGfx>955</startGfx>
+		<startGfx2>-1</startGfx2>
+		<projectile>27</projectile>
+		<rangedStr>46</rangedStr>
+		<endGfx>-1</endGfx>
+	</projectileData>  	
+	
+	<!-- Steel Bolt -->
+	
+	<projectileData>
+		<arrowId>
+		<int>9141</int>
+		<int>9288</int>
+		<int>9295</int>
+		<int>9302</int>
+		</arrowId>
+		<startGfx>955</startGfx>
+		<startGfx2>-1</startGfx2>
+		<projectile>27</projectile>
+		<rangedStr>64</rangedStr>
+		<endGfx>-1</endGfx>
+	</projectileData>  	
+	
+	<!-- Black Bolt -->
+	
+	<projectileData>
+		<arrowId>
+		<int>13083</int>
+		<int>13084</int>
+		<int>13085</int>
+		<int>13086</int>
+		</arrowId>
+		<startGfx>955</startGfx>
+		<startGfx2>-1</startGfx2>
+		<projectile>27</projectile>
+		<rangedStr>75</rangedStr>
+		<endGfx>-1</endGfx>
+	</projectileData>  	
+	
+	<!-- Mithril Bolt -->
+	
+	<projectileData>
+		<arrowId>
+		<int>9142</int>
+		<int>9289</int>
+		<int>9296</int>
+		<int>9303</int>
+		</arrowId>
+		<startGfx>955</startGfx>
+		<startGfx2>-1</startGfx2>
+		<projectile>27</projectile>
+		<rangedStr>82</rangedStr>
+		<endGfx>-1</endGfx>
+	</projectileData>  	
+	
+	<!-- Adamant Bolt -->
+	
+	<projectileData>
+		<arrowId>
+		<int>9143</int>
+		<int>9290</int>
+		<int>9297</int>
+		<int>9304</int>
+		</arrowId>
+		<startGfx>955</startGfx>
+		<startGfx2>-1</startGfx2>
+		<projectile>27</projectile>
+		<rangedStr>100</rangedStr>
+		<endGfx>-1</endGfx>
+	</projectileData>  	
+
+	<!-- Rune Bolt -->
+	
+	<projectileData>
+		<arrowId>
+		<int>9144</int>
+		<int>9291</int>
+		<int>9298</int>
+		<int>9305</int>
+		</arrowId>
+		<startGfx>955</startGfx>
+		<startGfx2>-1</startGfx2>
+		<projectile>27</projectile>
+		<rangedStr>115</rangedStr>
+		<endGfx>-1</endGfx>
+	</projectileData>
+	
+	<!-- Opal Bolt -->
+	
+	<projectileData>
+		<arrowId>
+		<int>879</int>
+		<int>9236</int>
+		</arrowId>
+		<startGfx>955</startGfx>
+		<startGfx2>-1</startGfx2>
+		<projectile>27</projectile>
+		<rangedStr>14</rangedStr>
+		<endGfx>-1</endGfx>
+	</projectileData>
+
+	<!-- Jade Bolt -->
+	
+	<projectileData>
+		<arrowId>
+		<int>9237</int>
+		<int>9335</int>
+		</arrowId>
+		<startGfx>955</startGfx>
+		<startGfx2>-1</startGfx2>
+		<projectile>27</projectile>
+		<rangedStr>30</rangedStr>
+		<endGfx>-1</endGfx>
+	</projectileData>
+
+	<!-- Peal Bolt -->
+	
+	<projectileData>
+		<arrowId>
+		<int>880</int>
+		<int>9238</int>
+		</arrowId>
+		<startGfx>955</startGfx>
+		<startGfx2>-1</startGfx2>
+		<projectile>27</projectile>
+		<rangedStr>48</rangedStr>
+		<endGfx>-1</endGfx>
+	</projectileData>	
+	
+	<!-- Topaz Bolt -->
+	
+	<projectileData>
+		<arrowId>
+		<int>9239</int>
+		<int>9336</int>
+		</arrowId>
+		<startGfx>955</startGfx>
+		<startGfx2>-1</startGfx2>
+		<projectile>27</projectile>
+		<rangedStr>66</rangedStr>
+		<endGfx>-1</endGfx>
+	</projectileData>
+	
+	<!-- Sapphire Bolt -->
+	
+	<projectileData>
+		<arrowId>
+		<int>9240</int>
+		<int>9337</int>
+		</arrowId>
+		<startGfx>955</startGfx>
+		<startGfx2>-1</startGfx2>
+		<projectile>27</projectile>
+		<rangedStr>83</rangedStr>
+		<endGfx>-1</endGfx>
+	</projectileData>
+	
+	<!-- Emerald Bolt -->
+	
+	<projectileData>
+		<arrowId>
+		<int>9241</int>
+		<int>9338</int>
+		</arrowId>
+		<startGfx>955</startGfx>
+		<startGfx2>-1</startGfx2>
+		<projectile>27</projectile>
+		<rangedStr>85</rangedStr>
+		<endGfx>-1</endGfx>
+	</projectileData>
+	
+	<!-- Ruby Bolt -->
+	
+	<projectileData>
+		<arrowId>
+		<int>9242</int>
+		<int>9339</int>
+		</arrowId>
+		<startGfx>955</startGfx>
+		<startGfx2>-1</startGfx2>
+		<projectile>27</projectile>
+		<rangedStr>103</rangedStr>
+		<endGfx>-1</endGfx>
+	</projectileData>
+	
+	<!-- Diamond Bolt -->
+	
+	<projectileData>
+		<arrowId>
+		<int>9243</int>
+		<int>9340</int>
+		</arrowId>
+		<startGfx>955</startGfx>
+		<startGfx2>-1</startGfx2>
+		<projectile>27</projectile>
+		<rangedStr>105</rangedStr>
+		<endGfx>-1</endGfx>
+	</projectileData>
+
+	<!-- Dragon Bolt -->
+	
+	<projectileData>
+		<arrowId>
+		<int>9244</int>
+		<int>9341</int>
+		</arrowId>
+		<startGfx>955</startGfx>
+		<startGfx2>-1</startGfx2>
+		<projectile>27</projectile>
+		<rangedStr>117</rangedStr>
+		<endGfx>-1</endGfx>
+	</projectileData>
+	
+	<!-- Onyx Bolt -->
+	
+	<projectileData>
+		<arrowId>
+		<int>9245</int>
+		<int>9342</int>
+		</arrowId>
+		<startGfx>955</startGfx>
+		<startGfx2>-1</startGfx2>
+		<projectile>27</projectile>
+		<rangedStr>120</rangedStr>
+		<endGfx>-1</endGfx>
+	</projectileData>
+	
+	<!-- Onyx Bolt -->
+	
+	<projectileData>
+		<arrowId>
+		<int>4740</int>
+		</arrowId>
+		<startGfx>955</startGfx>
+		<startGfx2>-1</startGfx2>
+		<projectile>27</projectile>
+		<rangedStr>55</rangedStr>
+		<endGfx>-1</endGfx>
+	</projectileData>
+
+	<!-- Hand Cannon Ammo -->
+	
+	<projectileData>
+		<arrowId>
+		<int>15243</int>
+		</arrowId>
+		<startGfx>2138</startGfx>
+		<startGfx2>-1</startGfx2>
+		<projectile>2143</projectile>
+		<rangedStr>150</rangedStr>
+		<endGfx>-1</endGfx>
+	</projectileData>  	
+
+	<!-- God arrows -->
+	
+	<projectileData>
+		<arrowId>
+		<int>19152</int>
+		</arrowId>
+		<startGfx>2138</startGfx>
+		<startGfx2>-1</startGfx2>
+		<projectile>2167</projectile>
+		<rangedStr>60</rangedStr>
+		<endGfx>-1</endGfx>
+	</projectileData>  
+	
+	<projectileData>
+		<arrowId>
+		<int>19157</int>
+		</arrowId>
+		<startGfx>2138</startGfx>
+		<startGfx2>-1</startGfx2>
+		<projectile>2119</projectile>
+		<rangedStr>60</rangedStr>
+		<endGfx>-1</endGfx>
+	</projectileData> 
+	
+	<projectileData>
+		<arrowId>
+		<int>19162</int>
+		</arrowId>
+		<startGfx>2138</startGfx>
+		<startGfx2>-1</startGfx2>
+		<projectile>2183</projectile>
+		<rangedStr>60</rangedStr>
+		<endGfx>-1</endGfx>
+	</projectileData>
+	  
+</list>

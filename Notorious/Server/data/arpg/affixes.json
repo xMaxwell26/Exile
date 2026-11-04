@@ -1,0 +1,2385 @@
+[
+  {
+    "id": "sharpened",
+    "layer": "PREFIX",
+    "slots": "weapon",
+    "stats": [
+      "PHYSICAL_MIN",
+      "PHYSICAL_MAX"
+    ],
+    "operation": "FLAT",
+    "tiers": [
+      {
+        "tier": 10,
+        "level": 1,
+        "weight": 100,
+        "low": [
+          1.0,
+          3.0
+        ],
+        "high": [
+          3.0,
+          7.0
+        ]
+      },
+      {
+        "tier": 9,
+        "level": 5,
+        "weight": 100,
+        "low": [
+          1.6,
+          4.8
+        ],
+        "high": [
+          4.8,
+          11.2
+        ]
+      },
+      {
+        "tier": 8,
+        "level": 10,
+        "weight": 100,
+        "low": [
+          2.2,
+          6.6
+        ],
+        "high": [
+          6.6,
+          15.4
+        ]
+      },
+      {
+        "tier": 7,
+        "level": 20,
+        "weight": 100,
+        "low": [
+          2.8,
+          8.4
+        ],
+        "high": [
+          8.4,
+          19.6
+        ]
+      },
+      {
+        "tier": 6,
+        "level": 30,
+        "weight": 100,
+        "low": [
+          3.4,
+          10.2
+        ],
+        "high": [
+          10.2,
+          23.8
+        ]
+      },
+      {
+        "tier": 5,
+        "level": 40,
+        "weight": 100,
+        "low": [
+          4.0,
+          12.0
+        ],
+        "high": [
+          12.0,
+          28.0
+        ]
+      },
+      {
+        "tier": 4,
+        "level": 50,
+        "weight": 100,
+        "low": [
+          4.6,
+          13.8
+        ],
+        "high": [
+          13.8,
+          32.2
+        ]
+      },
+      {
+        "tier": 3,
+        "level": 60,
+        "weight": 100,
+        "low": [
+          5.2,
+          15.6
+        ],
+        "high": [
+          15.6,
+          36.4
+        ]
+      },
+      {
+        "tier": 2,
+        "level": 75,
+        "weight": 100,
+        "low": [
+          5.8,
+          17.4
+        ],
+        "high": [
+          17.4,
+          40.6
+        ]
+      },
+      {
+        "tier": 1,
+        "level": 85,
+        "weight": 100,
+        "low": [
+          6.4,
+          19.2
+        ],
+        "high": [
+          19.2,
+          44.8
+        ]
+      }
+    ]
+  },
+  {
+    "id": "tempered",
+    "layer": "PREFIX",
+    "slots": "weapon",
+    "stats": [
+      "PHYSICAL_MIN",
+      "PHYSICAL_MAX"
+    ],
+    "operation": "INCREASED",
+    "tiers": [
+      {
+        "tier": 10,
+        "level": 1,
+        "weight": 100,
+        "low": [
+          10.0,
+          10.0
+        ],
+        "high": [
+          20.0,
+          20.0
+        ]
+      },
+      {
+        "tier": 9,
+        "level": 5,
+        "weight": 100,
+        "low": [
+          16.0,
+          16.0
+        ],
+        "high": [
+          32.0,
+          32.0
+        ]
+      },
+      {
+        "tier": 8,
+        "level": 10,
+        "weight": 100,
+        "low": [
+          22.0,
+          22.0
+        ],
+        "high": [
+          44.0,
+          44.0
+        ]
+      },
+      {
+        "tier": 7,
+        "level": 20,
+        "weight": 100,
+        "low": [
+          28.0,
+          28.0
+        ],
+        "high": [
+          56.0,
+          56.0
+        ]
+      },
+      {
+        "tier": 6,
+        "level": 30,
+        "weight": 100,
+        "low": [
+          34.0,
+          34.0
+        ],
+        "high": [
+          68.0,
+          68.0
+        ]
+      },
+      {
+        "tier": 5,
+        "level": 40,
+        "weight": 100,
+        "low": [
+          40.0,
+          40.0
+        ],
+        "high": [
+          80.0,
+          80.0
+        ]
+      },
+      {
+        "tier": 4,
+        "level": 50,
+        "weight": 100,
+        "low": [
+          46.0,
+          46.0
+        ],
+        "high": [
+          92.0,
+          92.0
+        ]
+      },
+      {
+        "tier": 3,
+        "level": 60,
+        "weight": 100,
+        "low": [
+          52.0,
+          52.0
+        ],
+        "high": [
+          104.0,
+          104.0
+        ]
+      },
+      {
+        "tier": 2,
+        "level": 75,
+        "weight": 100,
+        "low": [
+          58.0,
+          58.0
+        ],
+        "high": [
+          116.0,
+          116.0
+        ]
+      },
+      {
+        "tier": 1,
+        "level": 85,
+        "weight": 100,
+        "low": [
+          64.0,
+          64.0
+        ],
+        "high": [
+          128.0,
+          128.0
+        ]
+      }
+    ]
+  },
+  {
+    "id": "martial",
+    "layer": "PREFIX",
+    "slots": "weapon",
+    "stats": [
+      "PHYSICAL_MIN",
+      "PHYSICAL_MAX",
+      "ACCURACY"
+    ],
+    "operation": "INCREASED",
+    "tiers": [
+      {
+        "tier": 10,
+        "level": 1,
+        "weight": 100,
+        "low": [
+          5.0,
+          5.0,
+          5.0
+        ],
+        "high": [
+          10.0,
+          10.0,
+          10.0
+        ]
+      },
+      {
+        "tier": 9,
+        "level": 5,
+        "weight": 100,
+        "low": [
+          8.0,
+          8.0,
+          8.0
+        ],
+        "high": [
+          16.0,
+          16.0,
+          16.0
+        ]
+      },
+      {
+        "tier": 8,
+        "level": 10,
+        "weight": 100,
+        "low": [
+          11.0,
+          11.0,
+          11.0
+        ],
+        "high": [
+          22.0,
+          22.0,
+          22.0
+        ]
+      },
+      {
+        "tier": 7,
+        "level": 20,
+        "weight": 100,
+        "low": [
+          14.0,
+          14.0,
+          14.0
+        ],
+        "high": [
+          28.0,
+          28.0,
+          28.0
+        ]
+      },
+      {
+        "tier": 6,
+        "level": 30,
+        "weight": 100,
+        "low": [
+          17.0,
+          17.0,
+          17.0
+        ],
+        "high": [
+          34.0,
+          34.0,
+          34.0
+        ]
+      },
+      {
+        "tier": 5,
+        "level": 40,
+        "weight": 100,
+        "low": [
+          20.0,
+          20.0,
+          20.0
+        ],
+        "high": [
+          40.0,
+          40.0,
+          40.0
+        ]
+      },
+      {
+        "tier": 4,
+        "level": 50,
+        "weight": 100,
+        "low": [
+          23.0,
+          23.0,
+          23.0
+        ],
+        "high": [
+          46.0,
+          46.0,
+          46.0
+        ]
+      },
+      {
+        "tier": 3,
+        "level": 60,
+        "weight": 100,
+        "low": [
+          26.0,
+          26.0,
+          26.0
+        ],
+        "high": [
+          52.0,
+          52.0,
+          52.0
+        ]
+      },
+      {
+        "tier": 2,
+        "level": 75,
+        "weight": 100,
+        "low": [
+          29.0,
+          29.0,
+          29.0
+        ],
+        "high": [
+          58.0,
+          58.0,
+          58.0
+        ]
+      },
+      {
+        "tier": 1,
+        "level": 85,
+        "weight": 100,
+        "low": [
+          32.0,
+          32.0,
+          32.0
+        ],
+        "high": [
+          64.0,
+          64.0,
+          64.0
+        ]
+      }
+    ]
+  },
+  {
+    "id": "healthy",
+    "layer": "PREFIX",
+    "slots": "armour",
+    "stats": [
+      "LIFE"
+    ],
+    "operation": "FLAT",
+    "tiers": [
+      {
+        "tier": 10,
+        "level": 1,
+        "weight": 100,
+        "low": [
+          10.0
+        ],
+        "high": [
+          25.0
+        ]
+      },
+      {
+        "tier": 9,
+        "level": 5,
+        "weight": 100,
+        "low": [
+          16.0
+        ],
+        "high": [
+          40.0
+        ]
+      },
+      {
+        "tier": 8,
+        "level": 10,
+        "weight": 100,
+        "low": [
+          22.0
+        ],
+        "high": [
+          55.0
+        ]
+      },
+      {
+        "tier": 7,
+        "level": 20,
+        "weight": 100,
+        "low": [
+          28.0
+        ],
+        "high": [
+          70.0
+        ]
+      },
+      {
+        "tier": 6,
+        "level": 30,
+        "weight": 100,
+        "low": [
+          34.0
+        ],
+        "high": [
+          85.0
+        ]
+      },
+      {
+        "tier": 5,
+        "level": 40,
+        "weight": 100,
+        "low": [
+          40.0
+        ],
+        "high": [
+          100.0
+        ]
+      },
+      {
+        "tier": 4,
+        "level": 50,
+        "weight": 100,
+        "low": [
+          46.0
+        ],
+        "high": [
+          115.0
+        ]
+      },
+      {
+        "tier": 3,
+        "level": 60,
+        "weight": 100,
+        "low": [
+          52.0
+        ],
+        "high": [
+          130.0
+        ]
+      },
+      {
+        "tier": 2,
+        "level": 75,
+        "weight": 100,
+        "low": [
+          58.0
+        ],
+        "high": [
+          145.0
+        ]
+      },
+      {
+        "tier": 1,
+        "level": 85,
+        "weight": 100,
+        "low": [
+          64.0
+        ],
+        "high": [
+          160.0
+        ]
+      }
+    ]
+  },
+  {
+    "id": "sheltering",
+    "layer": "PREFIX",
+    "slots": "armour",
+    "stats": [
+      "ENERGY_SHIELD"
+    ],
+    "operation": "FLAT",
+    "tiers": [
+      {
+        "tier": 10,
+        "level": 1,
+        "weight": 100,
+        "low": [
+          10.0
+        ],
+        "high": [
+          20.0
+        ]
+      },
+      {
+        "tier": 9,
+        "level": 5,
+        "weight": 100,
+        "low": [
+          16.0
+        ],
+        "high": [
+          32.0
+        ]
+      },
+      {
+        "tier": 8,
+        "level": 10,
+        "weight": 100,
+        "low": [
+          22.0
+        ],
+        "high": [
+          44.0
+        ]
+      },
+      {
+        "tier": 7,
+        "level": 20,
+        "weight": 100,
+        "low": [
+          28.0
+        ],
+        "high": [
+          56.0
+        ]
+      },
+      {
+        "tier": 6,
+        "level": 30,
+        "weight": 100,
+        "low": [
+          34.0
+        ],
+        "high": [
+          68.0
+        ]
+      },
+      {
+        "tier": 5,
+        "level": 40,
+        "weight": 100,
+        "low": [
+          40.0
+        ],
+        "high": [
+          80.0
+        ]
+      },
+      {
+        "tier": 4,
+        "level": 50,
+        "weight": 100,
+        "low": [
+          46.0
+        ],
+        "high": [
+          92.0
+        ]
+      },
+      {
+        "tier": 3,
+        "level": 60,
+        "weight": 100,
+        "low": [
+          52.0
+        ],
+        "high": [
+          104.0
+        ]
+      },
+      {
+        "tier": 2,
+        "level": 75,
+        "weight": 100,
+        "low": [
+          58.0
+        ],
+        "high": [
+          116.0
+        ]
+      },
+      {
+        "tier": 1,
+        "level": 85,
+        "weight": 100,
+        "low": [
+          64.0
+        ],
+        "high": [
+          128.0
+        ]
+      }
+    ]
+  },
+  {
+    "id": "plated",
+    "layer": "PREFIX",
+    "slots": "armour",
+    "stats": [
+      "ARMOUR"
+    ],
+    "operation": "FLAT",
+    "tiers": [
+      {
+        "tier": 10,
+        "level": 1,
+        "weight": 100,
+        "low": [
+          20.0
+        ],
+        "high": [
+          50.0
+        ]
+      },
+      {
+        "tier": 9,
+        "level": 5,
+        "weight": 100,
+        "low": [
+          32.0
+        ],
+        "high": [
+          80.0
+        ]
+      },
+      {
+        "tier": 8,
+        "level": 10,
+        "weight": 100,
+        "low": [
+          44.0
+        ],
+        "high": [
+          110.0
+        ]
+      },
+      {
+        "tier": 7,
+        "level": 20,
+        "weight": 100,
+        "low": [
+          56.0
+        ],
+        "high": [
+          140.0
+        ]
+      },
+      {
+        "tier": 6,
+        "level": 30,
+        "weight": 100,
+        "low": [
+          68.0
+        ],
+        "high": [
+          170.0
+        ]
+      },
+      {
+        "tier": 5,
+        "level": 40,
+        "weight": 100,
+        "low": [
+          80.0
+        ],
+        "high": [
+          200.0
+        ]
+      },
+      {
+        "tier": 4,
+        "level": 50,
+        "weight": 100,
+        "low": [
+          92.0
+        ],
+        "high": [
+          230.0
+        ]
+      },
+      {
+        "tier": 3,
+        "level": 60,
+        "weight": 100,
+        "low": [
+          104.0
+        ],
+        "high": [
+          260.0
+        ]
+      },
+      {
+        "tier": 2,
+        "level": 75,
+        "weight": 100,
+        "low": [
+          116.0
+        ],
+        "high": [
+          290.0
+        ]
+      },
+      {
+        "tier": 1,
+        "level": 85,
+        "weight": 100,
+        "low": [
+          128.0
+        ],
+        "high": [
+          320.0
+        ]
+      }
+    ]
+  },
+  {
+    "id": "nimble",
+    "layer": "PREFIX",
+    "slots": "armour",
+    "stats": [
+      "EVASION"
+    ],
+    "operation": "FLAT",
+    "tiers": [
+      {
+        "tier": 10,
+        "level": 1,
+        "weight": 100,
+        "low": [
+          20.0
+        ],
+        "high": [
+          50.0
+        ]
+      },
+      {
+        "tier": 9,
+        "level": 5,
+        "weight": 100,
+        "low": [
+          32.0
+        ],
+        "high": [
+          80.0
+        ]
+      },
+      {
+        "tier": 8,
+        "level": 10,
+        "weight": 100,
+        "low": [
+          44.0
+        ],
+        "high": [
+          110.0
+        ]
+      },
+      {
+        "tier": 7,
+        "level": 20,
+        "weight": 100,
+        "low": [
+          56.0
+        ],
+        "high": [
+          140.0
+        ]
+      },
+      {
+        "tier": 6,
+        "level": 30,
+        "weight": 100,
+        "low": [
+          68.0
+        ],
+        "high": [
+          170.0
+        ]
+      },
+      {
+        "tier": 5,
+        "level": 40,
+        "weight": 100,
+        "low": [
+          80.0
+        ],
+        "high": [
+          200.0
+        ]
+      },
+      {
+        "tier": 4,
+        "level": 50,
+        "weight": 100,
+        "low": [
+          92.0
+        ],
+        "high": [
+          230.0
+        ]
+      },
+      {
+        "tier": 3,
+        "level": 60,
+        "weight": 100,
+        "low": [
+          104.0
+        ],
+        "high": [
+          260.0
+        ]
+      },
+      {
+        "tier": 2,
+        "level": 75,
+        "weight": 100,
+        "low": [
+          116.0
+        ],
+        "high": [
+          290.0
+        ]
+      },
+      {
+        "tier": 1,
+        "level": 85,
+        "weight": 100,
+        "low": [
+          128.0
+        ],
+        "high": [
+          320.0
+        ]
+      }
+    ]
+  },
+  {
+    "id": "reservoir",
+    "layer": "PREFIX",
+    "slots": "armour",
+    "stats": [
+      "MANA"
+    ],
+    "operation": "FLAT",
+    "tiers": [
+      {
+        "tier": 10,
+        "level": 1,
+        "weight": 100,
+        "low": [
+          5.0
+        ],
+        "high": [
+          15.0
+        ]
+      },
+      {
+        "tier": 9,
+        "level": 5,
+        "weight": 100,
+        "low": [
+          8.0
+        ],
+        "high": [
+          24.0
+        ]
+      },
+      {
+        "tier": 8,
+        "level": 10,
+        "weight": 100,
+        "low": [
+          11.0
+        ],
+        "high": [
+          33.0
+        ]
+      },
+      {
+        "tier": 7,
+        "level": 20,
+        "weight": 100,
+        "low": [
+          14.0
+        ],
+        "high": [
+          42.0
+        ]
+      },
+      {
+        "tier": 6,
+        "level": 30,
+        "weight": 100,
+        "low": [
+          17.0
+        ],
+        "high": [
+          51.0
+        ]
+      },
+      {
+        "tier": 5,
+        "level": 40,
+        "weight": 100,
+        "low": [
+          20.0
+        ],
+        "high": [
+          60.0
+        ]
+      },
+      {
+        "tier": 4,
+        "level": 50,
+        "weight": 100,
+        "low": [
+          23.0
+        ],
+        "high": [
+          69.0
+        ]
+      },
+      {
+        "tier": 3,
+        "level": 60,
+        "weight": 100,
+        "low": [
+          26.0
+        ],
+        "high": [
+          78.0
+        ]
+      },
+      {
+        "tier": 2,
+        "level": 75,
+        "weight": 100,
+        "low": [
+          29.0
+        ],
+        "high": [
+          87.0
+        ]
+      },
+      {
+        "tier": 1,
+        "level": 85,
+        "weight": 100,
+        "low": [
+          32.0
+        ],
+        "high": [
+          96.0
+        ]
+      }
+    ]
+  },
+  {
+    "id": "keen",
+    "layer": "SUFFIX",
+    "slots": "weapon",
+    "stats": [
+      "CRITICAL_CHANCE"
+    ],
+    "operation": "INCREASED",
+    "tiers": [
+      {
+        "tier": 10,
+        "level": 1,
+        "weight": 100,
+        "low": [
+          5.0
+        ],
+        "high": [
+          12.0
+        ]
+      },
+      {
+        "tier": 9,
+        "level": 5,
+        "weight": 100,
+        "low": [
+          8.0
+        ],
+        "high": [
+          19.2
+        ]
+      },
+      {
+        "tier": 8,
+        "level": 10,
+        "weight": 100,
+        "low": [
+          11.0
+        ],
+        "high": [
+          26.4
+        ]
+      },
+      {
+        "tier": 7,
+        "level": 20,
+        "weight": 100,
+        "low": [
+          14.0
+        ],
+        "high": [
+          33.6
+        ]
+      },
+      {
+        "tier": 6,
+        "level": 30,
+        "weight": 100,
+        "low": [
+          17.0
+        ],
+        "high": [
+          40.8
+        ]
+      },
+      {
+        "tier": 5,
+        "level": 40,
+        "weight": 100,
+        "low": [
+          20.0
+        ],
+        "high": [
+          48.0
+        ]
+      },
+      {
+        "tier": 4,
+        "level": 50,
+        "weight": 100,
+        "low": [
+          23.0
+        ],
+        "high": [
+          55.2
+        ]
+      },
+      {
+        "tier": 3,
+        "level": 60,
+        "weight": 100,
+        "low": [
+          26.0
+        ],
+        "high": [
+          62.4
+        ]
+      },
+      {
+        "tier": 2,
+        "level": 75,
+        "weight": 100,
+        "low": [
+          29.0
+        ],
+        "high": [
+          69.6
+        ]
+      },
+      {
+        "tier": 1,
+        "level": 85,
+        "weight": 100,
+        "low": [
+          32.0
+        ],
+        "high": [
+          76.8
+        ]
+      }
+    ]
+  },
+  {
+    "id": "quick",
+    "layer": "SUFFIX",
+    "slots": "weapon",
+    "stats": [
+      "ATTACK_SPEED"
+    ],
+    "operation": "INCREASED",
+    "tiers": [
+      {
+        "tier": 10,
+        "level": 1,
+        "weight": 100,
+        "low": [
+          3.0
+        ],
+        "high": [
+          7.0
+        ]
+      },
+      {
+        "tier": 9,
+        "level": 5,
+        "weight": 100,
+        "low": [
+          4.8
+        ],
+        "high": [
+          11.2
+        ]
+      },
+      {
+        "tier": 8,
+        "level": 10,
+        "weight": 100,
+        "low": [
+          6.6
+        ],
+        "high": [
+          15.4
+        ]
+      },
+      {
+        "tier": 7,
+        "level": 20,
+        "weight": 100,
+        "low": [
+          8.4
+        ],
+        "high": [
+          19.6
+        ]
+      },
+      {
+        "tier": 6,
+        "level": 30,
+        "weight": 100,
+        "low": [
+          10.2
+        ],
+        "high": [
+          23.8
+        ]
+      },
+      {
+        "tier": 5,
+        "level": 40,
+        "weight": 100,
+        "low": [
+          12.0
+        ],
+        "high": [
+          28.0
+        ]
+      },
+      {
+        "tier": 4,
+        "level": 50,
+        "weight": 100,
+        "low": [
+          13.8
+        ],
+        "high": [
+          32.2
+        ]
+      },
+      {
+        "tier": 3,
+        "level": 60,
+        "weight": 100,
+        "low": [
+          15.6
+        ],
+        "high": [
+          36.4
+        ]
+      },
+      {
+        "tier": 2,
+        "level": 75,
+        "weight": 100,
+        "low": [
+          17.4
+        ],
+        "high": [
+          40.6
+        ]
+      },
+      {
+        "tier": 1,
+        "level": 85,
+        "weight": 100,
+        "low": [
+          19.2
+        ],
+        "high": [
+          44.8
+        ]
+      }
+    ]
+  },
+  {
+    "id": "precise",
+    "layer": "SUFFIX",
+    "slots": "weapon",
+    "stats": [
+      "ACCURACY"
+    ],
+    "operation": "FLAT",
+    "tiers": [
+      {
+        "tier": 10,
+        "level": 1,
+        "weight": 100,
+        "low": [
+          10.0
+        ],
+        "high": [
+          25.0
+        ]
+      },
+      {
+        "tier": 9,
+        "level": 5,
+        "weight": 100,
+        "low": [
+          16.0
+        ],
+        "high": [
+          40.0
+        ]
+      },
+      {
+        "tier": 8,
+        "level": 10,
+        "weight": 100,
+        "low": [
+          22.0
+        ],
+        "high": [
+          55.0
+        ]
+      },
+      {
+        "tier": 7,
+        "level": 20,
+        "weight": 100,
+        "low": [
+          28.0
+        ],
+        "high": [
+          70.0
+        ]
+      },
+      {
+        "tier": 6,
+        "level": 30,
+        "weight": 100,
+        "low": [
+          34.0
+        ],
+        "high": [
+          85.0
+        ]
+      },
+      {
+        "tier": 5,
+        "level": 40,
+        "weight": 100,
+        "low": [
+          40.0
+        ],
+        "high": [
+          100.0
+        ]
+      },
+      {
+        "tier": 4,
+        "level": 50,
+        "weight": 100,
+        "low": [
+          46.0
+        ],
+        "high": [
+          115.0
+        ]
+      },
+      {
+        "tier": 3,
+        "level": 60,
+        "weight": 100,
+        "low": [
+          52.0
+        ],
+        "high": [
+          130.0
+        ]
+      },
+      {
+        "tier": 2,
+        "level": 75,
+        "weight": 100,
+        "low": [
+          58.0
+        ],
+        "high": [
+          145.0
+        ]
+      },
+      {
+        "tier": 1,
+        "level": 85,
+        "weight": 100,
+        "low": [
+          64.0
+        ],
+        "high": [
+          160.0
+        ]
+      }
+    ]
+  },
+  {
+    "id": "fire_resistance",
+    "layer": "SUFFIX",
+    "slots": "armour",
+    "stats": [
+      "FIRE_RESISTANCE"
+    ],
+    "operation": "FLAT",
+    "tiers": [
+      {
+        "tier": 10,
+        "level": 1,
+        "weight": 100,
+        "low": [
+          6.0
+        ],
+        "high": [
+          12.0
+        ]
+      },
+      {
+        "tier": 9,
+        "level": 5,
+        "weight": 100,
+        "low": [
+          9.6
+        ],
+        "high": [
+          19.2
+        ]
+      },
+      {
+        "tier": 8,
+        "level": 10,
+        "weight": 100,
+        "low": [
+          13.2
+        ],
+        "high": [
+          26.4
+        ]
+      },
+      {
+        "tier": 7,
+        "level": 20,
+        "weight": 100,
+        "low": [
+          16.8
+        ],
+        "high": [
+          33.6
+        ]
+      },
+      {
+        "tier": 6,
+        "level": 30,
+        "weight": 100,
+        "low": [
+          20.4
+        ],
+        "high": [
+          40.8
+        ]
+      },
+      {
+        "tier": 5,
+        "level": 40,
+        "weight": 100,
+        "low": [
+          24.0
+        ],
+        "high": [
+          48.0
+        ]
+      },
+      {
+        "tier": 4,
+        "level": 50,
+        "weight": 100,
+        "low": [
+          27.6
+        ],
+        "high": [
+          55.2
+        ]
+      },
+      {
+        "tier": 3,
+        "level": 60,
+        "weight": 100,
+        "low": [
+          31.2
+        ],
+        "high": [
+          62.4
+        ]
+      },
+      {
+        "tier": 2,
+        "level": 75,
+        "weight": 100,
+        "low": [
+          34.8
+        ],
+        "high": [
+          69.6
+        ]
+      },
+      {
+        "tier": 1,
+        "level": 85,
+        "weight": 100,
+        "low": [
+          38.4
+        ],
+        "high": [
+          76.8
+        ]
+      }
+    ]
+  },
+  {
+    "id": "cold_resistance",
+    "layer": "SUFFIX",
+    "slots": "armour",
+    "stats": [
+      "COLD_RESISTANCE"
+    ],
+    "operation": "FLAT",
+    "tiers": [
+      {
+        "tier": 10,
+        "level": 1,
+        "weight": 100,
+        "low": [
+          6.0
+        ],
+        "high": [
+          12.0
+        ]
+      },
+      {
+        "tier": 9,
+        "level": 5,
+        "weight": 100,
+        "low": [
+          9.6
+        ],
+        "high": [
+          19.2
+        ]
+      },
+      {
+        "tier": 8,
+        "level": 10,
+        "weight": 100,
+        "low": [
+          13.2
+        ],
+        "high": [
+          26.4
+        ]
+      },
+      {
+        "tier": 7,
+        "level": 20,
+        "weight": 100,
+        "low": [
+          16.8
+        ],
+        "high": [
+          33.6
+        ]
+      },
+      {
+        "tier": 6,
+        "level": 30,
+        "weight": 100,
+        "low": [
+          20.4
+        ],
+        "high": [
+          40.8
+        ]
+      },
+      {
+        "tier": 5,
+        "level": 40,
+        "weight": 100,
+        "low": [
+          24.0
+        ],
+        "high": [
+          48.0
+        ]
+      },
+      {
+        "tier": 4,
+        "level": 50,
+        "weight": 100,
+        "low": [
+          27.6
+        ],
+        "high": [
+          55.2
+        ]
+      },
+      {
+        "tier": 3,
+        "level": 60,
+        "weight": 100,
+        "low": [
+          31.2
+        ],
+        "high": [
+          62.4
+        ]
+      },
+      {
+        "tier": 2,
+        "level": 75,
+        "weight": 100,
+        "low": [
+          34.8
+        ],
+        "high": [
+          69.6
+        ]
+      },
+      {
+        "tier": 1,
+        "level": 85,
+        "weight": 100,
+        "low": [
+          38.4
+        ],
+        "high": [
+          76.8
+        ]
+      }
+    ]
+  },
+  {
+    "id": "lightning_resistance",
+    "layer": "SUFFIX",
+    "slots": "armour",
+    "stats": [
+      "LIGHTNING_RESISTANCE"
+    ],
+    "operation": "FLAT",
+    "tiers": [
+      {
+        "tier": 10,
+        "level": 1,
+        "weight": 100,
+        "low": [
+          6.0
+        ],
+        "high": [
+          12.0
+        ]
+      },
+      {
+        "tier": 9,
+        "level": 5,
+        "weight": 100,
+        "low": [
+          9.6
+        ],
+        "high": [
+          19.2
+        ]
+      },
+      {
+        "tier": 8,
+        "level": 10,
+        "weight": 100,
+        "low": [
+          13.2
+        ],
+        "high": [
+          26.4
+        ]
+      },
+      {
+        "tier": 7,
+        "level": 20,
+        "weight": 100,
+        "low": [
+          16.8
+        ],
+        "high": [
+          33.6
+        ]
+      },
+      {
+        "tier": 6,
+        "level": 30,
+        "weight": 100,
+        "low": [
+          20.4
+        ],
+        "high": [
+          40.8
+        ]
+      },
+      {
+        "tier": 5,
+        "level": 40,
+        "weight": 100,
+        "low": [
+          24.0
+        ],
+        "high": [
+          48.0
+        ]
+      },
+      {
+        "tier": 4,
+        "level": 50,
+        "weight": 100,
+        "low": [
+          27.6
+        ],
+        "high": [
+          55.2
+        ]
+      },
+      {
+        "tier": 3,
+        "level": 60,
+        "weight": 100,
+        "low": [
+          31.2
+        ],
+        "high": [
+          62.4
+        ]
+      },
+      {
+        "tier": 2,
+        "level": 75,
+        "weight": 100,
+        "low": [
+          34.8
+        ],
+        "high": [
+          69.6
+        ]
+      },
+      {
+        "tier": 1,
+        "level": 85,
+        "weight": 100,
+        "low": [
+          38.4
+        ],
+        "high": [
+          76.8
+        ]
+      }
+    ]
+  },
+  {
+    "id": "chaos_resistance",
+    "layer": "SUFFIX",
+    "slots": "armour",
+    "stats": [
+      "CHAOS_RESISTANCE"
+    ],
+    "operation": "FLAT",
+    "tiers": [
+      {
+        "tier": 10,
+        "level": 1,
+        "weight": 100,
+        "low": [
+          6.0
+        ],
+        "high": [
+          12.0
+        ]
+      },
+      {
+        "tier": 9,
+        "level": 5,
+        "weight": 100,
+        "low": [
+          9.6
+        ],
+        "high": [
+          19.2
+        ]
+      },
+      {
+        "tier": 8,
+        "level": 10,
+        "weight": 100,
+        "low": [
+          13.2
+        ],
+        "high": [
+          26.4
+        ]
+      },
+      {
+        "tier": 7,
+        "level": 20,
+        "weight": 100,
+        "low": [
+          16.8
+        ],
+        "high": [
+          33.6
+        ]
+      },
+      {
+        "tier": 6,
+        "level": 30,
+        "weight": 100,
+        "low": [
+          20.4
+        ],
+        "high": [
+          40.8
+        ]
+      },
+      {
+        "tier": 5,
+        "level": 40,
+        "weight": 100,
+        "low": [
+          24.0
+        ],
+        "high": [
+          48.0
+        ]
+      },
+      {
+        "tier": 4,
+        "level": 50,
+        "weight": 100,
+        "low": [
+          27.6
+        ],
+        "high": [
+          55.2
+        ]
+      },
+      {
+        "tier": 3,
+        "level": 60,
+        "weight": 100,
+        "low": [
+          31.2
+        ],
+        "high": [
+          62.4
+        ]
+      },
+      {
+        "tier": 2,
+        "level": 75,
+        "weight": 100,
+        "low": [
+          34.8
+        ],
+        "high": [
+          69.6
+        ]
+      },
+      {
+        "tier": 1,
+        "level": 85,
+        "weight": 100,
+        "low": [
+          38.4
+        ],
+        "high": [
+          76.8
+        ]
+      }
+    ]
+  },
+  {
+    "id": "of_execution",
+    "slots": "weapon",
+    "layer": "SUFFIX",
+    "stats": [
+      "CRITICAL_MULTIPLIER"
+    ],
+    "operation": "FLAT",
+    "tiers": [
+      {
+        "tier": 10,
+        "level": 1,
+        "weight": 100,
+        "low": [
+          8.0
+        ],
+        "high": [
+          15.0
+        ]
+      },
+      {
+        "tier": 9,
+        "level": 5,
+        "weight": 100,
+        "low": [
+          9.76
+        ],
+        "high": [
+          18.3
+        ]
+      },
+      {
+        "tier": 8,
+        "level": 10,
+        "weight": 100,
+        "low": [
+          11.52
+        ],
+        "high": [
+          21.6
+        ]
+      },
+      {
+        "tier": 7,
+        "level": 20,
+        "weight": 100,
+        "low": [
+          13.28
+        ],
+        "high": [
+          24.9
+        ]
+      },
+      {
+        "tier": 6,
+        "level": 30,
+        "weight": 100,
+        "low": [
+          15.04
+        ],
+        "high": [
+          28.2
+        ]
+      },
+      {
+        "tier": 5,
+        "level": 40,
+        "weight": 100,
+        "low": [
+          16.8
+        ],
+        "high": [
+          31.5
+        ]
+      },
+      {
+        "tier": 4,
+        "level": 50,
+        "weight": 100,
+        "low": [
+          18.56
+        ],
+        "high": [
+          34.8
+        ]
+      },
+      {
+        "tier": 3,
+        "level": 60,
+        "weight": 100,
+        "low": [
+          20.32
+        ],
+        "high": [
+          38.1
+        ]
+      },
+      {
+        "tier": 2,
+        "level": 75,
+        "weight": 100,
+        "low": [
+          22.08
+        ],
+        "high": [
+          41.4
+        ]
+      },
+      {
+        "tier": 1,
+        "level": 85,
+        "weight": 100,
+        "low": [
+          23.84
+        ],
+        "high": [
+          44.7
+        ]
+      }
+    ]
+  },
+  {
+    "id": "regenerating",
+    "slots": "armour",
+    "layer": "PREFIX",
+    "stats": [
+      "LIFE_REGEN"
+    ],
+    "operation": "FLAT",
+    "tiers": [
+      {
+        "tier": 10,
+        "level": 1,
+        "weight": 100,
+        "low": [
+          1.0
+        ],
+        "high": [
+          2.0
+        ]
+      },
+      {
+        "tier": 9,
+        "level": 5,
+        "weight": 100,
+        "low": [
+          1.22
+        ],
+        "high": [
+          2.44
+        ]
+      },
+      {
+        "tier": 8,
+        "level": 10,
+        "weight": 100,
+        "low": [
+          1.44
+        ],
+        "high": [
+          2.88
+        ]
+      },
+      {
+        "tier": 7,
+        "level": 20,
+        "weight": 100,
+        "low": [
+          1.66
+        ],
+        "high": [
+          3.32
+        ]
+      },
+      {
+        "tier": 6,
+        "level": 30,
+        "weight": 100,
+        "low": [
+          1.88
+        ],
+        "high": [
+          3.76
+        ]
+      },
+      {
+        "tier": 5,
+        "level": 40,
+        "weight": 100,
+        "low": [
+          2.1
+        ],
+        "high": [
+          4.2
+        ]
+      },
+      {
+        "tier": 4,
+        "level": 50,
+        "weight": 100,
+        "low": [
+          2.32
+        ],
+        "high": [
+          4.64
+        ]
+      },
+      {
+        "tier": 3,
+        "level": 60,
+        "weight": 100,
+        "low": [
+          2.54
+        ],
+        "high": [
+          5.08
+        ]
+      },
+      {
+        "tier": 2,
+        "level": 75,
+        "weight": 100,
+        "low": [
+          2.76
+        ],
+        "high": [
+          5.52
+        ]
+      },
+      {
+        "tier": 1,
+        "level": 85,
+        "weight": 100,
+        "low": [
+          2.98
+        ],
+        "high": [
+          5.96
+        ]
+      }
+    ]
+  },
+  {
+    "id": "of_clarity",
+    "slots": "armour",
+    "layer": "SUFFIX",
+    "stats": [
+      "MANA_REGEN"
+    ],
+    "operation": "FLAT",
+    "tiers": [
+      {
+        "tier": 10,
+        "level": 1,
+        "weight": 100,
+        "low": [
+          1.0
+        ],
+        "high": [
+          2.0
+        ]
+      },
+      {
+        "tier": 9,
+        "level": 5,
+        "weight": 100,
+        "low": [
+          1.22
+        ],
+        "high": [
+          2.44
+        ]
+      },
+      {
+        "tier": 8,
+        "level": 10,
+        "weight": 100,
+        "low": [
+          1.44
+        ],
+        "high": [
+          2.88
+        ]
+      },
+      {
+        "tier": 7,
+        "level": 20,
+        "weight": 100,
+        "low": [
+          1.66
+        ],
+        "high": [
+          3.32
+        ]
+      },
+      {
+        "tier": 6,
+        "level": 30,
+        "weight": 100,
+        "low": [
+          1.88
+        ],
+        "high": [
+          3.76
+        ]
+      },
+      {
+        "tier": 5,
+        "level": 40,
+        "weight": 100,
+        "low": [
+          2.1
+        ],
+        "high": [
+          4.2
+        ]
+      },
+      {
+        "tier": 4,
+        "level": 50,
+        "weight": 100,
+        "low": [
+          2.32
+        ],
+        "high": [
+          4.64
+        ]
+      },
+      {
+        "tier": 3,
+        "level": 60,
+        "weight": 100,
+        "low": [
+          2.54
+        ],
+        "high": [
+          5.08
+        ]
+      },
+      {
+        "tier": 2,
+        "level": 75,
+        "weight": 100,
+        "low": [
+          2.76
+        ],
+        "high": [
+          5.52
+        ]
+      },
+      {
+        "tier": 1,
+        "level": 85,
+        "weight": 100,
+        "low": [
+          2.98
+        ],
+        "high": [
+          5.96
+        ]
+      }
+    ]
+  },
+  {
+    "id": "of_recharge",
+    "slots": "armour",
+    "layer": "SUFFIX",
+    "stats": [
+      "ES_RECHARGE"
+    ],
+    "operation": "FLAT",
+    "tiers": [
+      {
+        "tier": 10,
+        "level": 1,
+        "weight": 100,
+        "low": [
+          5.0
+        ],
+        "high": [
+          10.0
+        ]
+      },
+      {
+        "tier": 9,
+        "level": 5,
+        "weight": 100,
+        "low": [
+          6.1
+        ],
+        "high": [
+          12.2
+        ]
+      },
+      {
+        "tier": 8,
+        "level": 10,
+        "weight": 100,
+        "low": [
+          7.2
+        ],
+        "high": [
+          14.4
+        ]
+      },
+      {
+        "tier": 7,
+        "level": 20,
+        "weight": 100,
+        "low": [
+          8.3
+        ],
+        "high": [
+          16.6
+        ]
+      },
+      {
+        "tier": 6,
+        "level": 30,
+        "weight": 100,
+        "low": [
+          9.4
+        ],
+        "high": [
+          18.8
+        ]
+      },
+      {
+        "tier": 5,
+        "level": 40,
+        "weight": 100,
+        "low": [
+          10.5
+        ],
+        "high": [
+          21.0
+        ]
+      },
+      {
+        "tier": 4,
+        "level": 50,
+        "weight": 100,
+        "low": [
+          11.6
+        ],
+        "high": [
+          23.2
+        ]
+      },
+      {
+        "tier": 3,
+        "level": 60,
+        "weight": 100,
+        "low": [
+          12.7
+        ],
+        "high": [
+          25.4
+        ]
+      },
+      {
+        "tier": 2,
+        "level": 75,
+        "weight": 100,
+        "low": [
+          13.8
+        ],
+        "high": [
+          27.6
+        ]
+      },
+      {
+        "tier": 1,
+        "level": 85,
+        "weight": 100,
+        "low": [
+          14.9
+        ],
+        "high": [
+          29.8
+        ]
+      }
+    ]
+  }
+]

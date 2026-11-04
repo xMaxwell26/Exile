@@ -1,0 +1,3 @@
+import com.koios.client.arpg.*;import com.koios.client.world.Model;
+public class WeaponGeometryInspect{public static void main(String[] args)throws Exception{CustomItemVisualCheck.main(new String[0]);for(int id=22420;id<22424;id++){com.koios.client.definition.ItemDefinition d=com.koios.client.definition.ItemDefinition.forID(id);for(int mode=0;mode<3;mode++){Model m=mode==0?d.method202(1):d.method196(mode-1);System.out.print(id+" mode"+mode+" verts="+m.anInt1626+" ");int[][] axes={m.anIntArray1627,m.anIntArray1628,m.anIntArray1629};for(int[] axis:axes){int min=99999,max=-99999;for(int v:axis){min=Math.min(min,v);max=Math.max(max,v);}System.out.print(min+":"+max+" ");}System.out.println(" bones="+java.util.Arrays.toString(m.anIntArray1655));}}}}
+

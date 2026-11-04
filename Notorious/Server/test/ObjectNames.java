@@ -1,0 +1,2 @@
+import com.koios.game.map.ObjectDefinition;import java.util.Arrays;
+public class ObjectNames {public static void main(String[] args){ObjectDefinition.load();for(int id=0;id<ObjectDefinition.streamIndices.length;id++){ObjectDefinition d=ObjectDefinition.getById(id);if(d.name!=null&&(d.name.toLowerCase().contains("workbench")||d.name.toLowerCase().contains("crafting table")))System.out.println(id+" "+d.name+" "+Arrays.toString(d.actions)+" "+d.xLength+"x"+d.yLength);}}}

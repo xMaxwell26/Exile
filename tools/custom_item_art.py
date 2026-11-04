@@ -1,0 +1,25 @@
+from pathlib import Path
+p=Path('Notorious/Client/src/com/koios/client/arpg/EquipmentIcons.java');p.write_text('''package com.koios.client.arpg;
+import java.awt.*;import java.awt.geom.*;import java.awt.image.BufferedImage;import com.koios.client.graphic.Sprite;
+/** Original code-native item illustrations, independent of the cache inventory renders. */
+public final class EquipmentIcons {
+ private static final Sprite[] CACHE=new Sprite[10];
+ private static Shape shape(int...points){Path2D p=new Path2D.Double();p.moveTo(points[0],points[1]);for(int i=2;i<points.length;i+=2)p.lineTo(points[i],points[i+1]);p.closePath();return p;}
+ private static void fill(Graphics2D g,Shape s,int top,int bottom){g.setPaint(new GradientPaint(5,4,new Color(top),25,29,new Color(bottom)));g.fill(s);g.setColor(new Color(0x18212B));g.setStroke(new BasicStroke(.8f,BasicStroke.CAP_ROUND,BasicStroke.JOIN_ROUND));g.draw(s);}
+ private static void line(Graphics2D g,int color,float width,int...points){g.setColor(new Color(color));g.setStroke(new BasicStroke(width,BasicStroke.CAP_ROUND,BasicStroke.JOIN_ROUND));Path2D path=new Path2D.Double();path.moveTo(points[0],points[1]);for(int i=2;i<points.length;i+=2)path.lineTo(points[i],points[i+1]);g.draw(path);}
+ private static void gem(Graphics2D g,int x,int y,int color){fill(g,shape(x,y-3,x+3,y,x,y+3,x-3,y),0xE8F8FF,color);}
+ public static Sprite sprite(int id){int n=CustomEquipment.index(id);if(CACHE[n]!=null)return CACHE[n];BufferedImage large=new BufferedImage(128,128,BufferedImage.TYPE_INT_ARGB);Graphics2D g=large.createGraphics();g.scale(4,4);g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
+  if(n==0){fill(g,shape(22,2,25,4,20,12,18,12,19,15,15,21,11,19,17,10),0xDAEEF0,0x344B57);line(g,0x7DDFD9,1,22,5,15,17);fill(g,shape(8,19,11,18,19,23,17,26,13,24,9,22),0xE1BD77,0x745230);fill(g,shape(10,23,13,25,8,30,5,28),0x775445,0x292B37);gem(g,12,22,0x3EBCBB);}
+  else if(n==1){Path2D blade=new Path2D.Double();blade.moveTo(25,3);blade.curveTo(27,13,21,21,13,23);blade.lineTo(10,20);blade.curveTo(19,17,23,12,25,3);fill(g,blade,0xE5D6FA,0x4C3867);line(g,0xCEACF5,1,24,8,20,16,13,21);fill(g,shape(8,19,15,24,14,27,6,22),0xA3B4C7,0x414957);fill(g,shape(8,24,11,26,7,30,4,28),0x715268,0x2C243D);gem(g,10,23,0xAD72D9);}
+  else if(n==2){fill(g,shape(7,29,5,26,15,14,19,17),0x92715B,0x3D3033);fill(g,shape(14,4,19,7,24,7,24,12,27,16,22,18,19,22,15,18,10,16,11,11,10,7),0xD1C9AD,0x515263);fill(g,shape(17,8,22,11,22,16,18,19,13,15,13,11),0xC69C59,0x785043);gem(g,18,13,0xDD8438);line(g,0xF7C977,1,16,11,20,15);}
+  else if(n==3){fill(g,shape(9,30,6,28,19,5,22,7),0x8A6351,0x302B35);Path2D axe=new Path2D.Double();axe.moveTo(18,5);axe.curveTo(25,8,28,5,29,3);axe.curveTo(33,14,28,23,21,25);axe.lineTo(18,18);axe.lineTo(23,15);axe.lineTo(20,11);axe.lineTo(16,10);axe.closePath();fill(g,axe,0xD4BBC0,0x483A4A);line(g,0xE67A6C,1.4f,27,7,27,14,22,21);gem(g,20,11,0xB84048);}
+  else if(n==4){fill(g,shape(8,6,12,8,20,8,24,6,30,12,27,17,24,16,24,28,16,30,8,28,8,16,4,17,2,12),0xA3B1BC,0x303F51);fill(g,shape(10,10,16,13,22,10,22,24,16,28,10,24),0x647E91,0x27384B);line(g,0xC4A575,1,8,9,12,13,16,15,20,13,24,9);line(g,0xA9BDC4,.7f,9,19,15,22,15,27,17,27,17,22,23,19);gem(g,16,16,0x499DAE);}
+  else if(n==5){fill(g,shape(9,5,13,8,19,8,23,5,28,11,24,15,24,27,18,29,9,28,8,16,4,14,5,10),0x9C8455,0x3B4837);fill(g,shape(12,9,16,12,20,9,22,25,16,27,10,25),0x586E48,0x26392F);line(g,0xCDB979,.8f,15,13,15,24);for(int y=15;y<=22;y+=3)line(g,0xB4AA70,.7f,13,y,17,y+1);line(g,0x573C2F,2,9,23,23,21);gem(g,17,22,0xA9AF55);}
+  else if(n==6){fill(g,shape(11,5,16,3,21,5,22,9,28,12,30,20,24,18,27,29,16,31,5,29,8,18,2,20,4,12,10,9),0x8874B1,0x30263F);fill(g,shape(12,7,16,10,20,7,19,15,13,15),0x262F46,0x151B2C);line(g,0xCAB785,.8f,10,12,13,19,8,28,16,29,24,28,19,19,22,12);line(g,0x8DBCD6,1,16,17,16,26);gem(g,16,16,0x70B6E3);}
+  else if(n==7){fill(g,shape(6,4,25,5,23,27,4,28,6,22,5,16),0xE6D4AB,0x9B7858);line(g,0x6E695C,.8f,9,9,18,11,13,16,20,19);line(g,0x7A785E,.7f,10,23,17,21,20,24);fill(g,new Ellipse2D.Double(18,18,10,10),0xC56B66,0x762C43);gem(g,23,23,0xD5A96F);}
+  else{int color=n==8?0x72C9E7:0xEBA665;fill(g,shape(16,2,25,9,23,22,16,30,7,22,7,9),0xB3BECA,0x423951);fill(g,shape(16,5,22,10,21,21,16,26,10,21,10,10),n==8?0xA3F0F3:0xFFE2A4,n==8?0x237EAE:0xB65E38);line(g,0xF3ECDA,.8f,16,6,14,15,16,25,18,15,16,6);gem(g,16,15,color);if(n==9){line(g,0xE7BE79,1,6,13,4,16,7,19);line(g,0xE7BE79,1,26,13,28,16,25,19);}}
+  g.dispose();BufferedImage small=new BufferedImage(32,32,BufferedImage.TYPE_INT_ARGB);Graphics2D out=small.createGraphics();out.setRenderingHint(RenderingHints.KEY_INTERPOLATION,RenderingHints.VALUE_INTERPOLATION_BICUBIC);out.drawImage(large,0,0,32,32,null);out.dispose();Sprite result=new Sprite(32,32);int[] pixels=small.getRGB(0,0,32,32,null,0,32);for(int i=0;i<pixels.length;i++)result.myPixels[i]=(pixels[i]>>>24)>=100?(pixels[i]&0xFFFFFF):0;CACHE[n]=result;return result;
+ }
+}
+''')
+p=Path('Notorious/Client/src/com/koios/client/definition/ItemDefinition.java');s=p.read_text().replace('i>=22420?"Wear":null','i>=22420?(i<22424?"Wield":"Wear"):null');p.write_text(s)

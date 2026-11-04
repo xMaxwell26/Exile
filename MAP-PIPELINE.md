@@ -1,0 +1,15 @@
+# Custom map pipeline
+
+RSPSi source found at `C:/Users/mmuir/OneDrive/Desktop/RSPSi-master/RSPSi-master` (version 1.16.1, Gradle 6.1, Java 8). It includes Plugin317, Plugin474, Plugin530 and Plugin317530 plus several custom-cache plugins. The repository README contains no setup details. Compatibility with the Notorious cache is not yet established.
+
+The runtime uses client cache `Notorious/koios-cache/main_file_cache.dat` and index files. Server terrain/object collision loads from `Notorious/Server/data/fs/map_index` and `data/fs/map/*.gz`. A custom export must update the client terrain/landscape assets and server map/collision assets together, using matching region IDs and file IDs.
+
+Before authoring original layouts, verify a copy of the cache with an appropriate RSPSi plugin: load an existing region, export it unchanged, decode it in both this client and the server, and compare tile heights, floors, object IDs/rotations and collision. Then author a small enclosed settlement with walls, buildings, lanes, pack spaces and a boss room. Keep editor working files separate from runtime outputs.
+
+The prototype's RegionInstance sends constructed-region packets (241), copying 13x13 chunks per plane into independently allocated 104x104 destinations. It clones walking/projectile collision and object records. Original custom regions can become source templates for the same instance loader. Public terrain is not the runtime map: each run has separate coordinates, collision and ownership. Interactive doors and custom scenery scripts will need explicit instance-aware handlers; prototype scenery interactions are intentionally kept out of legacy world scripts.
+
+## Authored arena layouts
+
+Ashen Foundry and Thornwild Courtyard now use RegionInstance's tiled option: a clear8x8 terrain patch is repeated in the constructed-region packet, and server collision samples the identical source tile mapping. Authored perimeter walls, room partitions, passages, crates and statues are added independently to the destination region and sent to the client after region load. Each map has its own destination scenery and collision. This is an authored gameplay layout using existing terrain/object assets; custom painted terrain and RSPSi exports are still separate work. GameplayEdgeCheck decodes all676 constructed chunks and compares their source coordinates, plane, rotation and collision correspondence.
+
+Authored arenas now send a reserved65526 terrain profile before241. The client applies a flat height grid and distinct foundry/courtyard floor/path materials before scene creation, avoiding repeated8x8 hills. Instance/layout changes force a scene refresh and clear old dynamic-object entries. Real client-cache probes rejected asset158 (bookcase whenrendered); foundry uses verified stone-wall1583 with type0, courtyard fence2068/type0, crate357/type10 and statue574/type10. SceneryVisualCheck loads textures and checks actual requested model types/rotations, since server labels and collision alone did not establish visible geometry.

@@ -1,0 +1,35 @@
+from pathlib import Path
+p=Path('Notorious/Server/src/com/koios/game/arpg/MapRuns.java');s=p.read_text().replace('public int tier,mods,portals=6,ticks;', 'public Location slam;public int slamAt,nextSlam=10;public int tier,mods,portals=6,ticks;')
+# pack layout each six near a deterministic anchor; boss separate far tile
+s=s.replace('Location at=cells.get(i);boolean boss=i==count-1;', '''Location at=cells.get(i);boolean boss=i==count-1;if(!intro&&!boss){Location anchor=cells.get((i/6)*Math.max(1,cells.size()/3));List<Location> pack=reachable(anchor,3);List<Location> free=new ArrayList<>();for(Location candidate:pack){boolean used=false;for(MapMob previous:run.mobs)if(previous.getLocation().equals(candidate))used=true;if(!used&&Location.getManhattanDistance(candidate,run.spawn)>3)free.add(candidate);}if(!free.isEmpty())at=free.get(i%free.size());}''')
+s=s.replace('  Combat.resetCombat(p);p.getCombat().setAggressor(null);p.setPosition(base.spawn.copy());','  clearSlam(p);Combat.resetCombat(p);p.getCombat().setAggressor(null);p.setPosition(base.spawn.copy());')
+a=s.index('  if(run.ticks%5!=0)return;');b=s.index('\n }\n public static void death',a)
+s=s[:a]+'''  MapMob boss=null;for(MapMob mob:run.mobs)if(mob.boss&&!mob.isDead())boss=mob;
+  if(!run.intro&&boss!=null){
+   if(run.slam!=null&&run.ticks>=run.slamAt){Location impact=run.slam;clearSlam(p);if(Location.getManhattanDistance(p.getLocation(),impact)<=2&&StraightPathFinder.isInteractionPathClear(impact,p.getLocation())){p.setDamage(new Damage(20+4*run.tier,DamageType.PHYSICAL,true),boss);p.sendMessage("The champion's slam hit you!");}else p.sendMessage("You avoided the champion's slam.");}
+   if(run.slam==null&&run.ticks>=run.nextSlam&&Location.getManhattanDistance(p.getLocation(),boss.getLocation())<=8){run.slam=p.getLocation().copy();run.slamAt=run.ticks+3;run.nextSlam=run.ticks+12;boss.getFollowing().reset();boss.speak("Crush!");p.sendMessage("CHAMPION SLAM: move off the marked tiles!");hazard(p,run.slam);}
+  }
+  objective(p);if(run.ticks%5!=0||p.isDead())return;
+  for(MapMob mob:run.mobs){if(mob.isDead())continue;int distance=Location.getManhattanDistance(p.getLocation(),mob.getLocation());
+   if(distance<=8){if(mob.boss&&run.slam!=null)continue;int reach=mob.role==2?6:2;if(distance>reach)mob.getFollowing().setFollow(p,FollowType.COMBAT);else{mob.getFollowing().reset();if(StraightPathFinder.isInteractionPathClear(mob.getLocation(),p.getLocation())){mob.playAnimation(new Animation(mob.role==2?711:mob.getDefinition().getAttackAnimation()));DamageType type=mob.role==2?DamageType.FIRE:mob.role==3?DamageType.CHAOS:DamageType.PHYSICAL;double multiplier=((run.mods&1)!=0?1.3:1)*(mob.elite?1.35:1);p.setDamage(new Damage((int)((mob.boss?6+2*run.tier:1+run.tier)*multiplier),type,type==DamageType.PHYSICAL),mob);if(mob.elite)mob.speak("Empowered");if(p.isDead())break;}}}
+  }'''+s[b:]
+s=s.replace(' private static void killed(Player p,MapMob mob){Run run=mob.run;', ' private static void killed(Player p,MapMob mob){Run run=mob.run;if(mob.boss)clearSlam(p);')
+s=s.replace('20L*run.tier);drop','20L*run.tier*(mob.elite?2:1));drop').replace('||mob.boss)drop(p,mob,AffixCatalog','||mob.boss||mob.elite)drop(p,mob,AffixCatalog').replace('mob.boss?3:1));','mob.boss?3:mob.elite?2:1));')
+s=s.replace('"\\nPortal Scroll: open a return portal";', '"\\n"+(run.slam==null?"Portal Scroll: open a return portal":"SLAM! Leave marked tiles / "+String.format(Locale.ROOT,"%.1f",Math.max(0,run.slamAt-run.ticks)*0.6)+"s");')
+idx=s.index(' public static boolean useScroll');s=s[:idx]+''' private static void hazard(Player p,Location at){p.getSession().send(new com.koios.network.out.impl.SendStringPacket(at==null?"":at.getX()+"|"+at.getY()+"|2",65527));}
+ private static void clearSlam(Player p){Run run=RUNS.get(p);if(run!=null&&run.slam!=null){run.slam=null;hazard(p,null);}}
+'''+s[idx:]
+s=s.replace('final Run run;final boolean boss;','final Run run;final boolean boss;public final int role;public final boolean elite;')
+s=s.replace('super(boss?82:73,at);this.owner=', 'super(boss?82:run.intro?73:new int[]{73,90,13,59}[Math.floorMod(at.getX()*31+at.getY(),4)],at);this.role=boss?4:run.intro?0:Math.floorMod(at.getX()*31+at.getY(),4);this.elite=!run.intro&&!boss&&run.mobs.size()%6==0;this.owner=')
+s=s.replace('setSkill(new Skill(this,20+run.tier*5,run.tier*2,hitpoints));','if(elite)hitpoints=maximumHitpoints=(int)(hitpoints*1.6);setSkill(new Skill(this,20+run.tier*5,run.tier*2,hitpoints));')
+s=s.replace('if(!isDead()&&owner.getZ()==getZ())','if(boss&&run.slam!=null){getFollowing().reset();return;}if(!isDead()&&owner.getZ()==getZ())')
+p.write_text(s)
+p=Path('Notorious/Client/src/com/koios/client/arpg/SkillPanel.java');s=p.read_text().replace('+"s   E "+(state.length>=14?state[11]:"0.0")+"s",0x8DC5FF);','+"s",0x8DC5FF);',1).replace('"s",0x8DC5FF);\n  text(font,22,y+42','"s   E "+(state.length>=14?state[11]:"0.0")+"s",0x8DC5FF);\n  text(font,22,y+42');p.write_text(s)
+# add client ground hazard projection, clipped outline diamonds per affected tile
+p=Path('Notorious/Client/src/com/koios/client/Client.java');s=p.read_text();s=s.replace('mapObjective.clear();','mapObjective.clear();arpgHazardX=-1;');s=s.replace('if(frame==65528)', 'if(frame==65527){if(text.isEmpty())arpgHazardX=-1;else{String[] hazard=text.split("\\\\|");arpgHazardX=Integer.parseInt(hazard[0]);arpgHazardY=Integer.parseInt(hazard[1]);arpgHazardRadius=Integer.parseInt(hazard[2]);}pktType=-1;return true;}\n                    if(frame==65528)');s=s.replace('        if(prototypeOpen){prototypePanel.draw', '        drawMapHazard();\n        if(prototypeOpen){prototypePanel.draw');idx=s.index('    private boolean arpgSkillsOpen,prototypeOpen;');s=s[:idx]+'''    private int arpgHazardX=-1,arpgHazardY,arpgHazardRadius;
+    private void drawMapHazard(){if(arpgHazardX<0)return;for(int dx=-arpgHazardRadius;dx<=arpgHazardRadius;dx++)for(int dy=-arpgHazardRadius;dy<=arpgHazardRadius;dy++){if(Math.abs(dx)+Math.abs(dy)>arpgHazardRadius)continue;int[] xs=new int[4],ys=new int[4];boolean visible=true;int[][] corners={{0,0},{128,0},{128,128},{0,128}};for(int c=0;c<4;c++){calcEntityScreenPos(((arpgHazardX+dx-baseX)<<7)+corners[c][0],0,((arpgHazardY+dy-baseY)<<7)+corners[c][1]);xs[c]=spriteDrawX;ys[c]=spriteDrawY;if(spriteDrawX<0)visible=false;}if(visible)for(int c=0;c<4;c++)com.koios.client.arpg.HazardOutline.line(xs[c],ys[c],xs[(c+1)%4],ys[(c+1)%4],0xFF7958);}}
+'''+s[idx:];p.write_text(s)
+p=Path('Notorious/Client/src/com/koios/client/arpg/HazardOutline.java');p.write_text('''package com.koios.client.arpg;
+import com.koios.client.graphic.DrawingArea;
+public final class HazardOutline {public static void line(int x,int y,int tx,int ty,int color){int steps=Math.max(Math.abs(tx-x),Math.abs(ty-y));for(int i=0;i<=steps;i++){int px=x+(tx-x)*i/Math.max(1,steps),py=y+(ty-y)*i/Math.max(1,steps);if(px>=DrawingArea.topX&&py>=DrawingArea.topY&&px<DrawingArea.bottomX&&py<DrawingArea.bottomY)DrawingArea.pixels[px+py*DrawingArea.width]=color;}}}
+''')

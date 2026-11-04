@@ -1,0 +1,70 @@
+package com.koios.game.content.dialogue;
+
+/**
+ * Represents the expressions a chat dialogue head can make
+ *
+ * @author Arithium
+ */
+public enum Expression {
+	HAPPY1(9850), 
+	REALLY_SAD(9760), 
+	DEPRESSED(9770), 
+	WORRIED(9775), 
+	SCARED(9780), 
+	MEAN_FACE(9785), 
+	MEAN_HEAD_BANG(9790),
+	EVIL(9795), 
+	WHAT_THE_CRAP(9800),
+	CALM(9805),
+	CALM_TALK(9810), 
+	TOUGH(9815), 
+	SNOBBY(9820), 
+	SNOBBY_HEAD_MOVE(9825), 
+	CONFUSED(9830), 
+	DRUNK_HAPPY_TIRED(9835), 
+	TALKING_ALOT(9845), 
+	HAPPY_TALKING(9850), 
+	BAD_ASS(9855), 
+	THINKING(9860), 
+	COOL_YES(9864), 
+	LAUGH_EXCITED(9851), 
+	SECRELTY_TALKING(9838), 
+	NO_EXPRESSION(9760),
+	SAD(9764), 
+	SAD_TWO(9768), 
+	NO_EXPRESSION_TWO(9772), 
+	WHY(9776), 
+	MIDLY_ANGRY(9784), 
+	ANGRY(9788), 
+	VERY_ANGRY(9792), 
+	ANGRY_TWO(9796), // this one is broken
+	MANIC_FACE(9800), 
+	JUST_LISTEN(9804),
+	PLAIN_TALKING(9808), 
+	LOOK_DOWN(9812), 
+	WHAT_THE(9816), 
+	WHAT_THE_TWO(9820), 
+	EYES_WIDE(9824), 
+	CROOKED_HEAD(9828), 
+	GLANCE_DOWN(9832), 
+	UNSURE(9836), 
+	LISTEN_LAUGH(9840),
+	TALK_SWING(9844), 
+	NORMAL(9847), 
+	GOOFY_LAUGH(9851), 
+	NORMAL_STILL(9855), 
+	THINKING_STILL(9859), 
+	LOOKING_UP(9862)
+
+	;
+
+	int emoteId;
+
+	Expression(int emoteId) {
+		this.emoteId = emoteId;
+	}
+
+	public int getEmoteId() {
+		return emoteId;
+	}
+}

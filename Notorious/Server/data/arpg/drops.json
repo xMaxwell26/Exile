@@ -1,0 +1,280 @@
+{
+  "version": 1,
+  "_comment": "Editable ARPG map loot. See BALANCING-GUIDE.md. Restart server after edits. _comment strings are documentation and never affect rolls.",
+  "normalTable": "map_normal",
+  "eliteTable": "map_elite",
+  "bossTable": "map_boss",
+  "npcOverrides": {},
+  "_npcOverridesExample": "Copy map_normal as furnace_sentinel, then add \"15001\": \"furnace_sentinel\" inside npcOverrides. Overrides replace the whole rank table for that NPC, including elites.",
+  "pools": {
+    "crafting_materials": [
+      {
+        "itemId": 22403,
+        "weight": 30,
+        "_comment": "Transmutation: common early crafting."
+      },
+      {
+        "itemId": 22405,
+        "weight": 30,
+        "_comment": "Wisdom: identification must remain accessible."
+      },
+      {
+        "itemId": 22407,
+        "weight": 25,
+        "_comment": "Alteration: reroll a magic item."
+      },
+      {
+        "itemId": 22408,
+        "weight": 20,
+        "_comment": "Augmentation: fill a magic item."
+      },
+      {
+        "itemId": 22400,
+        "weight": 10,
+        "_comment": "Alchemy: create a rare from normal."
+      },
+      {
+        "itemId": 22401,
+        "weight": 8,
+        "_comment": "Chaos: reroll a rare."
+      },
+      {
+        "itemId": 22415,
+        "weight": 6,
+        "_comment": "Scouring: clear explicits."
+      },
+      {
+        "itemId": 22409,
+        "weight": 4,
+        "_comment": "Regal: retain magic rolls and upgrade."
+      },
+      {
+        "itemId": 22404,
+        "weight": 3,
+        "_comment": "Vaal: corruption is permanent."
+      },
+      {
+        "itemId": 22416,
+        "weight": 2,
+        "_comment": "Annulment: remove a random explicit."
+      },
+      {
+        "itemId": 22402,
+        "weight": 1,
+        "_comment": "Exalted: intentionally the least common material."
+      }
+    ]
+  },
+  "tables": [
+    {
+      "id": "map_normal",
+      "experiencePerTier": 20,
+      "_comment": "Kill XP = this value x map tier. Rows roll independently. Copy this object and rename id to make an NPC-specific table.",
+      "rolls": [
+        {
+          "label": "Coins",
+          "type": "ITEM",
+          "itemId": 995,
+          "minQuantity": 30,
+          "maxQuantity": 30,
+          "abundantQuantityMultiplier": 2,
+          "_comment": "Guaranteed. Abundant currency map modifier doubles this amount."
+        },
+        {
+          "label": "Equipment",
+          "type": "EQUIPMENT",
+          "chanceNumerator": 1,
+          "chanceDenominator": 3,
+          "abundantChanceDenominator": 2,
+          "equipmentLevelPerTier": 2,
+          "_comment": "Normal monsters: 1 in 3, or 1 in 2 on Abundant maps. Elite/boss: guaranteed. Item level is 2 x tier; introduction uses level1."
+        },
+        {
+          "label": "Crafting material",
+          "type": "POOL",
+          "pool": "crafting_materials",
+          "minQuantity": 1,
+          "maxQuantity": 1,
+          "_comment": "One weighted choice from the named pool. Quantity is a stack of that one material."
+        },
+        {
+          "label": "Active or support gem",
+          "type": "GEM",
+          "chanceNumerator": 1,
+          "chanceDenominator": 8,
+          "gemLevelBase": 1,
+          "gemLevelTierDivisor": 2,
+          "supportChancePercent": 50,
+          "_comment": "Half active, half support. Level = 1 + floor(tier / 2), capped20."
+        },
+        {
+          "label": "Spare same-tier map",
+          "type": "MAP",
+          "chanceNumerator": 1,
+          "chanceDenominator": 12,
+          "excludeIntroduction": true,
+          "_comment": "Optional sustain. Champion progression map is guaranteed separately in MapRuns."
+        },
+        {
+          "label": "Extra support gem",
+          "type": "SUPPORT_GEM",
+          "chanceNumerator": 1,
+          "chanceDenominator": 5,
+          "gemLevelBase": 0,
+          "gemLevelTierDivisor": 2,
+          "_comment": "Non-boss monsters only; minimum gem level1."
+        },
+        {
+          "label": "Portal scroll",
+          "type": "ITEM",
+          "itemId": 22406,
+          "chanceNumerator": 1,
+          "chanceDenominator": 10,
+          "minQuantity": 1,
+          "maxQuantity": 1,
+          "_comment": "Guaranteed two from a boss; otherwise 1 in 10."
+        }
+      ]
+    },
+    {
+      "id": "map_elite",
+      "experiencePerTier": 40,
+      "_comment": "Kill XP = this value x map tier. Rows roll independently. Copy this object and rename id to make an NPC-specific table.",
+      "rolls": [
+        {
+          "label": "Coins",
+          "type": "ITEM",
+          "itemId": 995,
+          "minQuantity": 30,
+          "maxQuantity": 30,
+          "abundantQuantityMultiplier": 2,
+          "_comment": "Guaranteed. Abundant currency map modifier doubles this amount."
+        },
+        {
+          "label": "Equipment",
+          "type": "EQUIPMENT",
+          "chanceNumerator": 1,
+          "chanceDenominator": 1,
+          "abundantChanceDenominator": 1,
+          "equipmentLevelPerTier": 2,
+          "_comment": "Normal monsters: 1 in 3, or 1 in 2 on Abundant maps. Elite/boss: guaranteed. Item level is 2 x tier; introduction uses level1."
+        },
+        {
+          "label": "Crafting material",
+          "type": "POOL",
+          "pool": "crafting_materials",
+          "minQuantity": 2,
+          "maxQuantity": 2,
+          "_comment": "One weighted choice from the named pool. Quantity is a stack of that one material."
+        },
+        {
+          "label": "Active or support gem",
+          "type": "GEM",
+          "chanceNumerator": 1,
+          "chanceDenominator": 8,
+          "gemLevelBase": 1,
+          "gemLevelTierDivisor": 2,
+          "supportChancePercent": 50,
+          "_comment": "Half active, half support. Level = 1 + floor(tier / 2), capped20."
+        },
+        {
+          "label": "Spare same-tier map",
+          "type": "MAP",
+          "chanceNumerator": 1,
+          "chanceDenominator": 12,
+          "excludeIntroduction": true,
+          "_comment": "Optional sustain. Champion progression map is guaranteed separately in MapRuns."
+        },
+        {
+          "label": "Extra support gem",
+          "type": "SUPPORT_GEM",
+          "chanceNumerator": 1,
+          "chanceDenominator": 5,
+          "gemLevelBase": 0,
+          "gemLevelTierDivisor": 2,
+          "_comment": "Non-boss monsters only; minimum gem level1."
+        },
+        {
+          "label": "Portal scroll",
+          "type": "ITEM",
+          "itemId": 22406,
+          "chanceNumerator": 1,
+          "chanceDenominator": 10,
+          "minQuantity": 1,
+          "maxQuantity": 1,
+          "_comment": "Guaranteed two from a boss; otherwise 1 in 10."
+        }
+      ]
+    },
+    {
+      "id": "map_boss",
+      "experiencePerTier": 100,
+      "_comment": "Kill XP = this value x map tier. Rows roll independently. Copy this object and rename id to make an NPC-specific table.",
+      "rolls": [
+        {
+          "label": "Coins",
+          "type": "ITEM",
+          "itemId": 995,
+          "minQuantity": 300,
+          "maxQuantity": 300,
+          "abundantQuantityMultiplier": 2,
+          "_comment": "Guaranteed. Abundant currency map modifier doubles this amount."
+        },
+        {
+          "label": "Equipment",
+          "type": "EQUIPMENT",
+          "chanceNumerator": 1,
+          "chanceDenominator": 1,
+          "abundantChanceDenominator": 1,
+          "equipmentLevelPerTier": 2,
+          "_comment": "Normal monsters: 1 in 3, or 1 in 2 on Abundant maps. Elite/boss: guaranteed. Item level is 2 x tier; introduction uses level1."
+        },
+        {
+          "label": "Crafting material",
+          "type": "POOL",
+          "pool": "crafting_materials",
+          "minQuantity": 3,
+          "maxQuantity": 3,
+          "_comment": "One weighted choice from the named pool. Quantity is a stack of that one material."
+        },
+        {
+          "label": "Active or support gem",
+          "type": "GEM",
+          "chanceNumerator": 1,
+          "chanceDenominator": 1,
+          "gemLevelBase": 1,
+          "gemLevelTierDivisor": 2,
+          "supportChancePercent": 50,
+          "_comment": "Half active, half support. Level = 1 + floor(tier / 2), capped20."
+        },
+        {
+          "label": "Spare same-tier map",
+          "type": "MAP",
+          "chanceNumerator": 1,
+          "chanceDenominator": 12,
+          "excludeIntroduction": true,
+          "_comment": "Optional sustain. Champion progression map is guaranteed separately in MapRuns."
+        },
+        {
+          "label": "Extra support gem",
+          "type": "SUPPORT_GEM",
+          "chanceNumerator": 0,
+          "chanceDenominator": 5,
+          "gemLevelBase": 0,
+          "gemLevelTierDivisor": 2,
+          "_comment": "Non-boss monsters only; minimum gem level1."
+        },
+        {
+          "label": "Portal scroll",
+          "type": "ITEM",
+          "itemId": 22406,
+          "chanceNumerator": 1,
+          "chanceDenominator": 1,
+          "minQuantity": 2,
+          "maxQuantity": 2,
+          "_comment": "Guaranteed two from a boss; otherwise 1 in 10."
+        }
+      ]
+    }
+  ]
+}

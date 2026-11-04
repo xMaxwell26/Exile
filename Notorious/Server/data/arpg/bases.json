@@ -1,0 +1,395 @@
+[
+  {
+    "id": "rusted_sword",
+    "itemId": 22420,
+    "name": "Ashbound Sword",
+    "weapon": true,
+    "stats": [
+      {
+        "stat": "PHYSICAL_MIN",
+        "base": 3,
+        "growth": 0.3333333333333333
+      },
+      {
+        "stat": "PHYSICAL_MAX",
+        "base": 7,
+        "growth": 0.5
+      }
+    ],
+    "templateId": 1277
+  },
+  {
+    "id": "carving_dagger",
+    "itemId": 22421,
+    "name": "Duskfang Dagger",
+    "weapon": true,
+    "stats": [
+      {
+        "stat": "PHYSICAL_MIN",
+        "base": 2,
+        "growth": 0.25
+      },
+      {
+        "stat": "PHYSICAL_MAX",
+        "base": 5,
+        "growth": 0.4
+      },
+      {
+        "stat": "ATTACK_SPEED",
+        "base": 0.65,
+        "growth": 0
+      },
+      {
+        "stat": "CRITICAL_CHANCE",
+        "base": 3,
+        "growth": 0
+      }
+    ],
+    "templateId": 1205
+  },
+  {
+    "id": "worn_mace",
+    "itemId": 22422,
+    "name": "Gravebell Mace",
+    "weapon": true,
+    "stats": [
+      {
+        "stat": "PHYSICAL_MIN",
+        "base": 6,
+        "growth": 0.4
+      },
+      {
+        "stat": "PHYSICAL_MAX",
+        "base": 13,
+        "growth": 0.7
+      },
+      {
+        "stat": "ATTACK_SPEED",
+        "base": -0.25,
+        "growth": 0
+      },
+      {
+        "stat": "ACCURACY",
+        "base": 20,
+        "growth": 1
+      }
+    ],
+    "templateId": 1420
+  },
+  {
+    "id": "splitting_axe",
+    "itemId": 22423,
+    "name": "Riftcleaver Axe",
+    "weapon": true,
+    "stats": [
+      {
+        "stat": "PHYSICAL_MIN",
+        "base": 4,
+        "growth": 0.3333333333333333
+      },
+      {
+        "stat": "PHYSICAL_MAX",
+        "base": 10,
+        "growth": 0.6
+      },
+      {
+        "stat": "ATTACK_SPEED",
+        "base": -0.1,
+        "growth": 0
+      },
+      {
+        "stat": "CRITICAL_MULTIPLIER",
+        "base": 20,
+        "growth": 0
+      }
+    ],
+    "templateId": 1351
+  },
+  {
+    "id": "ironward_mail",
+    "itemId": 22424,
+    "name": "Ironward Carapace",
+    "weapon": false,
+    "stats": [
+      {
+        "stat": "ARMOUR",
+        "base": 25,
+        "growth": 3
+      }
+    ],
+    "templateId": 1115
+  },
+  {
+    "id": "trailhide_vest",
+    "itemId": 22425,
+    "name": "Briarhide Vest",
+    "weapon": false,
+    "stats": [
+      {
+        "stat": "EVASION",
+        "base": 40,
+        "growth": 4
+      }
+    ],
+    "templateId": 1129
+  },
+  {
+    "id": "spiritweave_robe",
+    "itemId": 22426,
+    "name": "Aetherwoven Robe",
+    "weapon": false,
+    "stats": [
+      {
+        "stat": "ENERGY_SHIELD",
+        "base": 18,
+        "growth": 2
+      }
+    ],
+    "templateId": 577
+  },
+  {
+    "id": "warden_blade",
+    "name": "Warden Longblade",
+    "itemId": 22430,
+    "templateId": 1277,
+    "weapon": true,
+    "minLevel": 4,
+    "stats": [
+      {
+        "stat": "PHYSICAL_MIN",
+        "base": 6,
+        "growth": 0.5
+      },
+      {
+        "stat": "PHYSICAL_MAX",
+        "base": 12,
+        "growth": 0.8
+      },
+      {
+        "stat": "CRITICAL_CHANCE",
+        "base": 2,
+        "growth": 0
+      }
+    ]
+  },
+  {
+    "id": "venom_shiv",
+    "name": "Nightglass Shiv",
+    "itemId": 22431,
+    "templateId": 1205,
+    "weapon": true,
+    "minLevel": 4,
+    "stats": [
+      {
+        "stat": "PHYSICAL_MIN",
+        "base": 3,
+        "growth": 0.3
+      },
+      {
+        "stat": "PHYSICAL_MAX",
+        "base": 7,
+        "growth": 0.5
+      },
+      {
+        "stat": "ATTACK_SPEED",
+        "base": 0.8,
+        "growth": 0
+      },
+      {
+        "stat": "CRITICAL_MULTIPLIER",
+        "base": 15,
+        "growth": 0
+      }
+    ]
+  },
+  {
+    "id": "siege_maul",
+    "name": "Cinderheart Maul",
+    "itemId": 22432,
+    "templateId": 1420,
+    "weapon": true,
+    "minLevel": 6,
+    "stats": [
+      {
+        "stat": "PHYSICAL_MIN",
+        "base": 10,
+        "growth": 0.6
+      },
+      {
+        "stat": "PHYSICAL_MAX",
+        "base": 22,
+        "growth": 1.1
+      },
+      {
+        "stat": "ATTACK_SPEED",
+        "base": -0.4,
+        "growth": 0
+      }
+    ]
+  },
+  {
+    "id": "wayfarer_mail",
+    "name": "Wayfarer Brigandine",
+    "itemId": 22433,
+    "templateId": 1115,
+    "weapon": false,
+    "minLevel": 4,
+    "stats": [
+      {
+        "stat": "ARMOUR",
+        "base": 20,
+        "growth": 2
+      },
+      {
+        "stat": "EVASION",
+        "base": 25,
+        "growth": 3
+      }
+    ]
+  },
+  {
+    "id": "emberweave",
+    "name": "Emberweave Mantle",
+    "itemId": 22434,
+    "templateId": 577,
+    "weapon": false,
+    "minLevel": 6,
+    "stats": [
+      {
+        "stat": "ENERGY_SHIELD",
+        "base": 22,
+        "growth": 2
+      },
+      {
+        "stat": "FIRE_RESISTANCE",
+        "base": 12,
+        "growth": 0
+      }
+    ]
+  },
+  {
+    "id": "bogsteel_cleaver",
+    "itemId": 22435,
+    "name": "Bogsteel Cleaver",
+    "templateId": 1351,
+    "weapon": true,
+    "minLevel": 8,
+    "stats": [
+      {
+        "stat": "PHYSICAL_MIN",
+        "base": 8,
+        "growth": 0.5
+      },
+      {
+        "stat": "PHYSICAL_MAX",
+        "base": 18,
+        "growth": 0.8
+      },
+      {
+        "stat": "ATTACK_SPEED",
+        "base": -0.2,
+        "growth": 0
+      },
+      {
+        "stat": "ACCURACY",
+        "base": 25,
+        "growth": 1
+      }
+    ]
+  },
+  {
+    "id": "dawnbreaker_blade",
+    "itemId": 22436,
+    "name": "Dawnbreaker Blade",
+    "templateId": 1277,
+    "weapon": true,
+    "minLevel": 12,
+    "stats": [
+      {
+        "stat": "PHYSICAL_MIN",
+        "base": 8,
+        "growth": 0.45
+      },
+      {
+        "stat": "PHYSICAL_MAX",
+        "base": 16,
+        "growth": 0.7
+      },
+      {
+        "stat": "CRITICAL_CHANCE",
+        "base": 3,
+        "growth": 0
+      }
+    ]
+  },
+  {
+    "id": "gloomfang_dagger",
+    "itemId": 22437,
+    "name": "Gloomfang Dagger",
+    "templateId": 1205,
+    "weapon": true,
+    "minLevel": 12,
+    "stats": [
+      {
+        "stat": "PHYSICAL_MIN",
+        "base": 3,
+        "growth": 0.25
+      },
+      {
+        "stat": "PHYSICAL_MAX",
+        "base": 8,
+        "growth": 0.4
+      },
+      {
+        "stat": "ATTACK_SPEED",
+        "base": 0.9,
+        "growth": 0
+      },
+      {
+        "stat": "CRITICAL_CHANCE",
+        "base": 5,
+        "growth": 0
+      }
+    ]
+  },
+  {
+    "id": "bastion_plate",
+    "itemId": 22438,
+    "name": "Bastion Plate",
+    "templateId": 1115,
+    "weapon": false,
+    "minLevel": 10,
+    "stats": [
+      {
+        "stat": "ARMOUR",
+        "base": 65,
+        "growth": 5
+      },
+      {
+        "stat": "LIFE",
+        "base": 15,
+        "growth": 1
+      }
+    ]
+  },
+  {
+    "id": "veilweave_coat",
+    "itemId": 22439,
+    "name": "Veilweave Coat",
+    "templateId": 577,
+    "weapon": false,
+    "minLevel": 10,
+    "stats": [
+      {
+        "stat": "ENERGY_SHIELD",
+        "base": 20,
+        "growth": 2
+      },
+      {
+        "stat": "EVASION",
+        "base": 25,
+        "growth": 2
+      }
+    ]
+  }
+]

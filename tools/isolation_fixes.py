@@ -1,0 +1,4 @@
+from pathlib import Path
+r=Path('Notorious/Server/src/com/koios')
+p=r/'game/arpg/MapRuns.java';s=p.read_text().replace('public void update(){if(!isDead()&&owner.getZ()==getZ())getFollowing().process();}', 'public void update(){if(!inside(owner)||MapRuns.run(owner)!=run){getFollowing().reset();return;}if(!isDead()&&owner.getZ()==getZ())getFollowing().process();}');p.write_text(s)
+p=r/'network/in/impl/PacketObjectOption.java';s=p.read_text();s=s.replace('if(com.koios.game.arpg.MapRuns.object(player,player.objectId,player.objectX,player.objectY))return;','');s=s.replace('player.setFacePosition(player.objectX, player.objectY);','player.setFacePosition(player.objectX, player.objectY);\n            if(com.koios.game.arpg.MapRuns.object(player,player.objectId,player.objectX,player.objectY))return;');p.write_text(s)

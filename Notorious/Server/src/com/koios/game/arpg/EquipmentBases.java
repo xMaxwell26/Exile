@@ -1,0 +1,15 @@
+package com.koios.game.arpg;
+import java.util.*;import java.nio.file.*;import java.nio.charset.StandardCharsets;import com.google.gson.Gson;import com.koios.game.model.item.Item;
+public final class EquipmentBases {
+ public static final class Property {Stat stat;double base,growth;}
+ public static final class Base {public String id,name;public int itemId,templateId,minLevel;public boolean weapon;Property[] stats;}
+ private static Base[] bases;
+ public static Base[] all(){if(bases==null)try{bases=new Gson().fromJson(new String(Files.readAllBytes(Paths.get("data/arpg/bases.json")),StandardCharsets.UTF_8),Base[].class);}catch(Exception e){throw new IllegalStateException("Cannot load equipment bases",e);}return bases;}
+ public static Base select(boolean weapon,Random random){return select(weapon,random,100);}
+ public static Base select(boolean weapon,Random random,int level){List<Base> pool=new ArrayList<>();for(Base b:all())if(b.weapon==weapon&&b.minLevel<=level)pool.add(b);return pool.get(random.nextInt(pool.size()));}
+ public static Base starter(boolean weapon){for(Base b:all())if(b.id.equals(weapon?"rusted_sword":"ironward_mail"))return b;throw new IllegalStateException("Missing starter base");}
+ public static Item create(Base base,int level){level=Math.max(level,base.minLevel);List<Modifier> mods=new ArrayList<>();for(Property prop:base.stats){double value=prop.base+prop.growth*level;if(prop.stat==Stat.PHYSICAL_MIN||prop.stat==Stat.PHYSICAL_MAX||prop.stat==Stat.ARMOUR||prop.stat==Stat.EVASION||prop.stat==Stat.ENERGY_SHIELD)value=Math.floor(value);mods.add(new Modifier(prop.stat,Modifier.Operation.FLAT,value));}Item item=new Item(base.itemId);item.setRoll(new ItemRoll(ItemRoll.Rarity.NORMAL,level,Math.max(Math.max(1,base.minLevel),level-3),true,0,Collections.singletonList(new ItemRoll.Affix("base_"+base.id,ItemRoll.Layer.BASE_IMPLICIT,1,mods.toArray(new Modifier[0])))));return item;}
+ public static int template(int id){for(Base base:all())if(base.itemId==id)return base.templateId;return id;}
+ public static void migrate(Item item){if(!item.hasRoll())return;ItemRoll roll=item.getRoll();if(roll.getMap()!=null&&item.getId()==8007)item.transform(22410);else if(roll.getGem()!=null&&(item.getId()==1623||item.getId()==1631))item.transform(roll.getGem().support?22412:22411);else for(ItemRoll.Affix affix:roll.getAffixes())if(affix.getLayer()==ItemRoll.Layer.BASE_IMPLICIT){if(item.getId()==1277&&affix.getId().equals("sword_base"))item.transform(22420);if(item.getId()==1115){if(affix.getId().equals("evasion_base"))item.transform(22425);else if(affix.getId().equals("es_base"))item.transform(22426);else if(affix.getId().equals("armour_base")||affix.getId().equals("hybrid_base"))item.transform(22424);}for(Base base:all())if(affix.getId().equals("base_"+base.id)&&item.getId()==base.templateId)item.transform(base.itemId);}}
+ public static String name(Item item){if(item.hasRoll())for(ItemRoll.Affix affix:item.getRoll().getAffixes())if(affix.getLayer()==ItemRoll.Layer.BASE_IMPLICIT)for(Base b:all())if(affix.getId().equals("base_"+b.id))return b.name;return item.getDefinition().getName();}
+}

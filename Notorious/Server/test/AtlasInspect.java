@@ -1,0 +1,2 @@
+import javax.imageio.ImageIO;import java.io.*;import java.awt.image.*;
+public class AtlasInspect{public static void main(String[] args)throws Exception{for(String path:args){BufferedImage image=ImageIO.read(new File(path));long[] hist=new long[6];for(int y=0;y<image.getHeight();y++)for(int x=0;x<image.getWidth();x++){int alpha=image.getRGB(x,y)>>>24;hist[alpha==0?0:alpha<64?1:alpha<128?2:alpha<200?3:alpha<250?4:5]++;}System.out.println(path+" "+image.getWidth()+"x"+image.getHeight()+" alpha="+java.util.Arrays.toString(hist));}}}

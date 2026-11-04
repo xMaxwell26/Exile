@@ -1,0 +1,8 @@
+*.class
+
+*.classpath
+*.project
+
+bin/
+bin-prod/
+data/abuse-reports/

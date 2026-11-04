@@ -1,0 +1,14 @@
+package com.koios.client.arpg;
+import java.util.*;import com.koios.client.graphic.*;
+/** Clean sidebar chrome; all legacy widget origins and click bounds remain intact. */
+public final class SidebarChrome {
+ private static final Map<Sprite,Sprite[]> ICONS=new IdentityHashMap<>();
+ private static final int[] X={6,44,77,110,143,176,209},W={38,33,33,33,33,33,38};
+ private static void box(int x,int y,int w,int h,int border,int fill){DrawingArea.drawPixels(h,y,x,fill,w);DrawingArea.fillPixels(x,w,h,border,y);}
+ public static boolean contains(int x,int y,int width,int height,boolean fixed,boolean compact){if(fixed)return x>=516&&x<765&&y>=168&&y<503;int left=compact?width-204:width-247,top=compact?(width>=1000?height-311:height-348):height-336;return x>=left&&x<width&&y>=top&&y<height;}
+ public static void fixed(int x,int y,int selected){DrawingArea.drawPixels(335,y,x,ExileTheme.BACKGROUND,249);box(x+6,y+34,237,264,ExileTheme.BORDER,ExileTheme.SURFACE);box(x+24,y+35,201,262,ExileTheme.BORDER_SUBTLE,ExileTheme.SURFACE_DARK);for(int tab=0;tab<14;tab++){int row=tab/7,column=tab%7;box(x+X[column],y+(row==0?0:298),W[column]-1,36,tab==selected?ExileTheme.GOLD:ExileTheme.BORDER_SUBTLE,tab==selected?ExileTheme.SELECTED:ExileTheme.SURFACE_DARK);}}
+ public static void compact(int width,int height,boolean visible,int selected){int contentY=width>=1000?height-311:height-348;if(visible)box(width-204,contentY,204,274,ExileTheme.BORDER,ExileTheme.SURFACE_DARK);if(width>=1000){for(int i=0;i<13;i++)box(width-417+i*32,height-37,31,36,ExileTheme.BORDER_SUBTLE,ExileTheme.SURFACE_DARK);int[] stone={417,385,353,321,289,256,224,129,193,161,130,98,65,33};if(selected>=0&&selected<14)box(width-stone[selected],height-37,31,36,ExileTheme.GOLD,ExileTheme.SELECTED);}else{for(int row=0;row<2;row++)for(int col=0;col<7;col++)box(width-226+col*32,height-(row==0?73:37),31,36,ExileTheme.BORDER_SUBTLE,ExileTheme.SURFACE_DARK);int[] stone={226,194,162,130,99,65,34,130,195,161,130,98,65,33};if(selected>=0&&selected<14)box(width-stone[selected],height-(selected<7?73:37),31,36,ExileTheme.GOLD,ExileTheme.SELECTED);}}
+ public static Sprite icon(Sprite source,boolean selected){if(source==null)return null;Sprite[] cached=ICONS.get(source);if(cached==null){cached=new Sprite[]{source.toned(ExileTheme.MUTED),source.toned(ExileTheme.HEADING)};ICONS.put(source,cached);}return cached[selected?1:0];}
+ public static void slot(int x,int y,boolean hovered,boolean selected,int rarityColor){HighDpiArt.invalidate(x-2,y-1,36,34);box(x-2,y-1,36,34,selected?ExileTheme.GOLD:hovered?ExileTheme.GOLD:ExileTheme.BORDER_SUBTLE,hovered?ExileTheme.HOVER:ExileTheme.SURFACE);if(rarityColor!=0&&rarityColor!=0xD8D8D8)DrawingArea.drawPixels(1,y+31,x+7,rarityColor,18);}
+ public static void footer(TextDrawingArea font,int x,int y,int used){font.method389(true,x+7,ExileTheme.DIM,"INVENTORY",y+258);font.method389(true,x+153,ExileTheme.MUTED,used+" / 28",y+258);}
+}
