@@ -57,7 +57,16 @@ public final class CustomArmourModels {
    }
    if(projected<Double.MAX_VALUE)return projected-.6;
    double nearest=Double.MAX_VALUE;for(int i=0;i<source.anInt1626;i++)if(source.anIntArray1655!=null&&source.anIntArray1655[i]==group){double dx=x-source.anIntArray1627[i],dy=y-source.anIntArray1628[i];nearest=Math.min(nearest,dx*dx+dy*dy);}double z=Double.MAX_VALUE;for(int i=0;i<source.anInt1626;i++)if(source.anIntArray1655!=null&&source.anIntArray1655[i]==group){double dx=x-source.anIntArray1627[i],dy=y-source.anIntArray1628[i];if(dx*dx+dy*dy<=nearest+36)z=Math.min(z,source.anIntArray1629[i]);}return z==Double.MAX_VALUE?frontZ:z-1;}
-  int vertex(double x,double y,double depth,int bone){vertices.add(worn?new double[]{centerX+x*halfWidth,topY+y*height,surface(centerX+x*halfWidth,topY+y*height,bone)-depth}:new double[]{centerX+x*halfWidth,groundY-depth,centerZ+(y-.5)*height});bones.add(worn?bone:0);return source.anInt1626+vertices.size()-1;}
+  int vertex(double x,double y,double depth,int bone){
+   // Project at the final integer XY used by the legacy renderer. Projecting
+   // first and then rounding XY moved some vertices across sloped chest folds,
+   // leaving them on or behind the actual torso (16 measured cache fixtures).
+   // surface() includes 0.6 units of stand-off: nearest-integer Z rounding then
+   // still leaves positive clearance. Keep it shallow to avoid floating plates.
+   double fittedX=Math.round(centerX+x*halfWidth),fittedY=Math.round(topY+y*height);
+   vertices.add(worn?new double[]{fittedX,fittedY,surface(fittedX,fittedY,bone)-depth}:new double[]{centerX+x*halfWidth,groundY-depth,centerZ+(y-.5)*height});
+   bones.add(worn?bone:0);return source.anInt1626+vertices.size()-1;
+  }
   void face(int a,int b,int c,int color){faces.add(new int[]{a,worn?c:b,worn?b:c,color});}
   void piece(double[][] polygon,double thickness,int bone,int color,int edge){double area=0;for(int i=0;i<polygon.length;i++){double[] a=polygon[i],b=polygon[(i+1)%polygon.length];area+=a[0]*b[1]-b[0]*a[1];}double[][] points=polygon;if(area<0){points=new double[polygon.length][];for(int i=0;i<points.length;i++)points[i]=polygon[points.length-1-i];}List<int[]> triangles=CustomWeaponModels.triangulate(points);int count=points.length,start=source.anInt1626+vertices.size();for(int layer=0;layer<2;layer++)for(double[] point:points)vertex(point[0],point[1],layer==0?0:thickness,bone);for(int[] t:triangles){face(start+t[2],start+t[1],start+t[0],color);face(start+count+t[0],start+count+t[1],start+count+t[2],color);}for(int i=0;i<count;i++){int next=(i+1)%count;face(start+i,start+next,start+count+next,edge);face(start+i,start+count+next,start+count+i,edge);}}
   void band(double x1,double x2,double y1,double y2,double depth,int bone,int color){piece(new double[][]{{x1,y1},{x2,y1},{x2,y2},{x1,y2}},depth,bone,color,color);}
