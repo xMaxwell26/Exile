@@ -2,6 +2,11 @@ package com.koios.game.arpg;
 
 import com.google.gson.*;
 import java.util.*;
+import java.io.IOException;
+import java.io.StringReader;
+import java.math.BigDecimal;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonToken;
 
 /**
  * Strict author-facing schema gate for drops.json.
@@ -19,7 +24,14 @@ final class DropSchema {
 
  static JsonObject read(String json) {
   final JsonElement parsed;
-  try { parsed=new JsonParser().parse(json); }
+  try (JsonReader reader = new JsonReader(new StringReader(json))) {
+   // JsonParser temporarily enables Gson's lenient mode and loses duplicate
+   // keys. Read tokens ourselves so author mistakes cannot silently win.
+   reader.setLenient(false);
+   parsed = value(reader, "drops.json", 0);
+   if (reader.peek() != JsonToken.END_DOCUMENT) fail("drops.json", "unexpected trailing content");
+  }
+  catch(IOException failure){throw new IllegalArgumentException("drops.json: malformed JSON: "+failure.getMessage(),failure);}
   catch(RuntimeException failure){throw new IllegalArgumentException("drops.json: malformed JSON: "+failure.getMessage(),failure);}
   JsonObject root=object(parsed,"drops.json"); keys(root,"drops.json",ROOT);
   integer(required(root,"version","drops.json"),"drops.json.version");
@@ -61,6 +73,33 @@ final class DropSchema {
    }
   }
   return root;
+ }
+ /** Preserve JSON types and reject duplicate fields before a tree can overwrite them. */
+ private static JsonElement value(JsonReader reader, String at, int depth) throws IOException {
+  if (depth > 32) { fail(at, "nesting exceeds 32 levels"); }
+  switch (reader.peek()) {
+   case BEGIN_OBJECT:
+    reader.beginObject();
+    JsonObject object = new JsonObject();
+    while (reader.hasNext()) {
+     String key = reader.nextName();
+     if (object.has(key)) fail(at + "." + key, "duplicate field");
+     object.add(key, value(reader, at + "." + key, depth + 1));
+    }
+    reader.endObject();
+    return object;
+   case BEGIN_ARRAY:
+    reader.beginArray();
+    JsonArray array = new JsonArray();
+    while (reader.hasNext()) array.add(value(reader, at + "[" + array.size() + "]", depth + 1));
+    reader.endArray();
+    return array;
+   case STRING: return new JsonPrimitive(reader.nextString());
+   case NUMBER: return new JsonPrimitive(new BigDecimal(reader.nextString()));
+   case BOOLEAN: return new JsonPrimitive(reader.nextBoolean());
+   case NULL: reader.nextNull(); return JsonNull.INSTANCE;
+   default: fail(at, "expected a JSON value"); return null;
+  }
  }
  private static void keys(JsonObject object,String at,String[] allowed){comments(object,at);for(Map.Entry<String,JsonElement> field:object.entrySet()){String key=field.getKey();if(!Arrays.asList(allowed).contains(key))fail(at+"."+key,"unknown field; check spelling (allowed: "+Arrays.toString(allowed)+")");}}
  /** Underscore-prefixed string notes are documentation and never affect rewards. */

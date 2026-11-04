@@ -20,6 +20,12 @@ public final class DropTableCheck {
         try { MapDropTables.validate(root.toString()); throw new AssertionError("Accepted " + reason); }
         catch (IllegalArgumentException expected) { check(!expected.getMessage().isEmpty(), "Readable error for " + reason); }
     }
+    private static void rejectAt(String json, String path) {
+        try { MapDropTables.validate(json); throw new AssertionError("Accepted invalid field at " + path); }
+        catch (IllegalArgumentException expected) {
+            check(expected.getMessage().contains(path), "Error points to " + path + ": " + expected.getMessage());
+        }
+    }
     public static void main(String[] args) throws Exception {
         PrototypeIntegrationCheck.loaded();
         String json = new String(Files.readAllBytes(Paths.get("data/arpg/drops.json")), StandardCharsets.UTF_8);
@@ -115,6 +121,33 @@ public final class DropTableCheck {
                 check(expected.getMessage().contains("BASE") && expected.getMessage().contains("GEM")
                         && expected.getMessage().contains("MAP"), "Raw rolled ID rejected with author recipe guidance");
             }
+        }
+
+        // Strict authoring contract: never coerce strings, truncate numbers or
+        // ignore misspelled knobs. Every rejection must identify the exact field.
+        for (JsonElement invalid : Arrays.asList(new JsonPrimitive("2"), new JsonPrimitive(1.5),
+                new JsonPrimitive(2147483648L), new JsonPrimitive(true), JsonNull.INSTANCE)) {
+            bad = edit(json); row(bad).add("chanceDenominator", invalid);
+            rejectAt(bad.toString(), "drops.json.tables[0].rolls[0].chanceDenominator");
+        }
+        bad=edit(json); row(bad).addProperty("chanceDenominater", 10);
+        rejectAt(bad.toString(), "drops.json.tables[0].rolls[0].chanceDenominater");
+        bad=edit(json); row(bad).addProperty("excludeIntroduction", "true");
+        rejectAt(bad.toString(), "drops.json.tables[0].rolls[0].excludeIntroduction");
+        bad=edit(json); row(bad).remove("itemId");
+        rejectAt(bad.toString(), "drops.json.tables[0].rolls[0].itemId");
+        bad=edit(json); bad.addProperty("_author", "Safe root note");
+        row(bad).addProperty("_experiment", "Safe row note");
+        MapDropTables.validate(bad.toString());
+        check(true, "String notes remain editable without affecting rewards");
+        row(bad).addProperty("_experiment", 3);
+        rejectAt(bad.toString(), "drops.json.tables[0].rolls[0]._experiment");
+        bad=edit(json); bad.getAsJsonObject("npcOverrides").addProperty("015001", "map_normal");
+        rejectAt(bad.toString(), "drops.json.npcOverrides.015001");
+        rejectAt(json.replaceFirst("\\{", "{\"version\":1,"), "drops.json.version");
+        for (String malformed : new String[]{json + " true", json.replaceFirst("\"version\"", "version"),
+                "/* not a JSON note */" + json, json.substring(0, json.lastIndexOf('}')) + ",}"}) {
+            rejectAt(malformed, "drops.json");
         }
 
         StringBuilder report = new StringBuilder("# Drop balance reference\n\nSeed48721,2000 normal tier3 kills using data/arpg/drops.json. This is a deterministic sample, not final economy validation.\n\n");

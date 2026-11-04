@@ -13,6 +13,17 @@ This is the authoring entry point for the prototype. The original Desktop projec
 
 `_comment` strings inside drops.json explain nearby settings. They are ignored by the loader. Keep commas and quotes valid; do not add `//` comments to JSON. For quick feedback, run `tools/ValidateContent.ps1` from PowerShell after an initial build. It validates drops, enemies, bases and affix ranges without starting a server or writing saves. Run `dev.ps1 Test` for the broader reward-generation, invalid-data and tutorial-progression checks.
 
+## Strict drop-file validation
+
+Drop files use strict JSON: double-quoted keys, no trailing commas, no `//` or
+block comments, and no duplicate keys. Unknown fields fail with their exact path
+(for example `drops.json.tables[0].rolls[0].chanceDenominater`), so a misspelled
+balance knob cannot silently use its default. Numbers must be exact 32-bit
+integers, not quoted strings, fractions or overflowing values; flags are literal
+`true`/`false`. Optional fields may be omitted to use the documented defaults,
+but explicit `null` is rejected. Any underscore-prefixed **string** field can
+hold an author note. Validation and preview never replace the live catalog.
+
 ## Reading a drop table
 
 `normalTable`, `eliteTable` and `bossTable` select the default table for each rank. Each table has a unique `id`, `experiencePerTier` and a list of `rolls`.
