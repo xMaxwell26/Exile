@@ -75,8 +75,13 @@ public final class AuthoredMaps {
         // Four sentinels frame the boss lawn. Crates and barrels are confined to
         // collapsed storage corners, leaving a generous dodge envelope around it.
         for(int x:new int[]{47,57})for(int y:new int[]{62,69})place(region,574,x,y,10,0);
+        // Landmark clusters break the repeated rail silhouette while the nave
+        // and boss lawn stay open for readable combat.
+        place(region,609,35,53,10,0); place(region,609,66,53,10,0);
+        place(region,2783,37,48,10,0); place(region,2783,67,48,10,0);
+        place(region,574,36,58,10,0); place(region,574,68,58,10,0);
         crates(region,new int[][]{{34,35},{35,35},{34,42},{69,35},{70,35},{70,42},{35,67},{69,68}});
-        barrels(region,new int[][]{{37,35},{67,35},{36,69},{68,66}});
+        barrels(region,new int[][]{{37,35},{67,35},{36,69},{68,66},{39,58},{65,58}});
     }
 
     private static void crates(RegionInstance region,int[][] cells){for(int[] cell:cells)place(region,357,cell[0],cell[1],10,0);}
