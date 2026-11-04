@@ -277,7 +277,7 @@ public final class RSInterface {
 				rsInterface.textShadow = stream.readUnsignedByte() == 1;
 			}
 			if (rsInterface.type == 4) {
-				rsInterface.message = stream.readString().replaceAll("RuneScape", "RuneScape");
+				rsInterface.message = stream.readString().replace("RuneScape",com.koios.client.constants.Constants.CLIENT_NAME);
 				rsInterface.aString228 = stream.readString();
 			}
 			if (rsInterface.type == 1 || rsInterface.type == 3 || rsInterface.type == 4)

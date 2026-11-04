@@ -11,11 +11,17 @@ public final class ArpgTabs {
         ExileTheme.panel(x,y,190,260,ExileTheme.BORDER,ExileTheme.PANEL);ExileTheme.heading(x+12,y+23,title,ExileTheme.HEADING);
         DrawingArea.drawPixels(2, y + 31, x + 12, ExileTheme.CRIMSON, 166);
         String[] description = tab == 2
-            ? new String[]{"Shape your character with", "connected passive upgrades.", "", "Allocate nodes in the tree.", "Ctrl-click a leaf to refund."}
+            ? new String[]{"Shape your character with connected passive upgrades.","Allocate nodes in the tree. Ctrl-click a leaf to refund."}
             : tab == 5
-            ? new String[]{"Change how your skills fight.", "", "Find an uncut jewel.", "Craft the support you want.", "", "Drag it from your satchel", "into a support socket", "in your loadout."}
-            : new String[]{"Build your own fighting style.", "", "Three active gem sockets.", "Choose and craft your skills.", "", "Drag gems from your satchel", "into the loadout. Drag them", "back out to remove them."};
-        for (int i = 0; i < description.length; i++)ExileTheme.label(font,x+12,y+52+i*16,description[i],description[i].isEmpty()?ExileTheme.DIM:ExileTheme.TEXT);
+            ? new String[]{"Change how your skills fight.","Find an uncut jewel and craft the support you want.","Drag it from your satchel into a support socket in your loadout."}
+            : new String[]{"Build your own fighting style with three active gem sockets.","Craft your skills from uncut jewels.","Drag gems into the loadout. Drag them back out to remove them."};
+        java.util.List<String> rows=new java.util.ArrayList<>();
+        for(String paragraph:description){if(!rows.isEmpty())rows.add("");rows.addAll(ChatWrap.lines(paragraph,166,font::getTextWidth));}
+        int required=0;for(String row:rows)required+=row.isEmpty()?7:16;
+        TextDrawingArea body=font;
+        if(required>142){body=ExileTheme.small();rows.clear();for(String paragraph:description){if(!rows.isEmpty())rows.add("");rows.addAll(ChatWrap.lines(paragraph,166,body::getTextWidth));}}
+        int baseline=y+52;
+        for(String row:rows){if(row.isEmpty()){baseline+=7;continue;}if(baseline+3>=y+190)break;ExileTheme.label(body,x+12,baseline,row,ExileTheme.TEXT);baseline+=16;}
         ExileTheme.panel(x+8,y+198,174,30,ExileTheme.GOLD,ExileTheme.OXBLOOD);
         String action=tab==2?"Open passive tree":"Open loadout";ExileTheme.label(font,x+95-font.getTextWidth(action)/2,y+218,action,ExileTheme.HEADING);
     }

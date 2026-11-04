@@ -53,7 +53,7 @@ public final class CraftingReferenceCheck {
                 com.koios.client.arpg.PrototypePanel panel=new com.koios.client.arpg.PrototypePanel();
                 panel.accept(Base64.getEncoder().encodeToString(packet.getBytes("UTF-8")));
                 panel.draw(font,0,0);
-                check("craft".equals(panel.actionAt(30,60,false)),"Visible back row has matching hit target");
+                check("craft".equals(panel.actionAt(360,60,false)),"Visible Back button has matching hit target");
                 ImageIO.write(image,"png",new File("build/crafting-reference-"+(page+1)+".png"));
             }
         }

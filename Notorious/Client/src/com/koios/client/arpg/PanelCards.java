@@ -3,12 +3,14 @@ import java.util.*;import com.koios.client.graphic.*;
 /** Card layouts for map selection and gem choices using the existing server actions. */
 public final class PanelCards {
  private static final class Card {String action,label,detail="";int x,y,w,h,glyph=-1,mapId=-1;boolean support,selected;Card(String action,String label,int x,int y,int w,int h){this.action=action;this.label=label;this.x=x;this.y=y;this.w=w;this.h=h;}}
- private final java.util.List<Card> cards=new ArrayList<>();private String title="",detail="";private boolean active,gemCraft;private String secondary="";
+ private final java.util.List<Card> cards=new ArrayList<>();private String title="",detail="";private boolean active,gemCraft,reference,selectedItem;private final List<String> notes=new ArrayList<>();private String secondary="";
  public boolean accept(String[] lines){
-  cards.clear();active=false;gemCraft=false;secondary="";if(lines.length==0)return false;if(lines[0].equals("gemcraft"))return acceptGemCraft(lines);boolean maps=lines[0].equals("maps"),supplies=lines[0].equals("supplies"),gem=false;for(String line:lines)if(line.startsWith("learn "))gem=true;boolean crafting=lines[0].equals("craft")&&!gem;if(!maps&&!gem&&!supplies&&!crafting)return false;active=true;title=maps?"Map device":supplies?"Expedition supplies":crafting?"Crafting & gems":"Gem workshop";detail=maps?"Choose a map to open a private encounter.":supplies?"Basic expedition supplies, purchased with coins.":crafting?"Use materials on your equipment, or craft an uncut jewel.":"Give this jewel a skill or support identity.";
+  cards.clear();notes.clear();active=false;gemCraft=false;reference=false;selectedItem=false;secondary="";if(lines.length==0)return false;if(lines[0].equals("reference"))return acceptReference(lines);if(lines[0].equals("gemcraft"))return acceptGemCraft(lines);boolean maps=lines[0].equals("maps"),supplies=lines[0].equals("supplies"),gem=false;for(String line:lines)if(line.startsWith("learn "))gem=true;boolean crafting=lines[0].equals("craft")&&!gem;if(!maps&&!gem&&!supplies&&!crafting)return false;active=true;title=maps?"Map device":supplies?"Expedition supplies":crafting?"Crafting & gems":"Gem workshop";detail=maps?"Choose a map to open a private encounter.":supplies?"Basic expedition supplies, purchased with coins.":crafting?"Use materials on your equipment, or craft an uncut jewel.":"Give this jewel a skill or support identity.";
   java.util.List<String[]> main=new ArrayList<>(),utility=new ArrayList<>(),pages=new ArrayList<>();
   for(int i=1;i<lines.length;i++){String[] f=lines[i].split("\t",3);if(f.length<2||f[0].isEmpty())continue;if(f[0].startsWith("page "))pages.add(f);else if(maps&&f[0].startsWith("open ")||gem&&f[0].startsWith("learn ")||supplies&&f[0].startsWith("hub buy ")||crafting&&f[0].startsWith("select "))main.add(f);else if(gem&&f[1].startsWith("Selected:")){detail=f[1].substring(10);}else if(!crafting)utility.add(f);}
   if(crafting&&main.isEmpty()){
+   for(String line:lines)if(line.startsWith("items\tSelected:"))return acceptSelected(lines);
+
    title="Crafting materials";boolean selected=false;
    for(String line:lines)if(line.startsWith("items\tSelected:")){selected=true;detail=line.substring(line.indexOf("Selected:")+10);cards.add(new Card("items","Choose another item",28,84,145,30));break;}
    // Keep this list in the same deliberate order as the crafting vocabulary:
@@ -26,7 +28,7 @@ public final class PanelCards {
   if(main.isEmpty()){
    cards.clear();int count=0;boolean resume=false;for(String[] f:utility){if(f[0].equals("resume"))resume=true;int col=count%2,row=count++/2;cards.add(new Card(f[0],f[1],28+col*232,92+row*58,220,48));}detail=resume?"Resume your active map or close it before opening another.":"No maps here. Create a recovery map or finish the introduction.";
   }else{
-   for(int i=0;i<main.size()&&i<6;i++){String[] f=main.get(i);Card card=new Card(f[0],f[1],28+(i%2)*232,(crafting?96:124)+(i/2)*52,220,44);if(gem){int value=Integer.parseInt(f[0].substring(6));card.support=f[1].contains("support")||f[1].contains("gem");card.glyph=card.support?value-2:value<2?value:value-3;}else if(crafting){card.mapId=f[1].contains("Support")?22412:22411;int at=f[1].lastIndexOf(" / ");if(at>=0){card.label=f[1].substring(0,at).replace("Uncut ","");card.detail=f[1].substring(at+3);}}else if(supplies){card.mapId=f[0].endsWith("portals")?22406:f[0].endsWith("wisdom")?22405:22410;int at=f[1].lastIndexOf(" / ");if(at>=0){card.label=f[1].substring(0,at);card.detail=f[1].substring(at+3);}}else{card.mapId=f[1].contains("Ashen Foundry")?22413:f[1].contains("Thornwild")?22414:22410;card.detail=f.length>2?f[2]:"";}cards.add(card);}
+   for(int i=0;i<main.size()&&i<6;i++){String[] f=main.get(i);Card card=new Card(f[0],f[1],28+(i%2)*232,(crafting?96:124)+(i/2)*52,220,44);if(gem){int value=Integer.parseInt(f[0].substring(6));card.support=f[1].contains("support")||f[1].contains("gem");card.glyph=card.support?value-2:value<2?value:value-3;}else if(crafting){card.mapId=f[1].contains("Support")?22412:22411;int at=f[1].lastIndexOf(" / ");if(at>=0){card.label=f[1].substring(0,at);card.detail=f[1].substring(at+3);}}else if(supplies){card.mapId=f[0].endsWith("portals")?22406:f[0].endsWith("wisdom")?22405:22410;int at=f[1].lastIndexOf(" / ");if(at>=0){card.label=f[1].substring(0,at);card.detail=f[1].substring(at+3);}}else{card.mapId=f[1].contains("Ashen Foundry")?22413:f[1].contains("Thornwild")?22414:22410;card.detail=f.length>2?f[2]:"";}cards.add(card);}
   }
   if(crafting)cards.add(new Card("reference","Full crafting rules",28,252,452,26));
   for(int i=0;i<pages.size()&&i<2;i++){String[] f=pages.get(i);cards.add(new Card(f[0],f[1],f[1].startsWith("Next")?260:28,286,220,22));}return true;
@@ -70,6 +72,69 @@ public final class PanelCards {
   return true;
  }
 
+ /** Reference pages are recipe rows, not a dense console transcript. */
+ private boolean acceptReference(String[] lines){
+  active=true;reference=true;title="Crafting materials";detail="";Card current=null;
+  for(int i=1;i<lines.length;i++){
+   String[] fields=lines[i].split("\t",2);if(fields.length<2)continue;
+   String action=fields[0],label=fields[1];
+   if(action.equals("craft")){cards.add(new Card(action,"Back to crafting",346,48,134,26));continue;}
+   if(action.startsWith("page ")){cards.add(new Card(action,label.startsWith("Next")?"Next materials":"Previous materials",label.startsWith("Next")?260:28,286,220,22));continue;}
+   if(label.startsWith("MATERIAL REFERENCE")){detail=label.replace("MATERIAL REFERENCE / ","Page ");continue;}
+   if(label.startsWith("Use a material")||label.startsWith("Use materials")||label.startsWith("Corrupted:")||label.startsWith("One material")){notes.add(label);current=null;continue;}
+   int material=material(label);
+   if(material>=0){current=new Card("",label,28,82+recipeCount()*52,452,50);current.mapId=material;cards.add(current);}
+   else if(current!=null)current.detail+=(current.detail.isEmpty()?"":" ")+label;
+  }
+  return true;
+ }
+ private int recipeCount(){int count=0;for(Card card:cards)if(card.mapId>=0)count++;return count;}
+ private static int material(String value){
+  String[] names={"Alchemy","Chaos","Exalted","Transmutation","Vaal","Wisdom","Alteration","Augmentation","Regal","Scouring","Annulment"};
+  int[] ids={22400,22401,22402,22403,22404,22405,22407,22408,22409,22415,22416};
+  for(int i=0;i<names.length;i++)if(value.contains(names[i]))return ids[i];return -1;
+ }
+ private boolean acceptSelected(String[] lines){
+  selectedItem=true;active=true;cards.clear();notes.clear();boolean gem=false;
+  for(String line:lines){String[] fields=line.split("\t",2);if(fields.length<2)continue;
+   if(fields[0].equals("items")&&fields[1].startsWith("Selected:"))detail=fields[1].substring(10);
+   else if(fields[0].isEmpty()){notes.add(fields[1]);if(fields[1].startsWith("Active gems")||fields[1].startsWith("Support gems"))gem=true;}
+  }
+  title=gem?"Your skill gem":"Craft your equipment";
+  if(gem&&detail.startsWith("Uncut ")){
+   title="Your uncut jewel";notes.clear();
+   notes.add("Right-click this jewel in your inventory, then choose Craft.");
+   notes.add("Choose a skill or support. Its level is preserved.");
+   notes.add("After crafting, open K and drag the gem into a socket.");
+  }
+  cards.add(new Card("items","Choose another item",28,86,176,28));
+  cards.add(new Card("reference","Browse crafting materials",28,278,452,28));
+  return true;
+ }
+ private void button(TextDrawingArea font,Card card,int mx,int my){
+  boolean hover=!card.action.isEmpty()&&mx>=card.x&&mx<card.x+card.w&&my>=card.y&&my<card.y+card.h;
+  ExileTheme.inset(card.x,card.y,card.w,card.h,hover?ExileTheme.GOLD:ExileTheme.BORDER,hover?ExileTheme.HOVER:ExileTheme.SURFACE);
+  text(font,card.x+10,card.y+(card.h+font.anInt1497)/2-2,card.label,hover?ExileTheme.HEADING:ExileTheme.TEXT);
+ }
+ private void drawReference(TextDrawingArea font,int mx,int my){
+  ExileTheme.heading(28,63,title,ExileTheme.HEADING);text(ExileTheme.small(),28,77,detail,ExileTheme.MUTED);
+  for(Card card:cards){
+   if(!card.action.isEmpty()){button(font,card,mx,my);continue;}
+   ExileTheme.inset(card.x,card.y,card.w,card.h,ExileTheme.BORDER_SUBTLE,ExileTheme.SURFACE_DARK);
+   Sprite icon=ArtSprites.icon(card.mapId);if(icon!=null)icon.drawSprite(card.x+7,card.y+9);
+   text(font,card.x+48,card.y+15,card.label,ExileTheme.HEADING);
+   List<String> paragraph=ChatWrap.lines(card.detail,394,font::getTextWidth);
+   for(int row=0;row<paragraph.size();row++)text(font,card.x+48,card.y+29+row*14,paragraph.get(row),ExileTheme.TEXT);
+  }
+  for(int row=0;row<notes.size();row++)text(ExileTheme.small(),28,250+row*12,notes.get(row),ExileTheme.MUTED);
+ }
+ private void drawSelected(TextDrawingArea font,int mx,int my){
+  ExileTheme.heading(28,63,title,ExileTheme.HEADING);text(font,28,79,humanDetail(detail),ExileTheme.MUTED);
+  ExileTheme.inset(28,126,452,136,ExileTheme.BORDER_SUBTLE,ExileTheme.SURFACE_DARK);
+  int y=147;
+  for(String note:notes){for(String line:ChatWrap.lines(note,424,font::getTextWidth)){text(font,42,y,line,ExileTheme.TEXT);y+=16;}y+=5;}
+  for(Card card:cards)button(font,card,mx,my);
+ }
  /** Fit text to its real font width; never paint descriptions through another card. */
  private static String fit(TextDrawingArea font,String value,int width) {
   if(font.getTextWidth(value)<=width)return value;
@@ -109,14 +174,16 @@ public final class PanelCards {
   return value.replace("UNCUT SUPPORT JEWEL","Uncut support jewel").replace("UNCUT SKILL JEWEL","Uncut skill jewel")
    .replace("LEVEL","Level").replace("RARE","Rare").replace("MAGIC","Magic").replace("NORMAL","Normal");
  }
- private static String shorten(String label){if(label.startsWith("Return to"))return "Return to base";if(label.startsWith("Create a basic"))return "Map / 25 coins";if(label.startsWith("Start or resume"))return "Guided introduction";if(label.equals("Choose a different item"))return "Other gems";return label;}
+ private static String shorten(String label){if(label.startsWith("Return to"))return "Return to base";if(label.startsWith("Create a basic"))return "Map / 25 coins";if(label.startsWith("Start or resume"))return "Introduction";if(label.equals("Choose a different item"))return "Other gems";return label;}
  public String actionAt(int x,int y){if(!active)return null;for(Card c:cards)if(x>=c.x&&x<c.x+c.w&&y>=c.y&&y<c.y+c.h)return c.action.isEmpty()?null:c.action;return null;}
  public void draw(TextDrawingArea font,int mouseX,int mouseY){
+  if(reference){drawReference(font,mouseX,mouseY);return;}
+  if(selectedItem){drawSelected(font,mouseX,mouseY);return;}
   if(gemCraft){drawGemCraft(font,mouseX,mouseY);return;}
   ExileTheme.heading(28,63,title,ExileTheme.HEADING);String d=detail;while(font.getTextWidth(d)>444&&d.length()>3)d=d.substring(0,d.length()-4)+"...";text(font,28,79,d,ExileTheme.MUTED);
   for(Card c:cards){boolean hover=!c.action.isEmpty()&&mouseX>=c.x&&mouseX<c.x+c.w&&mouseY>=c.y&&mouseY<c.y+c.h;ExileTheme.inset(c.x,c.y,c.w,c.h,hover?ExileTheme.GOLD:c.action.isEmpty()?ExileTheme.BORDER_SUBTLE:ExileTheme.BORDER,hover?ExileTheme.HOVER:c.action.isEmpty()?ExileTheme.SURFACE_DARK:ExileTheme.SURFACE);int x=c.x+10;if(c.glyph>=0){Sprite icon=SkillGlyphs.icon(c.glyph,c.support,28);if(icon!=null)icon.drawSprite(x,c.y+8);x+=36;}
    String label=c.label;if(c.action.startsWith("open ")){int at=label.indexOf(": ");if(at>=0)label=label.substring(at+2);}if(c.action.startsWith("learn ")){label=label.replace("Upgrade ","").replace("Claim a ","").replace(" support gem","").replace(" gem","");}
-   if(c.mapId>=0){Sprite icon=ArtSprites.icon(c.mapId);if(icon!=null)icon.drawSprite(c.x+6,c.y+6);x=c.x+43;String title=label;while(font.getTextWidth(title)>c.w-51&&title.length()>3)title=title.substring(0,title.length()-4)+"...";int color=c.detail.startsWith("RARE")?0xE6CD84:c.detail.startsWith("MAGIC")?0xA5A5E8:0xB7CBD8;text(font,x,c.y+18,title,color);text(font,x,c.y+33,fit(font,humanDetail(c.detail),c.w-51),ExileTheme.MUTED);}
+   if(c.mapId>=0){Sprite icon=ArtSprites.icon(c.mapId);if(icon!=null)icon.drawSprite(c.x+6,c.y+6);x=c.x+43;TextDrawingArea cardFont=c.action.isEmpty()?ExileTheme.small():font;String title=label;while(cardFont.getTextWidth(title)>c.w-51&&title.length()>3)title=title.substring(0,title.length()-4)+"...";int color=c.detail.startsWith("RARE")?0xE6CD84:c.detail.startsWith("MAGIC")?0xA5A5E8:0xB7CBD8;text(cardFont,x,c.y+18,title,color);text(cardFont,x,c.y+33,fit(cardFont,humanDetail(c.detail),c.w-51),ExileTheme.MUTED);}
    else{java.util.List<String> wrapped=ChatWrap.lines(label,c.w-(x-c.x)-8,font::getTextWidth);int baseline=c.y+(c.h<=30?19:wrapped.size()>1?18:27);for(int i=0;i<wrapped.size()&&i<2;i++)text(font,x,baseline+i*13,wrapped.get(i),hover?0xF0DEB2:0xB7CBD8);}
   }
  }

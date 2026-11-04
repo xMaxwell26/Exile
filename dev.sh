@@ -36,7 +36,8 @@ checks=(TooltipContentCheck ArmourSurfaceCheck HeadlessLayoutCheck CourtyardEnvi
     TooltipBoundsCheck HubServicesCheck GroundLootMetadataCheck ExactLootPickupCheck GroundLootLabelsCheck HubTemplateCheck
     BiomeMapArtCheck WorldBackdropCheck CurrencyExpansionCheck CurrencyArtCheck CurrencyLabelAuditCheck HubPlacementCheck
     DropTableCheck ConstructProfileCheck ConstructWindupCheck CustomNpcMeshCheck CustomBriarMeshCheck ExileBrandingCheck
-    ExileThemeCheck ExileLoginCheck
+    ExileThemeCheck ExileLoginCheck TutorialGemInstructionCheck UncutJewelCheck GemcraftCardsCheck ExileTypographyCheck
+    OverlayViewportCheck GuidePresentationCheck ArsenalPanelPreview InterfaceStatesCheck InterfaceTextBoundsCheck ChatChromeLayoutCheck
 )
 for check in "${checks[@]}"; do
     echo "Running $check"

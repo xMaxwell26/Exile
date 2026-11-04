@@ -32,7 +32,7 @@ public final class ChatChrome {
     public static void channels(TextDrawingArea font,int y,int selected,int hovered,int[] modes){
         DrawingArea.drawPixels(22,y+143,0,ExileTheme.PANEL,519);
         DrawingArea.method339(y+143,ExileTheme.BORDER,519,0);
-        String[] states={"On","Friends","Off","Hide"};
+        String[] states={"On","Fr.","Off","Hide"};
         int[] colors={0x94BFA6,0xCEB77D,0xBC8F89,0x8CA8BE};
         for(int i=0;i<START.length;i++){
             int width=i==6?110:64,x=START[i];
@@ -40,9 +40,17 @@ public final class ChatChrome {
             if(active||hover)DrawingArea.drawPixels(20,y+144,x,active?ExileTheme.SELECTED:ExileTheme.HOVER,width);
             if(active)DrawingArea.drawPixels(1,y+144,x+5,0xA79165,width-10);
             int center=x+width/2;
-            font.drawText(active?GOLD:ExileTheme.MUTED,center,NAMES[i],y+(i>=2&&i<=5?153:158),true);
-            if(i>=2&&i<=5){int mode=Math.max(0,Math.min(3,modes[i-2]));font.drawText(colors[mode],center,states[mode],y+164,true);}
+            String caption=NAMES[i];int color=active?GOLD:ExileTheme.MUTED;
+            if(i>=2&&i<=5){int mode=Math.max(0,Math.min(3,modes[i-2]));caption+=" "+states[mode];color=colors[mode];}
+            font.drawText(color,center,caption,y+158,true);
         }
+    }
+
+    /** Keep the caret visible when a draft is wider than the chat input strip. */
+    public static String draft(TextDrawingArea font,String text,int width){
+        String visible=text==null?"":text;
+        while(!visible.isEmpty()&&font.getTextWidth(visible)>Math.max(0,width))visible=visible.substring(1);
+        return visible;
     }
 
     public static void scrollbar(int height,int position,int y,int x,int maximum){

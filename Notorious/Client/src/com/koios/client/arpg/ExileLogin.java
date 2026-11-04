@@ -13,8 +13,8 @@ import com.koios.client.graphic.TextDrawingArea;
 public final class ExileLogin {
  public static final class Layout {
   public final int x,y;
-  public final Rectangle account,password,remember,submit;
-  public Layout(int width,int height){x=width/2-389/2;y=height/2-213/2+20;account=new Rectangle(x+50,y+27,276,27);password=new Rectangle(x+50,y+70,276,33);remember=new Rectangle(x+50,y+105,24,25);submit=new Rectangle(width/2-147/2,y+140,147,44);}
+  public final Rectangle account,password,remember,submit,world;
+  public Layout(int width,int height){x=width/2-389/2;y=height/2-213/2+20;account=new Rectangle(x+38,y+32,313,30);password=new Rectangle(x+38,y+90,313,30);remember=new Rectangle(x+38,y+133,18,18);submit=new Rectangle(width/2-147/2,y+165,147,44);world=new Rectangle(width-90,height-45,70,35);}
  }
  /** Cover scaling and the wordmark are rasterized only when the logical viewport changes. */
  public static final class Backdrop {
@@ -43,11 +43,26 @@ public final class ExileLogin {
  private static File artFile(){File file=new File(System.getProperty("user.home"),"koios-cache/arpg-art/exile-login-v1.png");return file.isFile()?file:new File("../koios-cache/arpg-art/exile-login-v1.png");}
  public static void background(){BACKDROP.frame(DrawingArea.width,DrawingArea.height).drawSprite(0,0);}
  public static void chrome(TextDrawingArea font,Layout l,int mx,int my,boolean remember,int cursor){
-  ExileTheme.panel(l.x,l.y,389,213,ExileTheme.BORDER,ExileTheme.PANEL);DrawingArea.fillPixels(l.x+3,383,207,ExileTheme.BORDER_SUBTLE,l.y+3);DrawingArea.drawPixels(2,l.y+3,l.x+2,ExileTheme.CRIMSON,385);
-  ExileTheme.label(font,l.account.x,l.account.y-6,"Account",ExileTheme.MUTED);ExileTheme.label(font,l.password.x,l.password.y-6,"Password",ExileTheme.MUTED);
+  ExileTheme.panel(l.x,l.y,389,255,ExileTheme.BORDER,ExileTheme.PANEL);DrawingArea.fillPixels(l.x+3,383,249,ExileTheme.BORDER_SUBTLE,l.y+3);DrawingArea.drawPixels(2,l.y+3,l.x+2,ExileTheme.CRIMSON,385);
+  ExileTheme.label(font,l.account.x,l.account.y-9,"Account",ExileTheme.MUTED);ExileTheme.label(font,l.password.x,l.password.y-9,"Password",ExileTheme.MUTED);
   field(l.account,cursor==0||l.account.contains(mx,my));field(l.password,cursor==1||l.password.contains(mx,my));
-  ExileTheme.inset(l.remember.x,l.remember.y,24,25,ExileTheme.BORDER,ExileTheme.SURFACE_DARK);if(remember){tick(l.remember.x+5,l.remember.y+13,l.remember.x+10,l.remember.y+18);tick(l.remember.x+10,l.remember.y+18,l.remember.x+19,l.remember.y+7);}ExileTheme.label(font,l.remember.x+34,l.remember.y+17,"Remember account",ExileTheme.MUTED);
+  ExileTheme.inset(l.remember.x,l.remember.y,18,18,ExileTheme.BORDER,ExileTheme.SURFACE_DARK);if(remember){tick(l.remember.x+4,l.remember.y+9,l.remember.x+7,l.remember.y+12);tick(l.remember.x+7,l.remember.y+12,l.remember.x+13,l.remember.y+5);}ExileTheme.label(font,l.remember.x+28,l.remember.y+13,"Remember account",ExileTheme.MUTED);
   boolean hover=l.submit.contains(mx,my);ExileTheme.panel(l.submit.x,l.submit.y,l.submit.width,l.submit.height,hover?ExileTheme.GOLD:ExileTheme.CRIMSON,hover?ExileTheme.SELECTED:ExileTheme.OXBLOOD);ExileTheme.heading(l.submit.x+(l.submit.width-ExileTheme.headingWidth("Enter Exile"))/2,l.submit.y+27,"Enter Exile",ExileTheme.HEADING);
+ }
+ /** Fields and feedback own separate bands, including long connection failures. */
+ public static void credentials(Layout l,String account,String password,int cursor,boolean showCursor){
+  TextDrawingArea font=ExileTheme.body();
+  fieldText(font,l.account,account,cursor==0&&showCursor);
+  fieldText(font,l.password,password,cursor==1&&showCursor);
+ }
+ private static void fieldText(TextDrawingArea font,Rectangle rect,String value,boolean cursor){
+  String text=value==null?"":value;int limit=rect.width-20-(cursor?font.getTextWidth("|"):0);
+  while(font.getTextWidth(text)>limit&&!text.isEmpty())text=text.substring(1);
+  ExileTheme.label(font,rect.x+8,rect.y+20,text+(cursor?"|":""),ExileTheme.TEXT);
+ }
+ public static void feedback(Layout l,String message){
+  TextDrawingArea font=ExileTheme.small();java.util.List<String> rows=ChatWrap.lines(message==null?"":message,345,font::getTextWidth);
+  for(int i=0;i<Math.min(2,rows.size());i++){String text=rows.get(i);if(i==1&&rows.size()>2){while(font.getTextWidth(text+"...")>345&&!text.isEmpty())text=text.substring(0,text.length()-1);text+="...";}font.drawText(ExileTheme.TEXT,l.x+194,text,l.y+228+i*15,true);}
  }
  private static void tick(int x,int y,int tx,int ty){int steps=Math.max(Math.abs(tx-x),Math.abs(ty-y));for(int i=0;i<=steps;i++)DrawingArea.drawPixels(2,y+(ty-y)*i/steps-1,x+(tx-x)*i/steps,ExileTheme.GOLD,2);}
  private static void field(Rectangle r,boolean active){ExileTheme.inset(r.x,r.y,r.width,r.height,active?ExileTheme.GOLD:ExileTheme.BORDER,ExileTheme.SURFACE_DARK);}

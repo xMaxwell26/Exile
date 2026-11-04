@@ -25,6 +25,14 @@ The inventory's twenty-eight cells are reserved for items: do not draw titles,
 counts or other footer text inside the grid or across its final row.
 Avoid exposing implementation details such as instance IDs in player menus.
 
+Give titles, descriptions, controls and footer help their own vertical bands.
+Leave at least five pixels between native text (including its shadow and
+descenders) and an inset or panel edge. Reserve a separate full-width title
+band for item tooltips; long modifier lists can flow into body columns.
+Wrap recipe rules instead of shortening them. Keep gameplay warnings visible
+when replacing a server text list with cards, including non-clickable rows.
+Rendering and hit testing must share the same control bounds.
+
 ## Verification
 
 `dev.ps1 Build` builds the client and server. `dev.ps1 Test` includes the font,
@@ -34,6 +42,9 @@ Use Java 8 for the running server and integration checks.
 The most relevant checks are `ExileTypographyCheck`, `OverlayViewportCheck`,
 `GuidePresentationCheck`, `GemcraftCardsCheck`, `ArsenalPanelPreview`,
 `HighDpiArtCheck`, `ControlRoutingCheck` and `ViewportInputCheck`.
+`InterfaceStatesCheck`, `InterfaceTextBoundsCheck`, `ChatChromeLayoutCheck`
+and `ExileLoginCheck` cover the custom interface audit recorded in
+`INTERFACE-AUDIT.md`. These checks are included in both development gates.
 
 Inspect the live game in fixed mode, a normal resized window and a maximized
 window. Click a centered control, hover an inventory item, and drag a physical

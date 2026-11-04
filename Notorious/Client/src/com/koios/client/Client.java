@@ -696,7 +696,8 @@ public class Client extends RSApplet {
 				xOffset += 14;
 			}
 			newRegularFont.drawBasicString(s + ":", xOffset + 11, 133 + yOffset, 0xCBD5DD, shadow);
-			newRegularFont.drawBasicString((chatFocus.isEditing()?inputString+"*":"Press Enter or click to chat"), xOffset + 12 + newRegularFont.getTextWidth(s + ": "), 133 + yOffset, 0xA5C7DF, shadow);
+            int inputX=xOffset+12+newRegularFont.getTextWidth(s+": ");
+			newRegularFont.drawBasicString(com.koios.client.arpg.ChatChrome.draft(com.koios.client.arpg.ExileTheme.body(),chatFocus.isEditing()?inputString+"*":"Press Enter or click to chat",500-inputX),inputX,133+yOffset,0xA5C7DF,shadow);
 			DrawingArea.method339(121 + yOffset, 0x35434D, 506, 7);
 			DrawingArea.defaultDrawingAreaSize();
 		}
@@ -10592,23 +10593,12 @@ public class Client extends RSApplet {
 		// Obfuscate the password so we dont need to do it multiple times
 		String obfuscatedPassword = UsernameEncoding.obfuscateString(myPassword);
 
-		// Flash the cursor
-		if ((opacity < 10 || opacity > 20)) {
-			newRegularFont.drawBasicString("|", boxX + 57 + newRegularFont.getTextWidth(loginScreenCursorPos == 0 ? myUsername : obfuscatedPassword), boxY + (loginScreenCursorPos == 0 ? 50 : 93),
-					com.koios.client.arpg.ExileTheme.TEXT, 0);
-		}
-
-		// draw username
-		newRegularFont.drawBasicString(UsernameEncoding.formalize(myUsername), boxX + 56, boxY + 49, com.koios.client.arpg.ExileTheme.TEXT, 0);
-
-		// draw obfuscated password
-		newRegularFont.drawBasicString(obfuscatedPassword, boxX + 56, boxY + 93, com.koios.client.arpg.ExileTheme.TEXT, 0);
-
-		newRegularFont.drawCenteredString(loginMessage1, centerX, boxY + 200, com.koios.client.arpg.ExileTheme.TEXT, 0);
+		com.koios.client.arpg.ExileLogin.credentials(exileLayout,UsernameEncoding.formalize(myUsername),obfuscatedPassword,loginScreenCursorPos,opacity < 10 || opacity > 20);
+		com.koios.client.arpg.ExileLogin.feedback(exileLayout,loginMessage1);
 		// newRegularFont.drawCenteredString(loginMessage2, centerX, boxY + 240,
 		// 0xFFFFFF, 0);
 
-		//DrawingArea.drawPixels(worldHeight, worldY, worldX, worldColor, worldWidth);
+		positionLoginWorld();
 		DrawingArea.drawRoundedRectangle(worldX, worldY, worldWidth, worldHeight, com.koios.client.arpg.ExileTheme.OXBLOOD, 125, true, false);
 
 		newFancyFont.drawCenteredString(clientStatus.toString(), worldX + 35, worldY + 24, com.koios.client.arpg.ExileTheme.MUTED, -1);
@@ -10624,11 +10614,12 @@ public class Client extends RSApplet {
 		}
 	}
 
-	private final int worldX = frameWidth - 100;
-	private final int worldY = frameHeight - 50;
+	private int worldX;
+	private int worldY;
 	private final int worldWidth = 70;
 	private final int worldHeight = 35;
 	private final int worldColor = 0x009c87;
+    private void positionLoginWorld(){java.awt.Rectangle area=com.koios.client.arpg.ExileLogin.layout(frameWidth,frameHeight).world;worldX=area.x;worldY=area.y;}
 
 	public static int realPlane;
 
@@ -10967,6 +10958,7 @@ public class Client extends RSApplet {
         String qaCharacter=System.getProperty("arpg.qaCharacter","");
         if(!qaLoginAttempted&&clientStatus==ClientStatus.LOCAL&&qaCharacter.matches("qa[a-z0-9]{3,9}")){qaLoginAttempted=true;myUsername=qaCharacter;myPassword="qatest123";login(myUsername,myPassword,false);return;}
 
+        positionLoginWorld();
 		if (mouseInRegion(worldX, worldY, worldX + worldWidth, worldY + worldHeight) && super.clickMode2 > 0) {
 			clientStatus = clientStatus.getNext();
 			super.clickMode2 = 0;
