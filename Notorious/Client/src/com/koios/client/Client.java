@@ -2403,7 +2403,6 @@ public class Client extends RSApplet {
                 com.koios.client.arpg.ArpgTabs.draw(com.koios.client.arpg.ExileTheme.body(),tabID,x,y,arpgSkillState);
 			} else if (tabInterfaceIDs[tabID] != -1) {
 				drawInterface(0, x, RSInterface.interfaceCache[tabInterfaceIDs[tabID]], y);
-                if(tabID==3){RSInterface bag=RSInterface.interfaceCache[3214];int used=0;if(bag!=null&&bag.container!=null)for(int id:bag.container)if(id>0)used++;com.koios.client.arpg.SidebarChrome.footer(com.koios.client.arpg.ExileTheme.small(),x,y,used);}
 			}
 		}
 		if (menuOpen) {

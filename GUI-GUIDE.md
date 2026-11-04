@@ -21,6 +21,8 @@ type. Use short, mixed-case labels and describe the player's action directly.
 
 Keep decorative strokes inside component bounds. Tooltips must wrap and fit
 the viewport; descriptions must never cross into adjacent sockets or buttons.
+The inventory's twenty-eight cells are reserved for items: do not draw titles,
+counts or other footer text inside the grid or across its final row.
 Avoid exposing implementation details such as instance IDs in player menus.
 
 ## Verification
