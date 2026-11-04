@@ -30,7 +30,7 @@ The server runs locally on127.0.0.1:43594 with online/database mode disabled. Th
 - [PROTOTYPE-GUIDE.md](PROTOTYPE-GUIDE.md): play controls and prototype commands.
 - [logs/README.md](logs/README.md): implementation evidence, independent criticism, failures and live verification.
 
-The supported development entry points are dev.ps1, tools/ValidateContent.ps1 and tools/PlaytestClients.ps1. The older Python files under tools/ are historical one-off source generators; rerunning them can overwrite newer work. Edit the current Java/data files using the guides above.
+The supported development entry points are dev.ps1, dev.sh (Linux headless build/test), tools/ValidateContent.ps1 and tools/PlaytestClients.ps1. The older Python files under tools/ are historical one-off source generators; rerunning them can overwrite newer work. Edit the current Java/data files using the guides above.
 
 ## Compatibility and naming
 

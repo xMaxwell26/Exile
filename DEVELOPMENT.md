@@ -24,3 +24,32 @@ Packet fragmentation regression: `PacketFragmentationCheck` sends encrypted atta
 Tutorial layout preview: compile/run tools/TutorialLayoutPreview.java with the test classpath from Server to write build/tutorial-layout.png. Open-panel instructions are pinned above the chat input; closing restores the normal objective HUD.
 
 Death regression: PrototypeIntegrationCheck drives the actual PlayerDeathTask, preserving item identities and the tutorial checkpoint, returning to the private base, waiting there, and resuming the same instance through the map portal.
+
+## Linux/cloud headless gate
+
+`dev.sh` builds the server with Java 21 `--release 8`, builds the client with a
+Java 8 JDK (required for its legacy audio APIs), and runs tests on Java 8:
+
+```bash
+export EXILE_JAVA8_HOME=/path/to/java8-jdk
+export EXILE_JAVA21_HOME=/path/to/java21-jdk
+./dev.sh build
+./dev.sh test
+```
+
+Both toolchains must already be installed; the script never downloads tools or
+starts a server/client GUI. Test output goes to `Notorious/Server/build/*Check.log`;
+rendered PNGs go to the same build directory. Each test runs in its own JVM to
+isolate static cache/world state. The real repository cache and local JARs are used.
+The headless gate omits `ControlRoutingCheck` and `ViewportInputCheck`, which
+construct AWT Applets. Their pure scaling, hit-boundary, chat/hotbar clearance and
+tracker layout contracts are covered by `HeadlessLayoutCheck` at 16 display
+sizes, including portrait, ultrawide, odd sizes and scale breakpoints.
+
+New review artifacts include `courtyard-environment.png`,
+`crafting-reference-1.png` through `crafting-reference-4.png`, `layout-1920.png`,
+`layout-3840.png` and the existing tooltip/outfit pose sheets. These are native
+offscreen renders, not evidence of physical mouse delivery, OS fullscreen
+transitions or a logged-in runtime session. Occasional local acceptance still
+covers monitor switching, mouse bindings, camera angles, and animated clothing
+triangle interiors. No GUI/browser automation is part of the cloud gate.

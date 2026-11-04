@@ -1,5 +1,16 @@
 # Project TODO
 
+## Headless quality pass
+
+- [x] All seventeen equipment bases have tooltip property, duplicate-display and unidentified-privacy coverage.
+- [x] Strict drop JSON rejects coercion, misspelled fields, duplicate keys and lenient syntax with author-facing paths.
+- [x] Courtyard garden passages are two tiles wide, with matching worn terrain and real-cache scene/collision checks.
+- [x] Fitted armour projects onto integer renderer coordinates; all 600 covered added vertices clear the torso surface.
+- [x] Fullscreen layout contracts run headlessly at 16 sizes; physical monitor transitions remain local acceptance.
+- [x] All eleven crafting recipes have a paged in-game reference, with complete descriptions measured using the real cache font.
+- [x] Passive and repurposed quest/prayer/magic destinations use shared Exile chrome without adding legacy gameplay.
+- [ ] Continue complete-outfit animation/triangle-interior clipping review and physical controls/fullscreen acceptance locally.
+
 ## Current integration work
 
 - [x] Expand to 17 gated bases, six distinct higher-weapon meshes, two fitted armour variants and nine original ground consumable models.
