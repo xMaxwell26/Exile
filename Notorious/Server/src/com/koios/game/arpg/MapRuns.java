@@ -198,11 +198,11 @@ public final class MapRuns {
   // Private ground entities preserve each rolled item's UUID and require normal pickup.
   for(Item item:reward.items)drop(p,mob,item);
   // This guaranteed progression map/return portal is separate from optional balance-table rolls.
-  if(mob.boss){run.complete=true;if(run.intro){p.setAttribute("intro-complete",true);drop(p,mob,map(1,0,1));}else drop(p,mob,map(Math.min(10,run.tier+1),0,random.nextInt(3)));try{openPortal(p,mob.getLocation());}catch(IllegalArgumentException ex){openPortal(p,run.spawn);}objective(p);p.sendMessage("MAP COMPLETE: "+bossName(run)+" defeated! Collect your loot, then enter the return portal to your base.");}
+  if(mob.boss){run.complete=true;if(run.intro){p.setAttribute("intro-complete",true);drop(p,mob,map(1,0,1));}else {drop(p,mob,map(Math.min(10,run.tier+1),0,random.nextInt(3)));try{openPortal(p,mob.getLocation());}catch(IllegalArgumentException ex){openPortal(p,run.spawn);}}objective(p);p.sendMessage(run.intro?"TUTORIAL OBJECTIVE: "+bossName(run)+" defeated! Collect the map, then read a Portal Scroll to create your return portal.":"MAP COMPLETE: "+bossName(run)+" defeated! Collect your loot, then enter the return portal to your base.");}
  }
  public static String objectiveText(Player p){Run run=RUNS.get(p);if(!inside(p))return "";int remaining=0;MapMob boss=null;for(MapMob mob:run.mobs)if(!mob.isDead()){remaining++;if(mob.boss)boss=mob;}
   String heading=(run.complete?"MAP COMPLETE":"MAP OBJECTIVE")+" / "+(run.intro?"Introduction":AuthoredMaps.name(run.layout)+" T"+run.tier);
-  if(run.complete)return heading+"\n"+bossName(run)+" defeated\nCollect loot, then enter the return portal";
+  if(run.complete)return heading+"\n"+bossName(run)+" defeated\n"+(run.intro?"Read a Portal Scroll to create a return portal":"Collect loot, then enter the return portal");
   String direction="";if(boss!=null){int dx=boss.getX()-p.getX(),dy=boss.getY()-p.getY();direction=(dy>2?"north":dy< -2?"south":"")+(Math.abs(dx)>2?(Math.abs(dy)>2?"-":"")+(dx>0?"east":"west"):"");if(direction.isEmpty())direction="nearby";direction="Boss: "+direction+" / "+Location.getManhattanDistance(p.getLocation(),boss.getLocation())+" tiles";}
   return heading+"\nDefeat the "+bossName(run)+"\n"+direction+" / Enemies: "+remaining+"\n"+(run.slam==null?(run.ticks<run.bossRecoveryUntil?"CHAMPION RECOVERING: attack now":"Portal Scroll: open a return portal"):"SLAM! Leave marked tiles / "+String.format(Locale.ROOT,"%.1f",Math.max(0,run.slamAt-run.ticks)*0.6)+"s");
  }
