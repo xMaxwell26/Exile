@@ -48,12 +48,18 @@ public final class ArenaTerrain {
                     boolean eastBed=x>=61&&x<=70&&y>=48&&y<=60;
                     if(nave||crossing)material=courtyardStone;
                     if(westBed||eastBed)material=garden;
-                    if((westBed||eastBed)&&((x+y)&3)==0)material=earth;
+                    // Bounded patches read as overgrown beds rather than a repeating
+                    // diagonal pattern. Change these rectangles to reshape worn soil.
+                    if(westBed&&(x<=37&&y<=51||x>=40&&y>=55))material=earth;
+                    if(eastBed&&(x>=67&&y<=52||x<=64&&y>=56))material=earth;
                     if(northCourt)material=moss;
                     int dx=Math.abs(x-52),dy=Math.abs(y-67);
                     if(dx<=8&&dy<=5&&dx+dy<=11){material=courtyardStone;if(dx==8||dy==5||dx+dy>=10)material=jade;}
                     // Worn side passages visually connect both garden loops.
                     if((x>=36&&x<=40||x>=64&&x<=68)&&y>=43&&y<=66)material=earth;
+                    // Match the two-tile openings in AuthoredMaps. Side loops
+                    // remain earth while the central nave keeps its stone identity.
+                    if((y>=52&&y<=53||y>=57&&y<=58)&&(x>=34&&x<=47||x>=57&&x<=70))material=earth;
                     overlay[0][x][y]=(byte)material;
                 }
             }

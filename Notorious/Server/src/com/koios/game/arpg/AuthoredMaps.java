@@ -60,10 +60,11 @@ public final class AuthoredMaps {
         for(int x=33;x<72;x++)if(!(x>=48&&x<=56)&&!(x>=36&&x<=40)&&!(x>=64&&x<=68))place(region,1583,x,46,0,1);
 
         // Low garden railings divide the four overgrown beds. Every run has two
-        // openings, so ranged enemies cannot trap a player behind a decorative row.
-        for(int y=48;y<=60;y++)if(y!=52&&y!=57){place(region,2068,44,y,0,0);place(region,2068,60,y,0,0);}
-        for(int x=34;x<=43;x++)if(x!=38)place(region,2068,x,61,0,1);
-        for(int x=61;x<=70;x++)if(x!=66)place(region,2068,x,61,0,1);
+        // two-tile openings. Keep these thresholds aligned with ArenaTerrain so
+        // each visible worn passage is also traversable, including diagonal turns.
+        for(int y=48;y<=60;y++)if(!(y>=52&&y<=53)&&!(y>=57&&y<=58)){place(region,2068,44,y,0,0);place(region,2068,60,y,0,0);}
+        for(int x=34;x<=43;x++)if(x<38||x>39)place(region,2068,x,61,0,1);
+        for(int x=61;x<=70;x++)if(x<66||x>67)place(region,2068,x,61,0,1);
 
         // Broken north cloister: staggered wall fragments imply rooms while the
         // five-tile nave and both flanking gates remain readable at combat speed.
