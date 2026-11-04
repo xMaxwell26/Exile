@@ -8,6 +8,7 @@ public final class PrototypePanel {
  private static final String[] SUPPORT_EFFECTS={"Area damage","Attack speed and cooldowns","Physical damage"};
  public static void show(Player p,String tab){
   List<String> rows=new ArrayList<>();
+  p.setAttribute("prototype-map-selections",new HashMap<Integer,String>());
   if(tab.equals("tree")){
    rows.add("tree|"+Math.max(0,p.getArpgProgress().points()-p.getArpgPassives().spent())+"|"+p.getAttribute("free-refunds",false));
    for(PassiveTree.Node node:PassiveTree.NODES.values())rows.add(node.id+"|"+node.parent+"|"+p.getArpgPassives().has(node.id)+"|"+node.name+"|"+node.description());
@@ -75,8 +76,27 @@ public final class PrototypePanel {
  private static void inventory(Player p,List<String> rows,boolean maps){
   List<Integer> slots=new ArrayList<>();for(int i=0;i<p.getInventory().getCapacity();i++){Item item=p.getInventory().get(i);if(item!=null&&item.hasRoll()&&(!maps||MapRuns.isMap(item)))slots.add(i);}
   int last=Math.max(0,(slots.size()-1)/6),page=Math.max(0,Math.min(last,p.getAttribute("prototype-page",0)));p.setAttribute("prototype-page",page);
-  for(int offset=page*6;offset<Math.min(slots.size(),page*6+6);offset++){int slot=slots.get(offset);Item item=p.getInventory().get(slot);String metadata="";if(maps){int count=Integer.bitCount(item.getRoll().getMap().mods);metadata="\t"+item.getRoll().getRarity().name()+" / "+(count==0?"No modifiers":count+" modifier"+(count==1?"":"s"));}rows.add((maps?"open ":"select ")+slot+"\t"+MapRuns.name(item)+metadata);}
+  Map<Integer,String> shownMaps=new HashMap<>();
+  for(int offset=page*6;offset<Math.min(slots.size(),page*6+6);offset++){int slot=slots.get(offset);Item item=p.getInventory().get(slot);String metadata="";if(maps){shownMaps.put(slot,mapSelection(item));int count=Integer.bitCount(item.getRoll().getMap().mods);metadata="\t"+item.getRoll().getRarity().name()+" / "+(count==0?"No modifiers":count+" modifier"+(count==1?"":"s"));}rows.add((maps?"open ":"select ")+slot+"\t"+MapRuns.name(item)+metadata);}
+  if(maps)p.setAttribute("prototype-map-selections",shownMaps);
   if(page>0)row(rows,"page "+(page-1),"Previous page");if(page<last)row(rows,"page "+(page+1),"Next page");
+ }
+ /** A card is consent to this exact map and its displayed properties, not whatever later occupies a slot. */
+ private static String mapSelection(Item item){
+  if(!MapRuns.isMap(item))return "";
+  ItemRoll roll=item.getRoll();ItemRoll.MapData map=roll.getMap();
+  return item.getId()+"|"+roll.getInstanceId()+"|"+roll.getRarity()+"|"+roll.isIdentified()+"|"+roll.getCorruption()+"|"+map.tier+"|"+map.mods;
+ }
+ private static void openSelectedMap(Player player,int slot){
+  Item item=player.getInventory().get(slot);
+  // Player attributes require the same concrete default class as the stored value.
+  Map<Integer,String> shown=player.getAttribute("prototype-map-selections",new HashMap<Integer,String>());
+  if(!MapRuns.isMap(item)||!mapSelection(item).equals(shown.get(slot))){
+   show(player,"maps");
+   throw new IllegalArgumentException("That map moved or changed. Choose it again.");
+  }
+  MapRuns.start(player,slot,false);
+  player.setAttribute("prototype-map-selections",new HashMap<Integer,String>());
  }
  private static void gemInventory(Player p,List<String> rows){List<Integer> slots=new ArrayList<>();for(int i=0;i<p.getInventory().getCapacity();i++)if(MapRuns.isGem(p.getInventory().get(i)))slots.add(i);int last=Math.max(0,(slots.size()-1)/6),page=Math.max(0,Math.min(last,p.getAttribute("prototype-page",0)));p.setAttribute("prototype-page",page);for(int at=page*6;at<Math.min(slots.size(),page*6+6);at++){int slot=slots.get(at);row(rows,"select "+slot,MapRuns.name(p.getInventory().get(slot)));}if(page>0)row(rows,"page "+(page-1),"Previous page");if(page<last)row(rows,"page "+(page+1),"Next page");}
  public static void openGemCraft(Player p,int slot){
@@ -85,7 +105,16 @@ public final class PrototypePanel {
   if(gem.getRoll().getGem().kind>=0)throw new IllegalArgumentException("That jewel is already crafted");
   p.setAttribute("gem-craft-slot",slot);p.setAttribute("gem-craft-uuid",gem.getRoll().getInstanceId());p.setAttribute("gem-craft-filter",gem.getRoll().getGem().support?"support":"all");show(p,"gemcraft");
  }
- private static Item selectedUncut(Player p){int slot=p.getAttribute("gem-craft-slot",-1);Item gem=p.getInventory().get(slot);if(!MapRuns.isGem(gem)||gem.getRoll().getGem().kind>=0||!gem.getRoll().getInstanceId().equals(p.getAttribute("gem-craft-uuid","")))throw new IllegalArgumentException("That uncut jewel is no longer in this inventory slot");return gem;}
+ private static Item selectedUncut(Player p){
+  int slot=p.getAttribute("gem-craft-slot",-1);Item gem=p.getInventory().get(slot);
+  if(!MapRuns.isGem(gem)||gem.getRoll().getGem().kind>=0||!gem.getRoll().getInstanceId().equals(p.getAttribute("gem-craft-uuid",""))){
+   p.setAttribute("gem-craft-slot",-1);p.setAttribute("gem-craft-uuid","");
+   p.setAttribute("craft-slot",-1);p.setAttribute("craft-uuid","");
+   show(p,"craft");
+   throw new IllegalArgumentException("That uncut jewel moved or changed. Choose it again.");
+  }
+  return gem;
+ }
  private static void jewelCrafting(Player p,List<String> rows){
   Item gem=selectedUncut(p);boolean support=gem.getRoll().getGem().support;String filter=p.getAttribute("gem-craft-filter",support?"support":"all");
   row(rows,"",(support?"UNCUT SUPPORT JEWEL":"UNCUT SKILL JEWEL")+" / LEVEL "+gem.getRoll().getGem().level);row(rows,"","Choose its permanent identity. Jewel level and identity are preserved.");
@@ -104,17 +133,17 @@ public final class PrototypePanel {
     case "gemfilter":{Item gem=selectedUncut(p);String filter=args[1];if(gem.getRoll().getGem().support&&!filter.equals("support"))throw new IllegalArgumentException("This base crafts support jewels");if(!gem.getRoll().getGem().support&&filter.equals("support"))throw new IllegalArgumentException("This base crafts active skill jewels");if(!Arrays.asList("all","sword","dagger","mace","support").contains(filter))throw new IllegalArgumentException("Unknown jewel filter");p.setAttribute("gem-craft-filter",filter);show(p,"gemcraft");return true;}
     case "gemmake":{if(p.isTeleporting())throw new IllegalArgumentException("Cannot craft while travelling");int slot=p.getAttribute("gem-craft-slot",-1),kind=Integer.parseInt(args[1]);Item gem=selectedUncut(p);boolean support=gem.getRoll().getGem().support;if(kind<0||kind>=(support?SUPPORT_GEMS.length:ACTIVE_GEMS.length))throw new IllegalArgumentException("That recipe does not match this jewel");gem.setRoll(gem.getRoll().withGemKind(kind));p.getInventory().set(slot,gem);p.setAttribute("gem-craft-slot",-1);p.getSession().send(new SendStringPacket("close",65528));p.sendMessage("Crafted "+MapRuns.name(gem)+".");return true;}
     case "exchange":CraftingCurrency.exchange(p);show(p,"guide");return true;
-    case "items":p.setAttribute("craft-slot",-1);show(p,"craft");return true;
+    case "items":p.setAttribute("craft-slot",-1);p.setAttribute("craft-uuid","");p.setAttribute("prototype-page",p.getAttribute("craft-return-page",0));show(p,"craft");return true;
     case "page":p.setAttribute("prototype-page",Math.max(0,Math.min(10,Integer.parseInt(args[1]))));show(p,p.getAttribute("prototype-tab","craft"));return true;
     case "home":MapRuns.home(p);show(p,"maps");return true;
     case "intro":Tutorial.begin(p);return true;
-    case "open":MapRuns.start(p,Integer.parseInt(args[1]),false);return true;
+    case "open":openSelectedMap(p,Integer.parseInt(args[1]));return true;
     case "scrolls":if(p.getInventory().getCount(995)<25)throw new IllegalArgumentException("Requires 25 coins");if(!p.getInventory().hasRoomFor(new Item(MapRuns.PORTAL_SCROLL,5)))throw new IllegalArgumentException("Make inventory space first");p.getInventory().remove(995,25);p.getInventory().add(new Item(MapRuns.PORTAL_SCROLL,5));show(p,"guide");return true;
     case "training":if(!MapRuns.isHome(p))throw new IllegalArgumentException("Use your map device at home");if(p.getInventory().getCount(995)<25)throw new IllegalArgumentException("Requires 25 coins");MapRuns.grant(p,MapRuns.map(1,0));p.getInventory().remove(995,25);show(p,"maps");return true;
     case "resume":MapRuns.enter(p);return true;
     case "abandon":MapRuns.abandon(p);show(p,"maps");return true;
-    case "select":{int slot=Integer.parseInt(args[1]);Item item=p.getInventory().get(slot);if(item==null||!item.hasRoll())throw new IllegalArgumentException("Select rolled equipment or a map");p.setAttribute("craft-slot",slot);p.setAttribute("craft-uuid",item.getRoll().getInstanceId());show(p,"craft");return true;}
-    case "learn":{if(p.isTeleporting())throw new IllegalArgumentException("Wait until you finish travelling.");int slot=p.getAttribute("craft-slot",-1);Item gem=p.getInventory().get(slot);if(!MapRuns.isGem(gem)||!gem.getRoll().getInstanceId().equals(p.getAttribute("craft-uuid","")))throw new IllegalArgumentException("Select the gem again");int id=Integer.parseInt(args[1]);if(gem.getRoll().getGem().support?(id<2||id>4):(id!=0&&id!=1&&id!=5&&id!=6&&id!=7))throw new IllegalArgumentException("Wrong gem type");if(gem.getRoll().getGem().support)p.getArpgSkills().learnSupport(id-2,gem.getRoll().getGem().level,p.getArpgProgress().level());else p.getArpgSkills().upgrade(id,gem.getRoll().getGem().level,p.getArpgProgress().level());p.getInventory().set(slot,null);p.setAttribute("craft-slot",-1);show(p,"craft");return true;}
+    case "select":{int slot=Integer.parseInt(args[1]);Item item=p.getInventory().get(slot);if(item==null||!item.hasRoll())throw new IllegalArgumentException("Select rolled equipment or a map");p.setAttribute("craft-return-page",p.getAttribute("prototype-page",0));p.setAttribute("craft-slot",slot);p.setAttribute("craft-uuid",item.getRoll().getInstanceId());show(p,"craft");return true;}
+    case "learn":throw new IllegalArgumentException("Gems are physical items. Right-click an uncut jewel to Craft, then socket it in K.");
     case "allocate":p.getArpgPassives().allocate(Integer.parseInt(args[1]),p.getArpgProgress().points());Tutorial.action(p,"passive");show(p,"tree");return true;
     case "refund":{int id=Integer.parseInt(args[1]);if(!p.getAttribute("free-refunds",false)&&p.getInventory().getCount(995)<100)throw new IllegalArgumentException("Refund needs 100 coins");p.getArpgPassives().refund(id);if(!p.getAttribute("free-refunds",false))p.getInventory().remove(995,100);show(p,"tree");return true;}
     case "free":if(!GameService.isOnlineMode()){p.setAttribute("free-refunds",!p.getAttribute("free-refunds",false));show(p,"tree");}return true;

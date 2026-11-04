@@ -75,6 +75,7 @@ public final class PlayerSaver {
                 writeValue(bw,"essential-arpg-support-execute",player.getArpgSkills().getSupport(4));
                 writeValue(bw,"essential-arpg-hotbar",player.getArpgSkills().saveHotbar());
                 writeValue(bw,"essential-arpg-gems",player.getArpgSkills().saveLevels());
+                writeValue(bw,"essential-arpg-physical-gems",player.getArpgSkills().savePhysicalGems());
                 writeValue(bw,"essential-arpg-support-q",player.getArpgSkills().getSupport(0));
                 writeValue(bw,"essential-arpg-support-w",player.getArpgSkills().getSupport(1));
                 writeValue(bw,"essential-arpg-support-e",player.getArpgSkills().getSupport(2));

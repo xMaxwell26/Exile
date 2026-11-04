@@ -283,6 +283,7 @@ public final class PlayerLoader {
         case "essential-arpg-support-slam":player.getArpgSkills().setSupport(3,Integer.parseInt(value));break;
         case "essential-arpg-support-execute":player.getArpgSkills().setSupport(4,Integer.parseInt(value));break;
         case "essential-arpg-hotbar":player.getArpgSkills().loadHotbar(value);break;
+        case "essential-arpg-physical-gems":player.getArpgSkills().loadPhysicalGems(value);break;
         case "essential-arpg-gems":
             player.getArpgSkills().loadLevels(value);break;
         case "essential-arpg-support-q":

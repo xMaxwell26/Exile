@@ -68,3 +68,52 @@ their neighboring controls. The QA character remains in its existing tutorial.
 
 Rendering tests complement visual inspection. They check geometry and content
 preservation; a passing pixel count alone does not establish visual quality.
+
+## Interaction follow-up
+
+- Arsenal inventory drags now retain their gesture context. Missing a socket,
+  closing the panel or losing focus cancels the drag, instead of falling through
+  to the old ground-drop action. Inventory reordering still works.
+- Socketed gems preserve the actual item roll, UUID and level. Each skill's
+  support copies have independent levels used by combat and the client display.
+  The twenty saved socket records round-trip through the player save loader;
+  older saves without these records retain their previous usable state.
+- Obsolete abstract Learn/Assign/Attach commands are retired. They cannot create
+  gems or bypass the three active sockets. Invalid targets and full inventories
+  leave ownership unchanged. Rejections now explain the problem in chat.
+- Remove supports before removing their active skill, so a hidden empty row
+  cannot strand support gems. The Arsenal help describes this order.
+- Map cards bind to the exact map and shown properties. Replaced, crafted,
+  off-page or obsolete selections refresh safely before anything is consumed.
+  Stale jewel choices also return to crafting without changing the replacement.
+- Choosing another gem restores the page used before browsing recipe rules.
+- Large character values retain every digit: labels shorten first, and
+  Armour/Evasion use separate rows when a paired row would overflow.
+
+Focused regression checks are `PhysicalGemOwnershipCheck`,
+`PanelNavigationCheck`, `CharacterValueBoundsCheck` and
+`InventoryGemDragCheck`. The drag check requires a local AWT environment;
+the other three also run in the cloud gate.
+
+Fresh-login testing also exposed a cache-loader race: archive readers shared
+both a scratch buffer and a data-file seek position while locking only their
+individual index. Complete read/write transactions now lock the shared data
+file, and each index has its own buffer. `CacheConcurrencyCheck` reproduces the
+old corruption and covers concurrent reads, temporary-file writes and sector
+resizing without writing the production cache.
+
+Gem inventory menus now use the public per-item name and only offer Craft on
+an uncut jewel. Missing or unidentified metadata uses a neutral gem category
+and cannot disclose advanced details. `GemInventoryMetadataCheck` covers names,
+actions, slot isolation and privacy.
+
+The full Windows regression gate passed after the ownership/navigation fixes.
+After the cache and inventory-name changes, focused cache, metadata, panel,
+ownership, AWT and drag checks passed again. Live testing confirmed terrain and
+minimap return on a cache-fixed login, a missed inventory drag creates no ground
+drop, valid socketing survives logout/login with the same nonempty UUID and
+level, and removal returns the gem. Crafted-gem right-click menus show the
+actual skill name without a Craft option. The QA character's tutorial remains
+at its original stage.
+The final saved inventory also matches the original gem UUID and level after
+removal, and the corresponding socket record is empty.

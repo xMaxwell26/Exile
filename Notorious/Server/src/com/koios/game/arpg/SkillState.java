@@ -1,6 +1,36 @@
 package com.koios.game.arpg;
+import com.koios.game.model.item.Item;
 /** Server-owned skill resource and cooldown state, advanced once per world tick. */
 public final class SkillState {
+ /** Actual socketed rolls preserve distinct levels and identity; absent records are legacy saves. */
+ private final Item[] physicalGems=new Item[20];
+ private int physicalIndex(int skill,int support){if(skill<0||skill>=SKILLS||support< -1||support>2)throw new IllegalArgumentException("Invalid gem socket");return skill*4+support+1;}
+ public boolean hasPhysicalGems(){for(Item gem:physicalGems)if(gem!=null)return true;return false;}
+ public void validatePhysicalGem(Item item){if(!MapRuns.isGem(item)||item.getCount()!=1)throw new IllegalArgumentException("Choose one gem");for(Item gem:physicalGems)if(gem!=null&&gem.getRoll().getInstanceId().equals(item.getRoll().getInstanceId()))throw new IllegalArgumentException("That gem is already socketed");}
+ public void recordGem(int skill,int support,Item gem){physicalGems[physicalIndex(skill,support)]=gem.copy();}
+ public Item socketedGem(int skill,int support){Item gem=physicalGems[physicalIndex(skill,support)];return gem==null?MapRuns.gem(support<0?skillLevel(skill):supportLevel(skill,support),support>=0,support<0?skill:support):gem.copy();}
+ public void forgetGem(int skill,int support){physicalGems[physicalIndex(skill,support)]=null;}
+ public int supportLevel(int skill,int support){Item gem=physicalGems[physicalIndex(skill,support)];return gem==null?supportLevel(support):gem.getRoll().getGem().level;}
+ public String savePhysicalGems(){StringBuilder out=new StringBuilder();for(Item gem:physicalGems){if(out.length()>0)out.append(',');out.append(gem==null?"-":ItemRollCodec.encode(gem));}return out.toString();}
+ /** Decode to a temporary ledger first: a bad save cannot partially replace live sockets. */
+ public void loadPhysicalGems(String text){
+  String[] fields=text.split(",",-1);
+  if(fields.length!=20)throw new IllegalArgumentException("Invalid physical gem save");
+  Item[] next=new Item[20];
+  java.util.Set<String> identities=new java.util.HashSet<>();
+  for(int i=0;i<next.length;i++){
+   if(fields[i].equals("-"))continue;
+   boolean support=i%4!=0;
+   Item gem=ItemRollCodec.restore(new Item(support?22412:22411),fields,i);
+   int expectedKind=support?i%4-1:i/4;
+   if(!MapRuns.isGem(gem)||gem.getRoll().getGem().support!=support
+      ||gem.getRoll().getGem().kind!=expectedKind
+      ||!identities.add(gem.getRoll().getInstanceId()))
+    throw new IllegalArgumentException("Invalid socketed gem identity");
+   next[i]=gem;
+  }
+  System.arraycopy(next,0,physicalGems,0,next.length);
+ }
  private double mana=50;
  public static final int SKILLS=5;
  private final int[] gemLevels={1,1,1,1,1,1,1,1};
@@ -21,7 +51,7 @@ public final class SkillState {
  private final int[] cooldowns=new int[SKILLS],supports=new int[SKILLS];
  private final int[] hotbar={-1,-1,-1};
  private int levelIndex(int skill){if(skill<0||skill>=SKILLS)throw new IllegalArgumentException("Invalid skill");return skill>=2?skill+3:skill;}
- public void socketActive(int slot,int skill,int level,int character){if(slot<0||slot>=3||skill<0||skill>=SKILLS||hotbar[slot]>=0)throw new IllegalArgumentException("That active socket is occupied");if(level<1||level>20||character<Math.max(1,level*4-3))throw new IllegalArgumentException("Skill gem level is too high");for(int equipped:hotbar)if(equipped==skill)throw new IllegalArgumentException("That skill is already socketed");gemLevels[levelIndex(skill)]=Math.max(gemLevels[levelIndex(skill)],level);hotbar[slot]=skill;active=true;}
+ public void socketActive(int slot,int skill,int level,int character){if(slot<0||slot>=3||skill<0||skill>=SKILLS||hotbar[slot]>=0)throw new IllegalArgumentException("That active socket is occupied");if(level<1||level>20||character<Math.max(1,level*4-3))throw new IllegalArgumentException("Skill gem level is too high");for(int equipped:hotbar)if(equipped==skill)throw new IllegalArgumentException("That skill is already socketed");gemLevels[levelIndex(skill)]=level;hotbar[slot]=skill;active=true;}
  public int unsocketActive(int slot){if(slot<0||slot>=3||hotbar[slot]<0)throw new IllegalArgumentException("That active socket is empty");int skill=hotbar[slot];hotbar[slot]=-1;active=true;return skill;}
  public int assigned(int slot){if(slot<0||slot>=3)throw new IllegalArgumentException("Invalid hotbar slot");return hotbar[slot];}
  public void assign(int slot,int skill){if(slot<0||slot>=3||skill<0||skill>=SKILLS)throw new IllegalArgumentException("Invalid skill assignment");int old=hotbar[slot];for(int i=0;i<3;i++)if(hotbar[i]==skill){hotbar[i]=old;break;}hotbar[slot]=skill;active=true;}
@@ -33,16 +63,16 @@ public final class SkillState {
  private int actionLock;
  private boolean active;
  private String lastPayload;
- public int getSupport(int skill){return supports[skill];}
+ public int getSupport(int skill){if(skill<0||skill>=SKILLS)throw new IllegalArgumentException("Invalid skill");return supports[skill];}
  public void setSupport(int skill,int mask){if(skill<0||skill>=SKILLS||mask<0||mask>7)throw new IllegalArgumentException("Invalid support selection");supports[skill]=mask;}
  public void toggle(int skill,int support){if(skill<0||skill>=SKILLS||support<0||support>2)throw new IllegalArgumentException("Invalid support selection");attach(skill,support,(supports[skill]&(1<<support))==0);active=true;}
  public double cost(int skill){return new double[]{12,18,24,20,16}[skill]*(1+0.03*(skillLevel(skill)-1))*((supports[skill]&4)!=0?1.4:1)*((supports[skill]&1)!=0?1.2:1);}
- public double effectiveness(int skill){return new double[]{1.8,.9,1.15,1.3,2.0}[skill]*(1+0.05*(skillLevel(skill)-1))*((supports[skill]&4)!=0?(1.3+0.01*(gemLevels[4]-1)):1);}
+ public double effectiveness(int skill){return new double[]{1.8,.9,1.15,1.3,2.0}[skill]*(1+0.05*(skillLevel(skill)-1))*((supports[skill]&4)!=0?(1.3+0.01*(supportLevel(skill,2)-1)):1);}
  public boolean spend(int skill,double aps){
   if(skill<0||skill>=SKILLS||!Double.isFinite(aps)||aps<=0)return false;
   double cost=cost(skill);
   if(actionLock>0||cooldowns[skill]>0||mana+1e-9<cost)return false;
-  mana-=cost;double speed=(supports[skill]&2)!=0?(1.25+0.01*(gemLevels[3]-1)):1;
+  mana-=cost;double speed=(supports[skill]&2)!=0?(1.25+0.01*(supportLevel(skill,1)-1)):1;
   cooldowns[skill]=Math.max(1,(int)Math.ceil(new double[]{3,3.6,5,4.2,4.8}[skill]/speed/0.6-1e-9));
   actionLock=Math.max(1,(int)Math.ceil(1/aps/speed/0.6));active=true;return true;
  }
@@ -60,6 +90,7 @@ public final class SkillState {
   payload+="|"+hotbar[0]+"|"+hotbar[1]+"|"+hotbar[2];
   for(int skill=3;skill<SKILLS;skill++)payload+="|"+String.format(java.util.Locale.ROOT,"%.1f",cooldowns[skill]*.6)+"|"+supports[skill]+"|"+skillLevel(skill);
   for(int support=0;support<3;support++)payload+="|"+available(support);
+  for(int skill=0;skill<SKILLS;skill++)for(int support=0;support<3;support++)payload+="|"+supportLevel(skill,support);
   if(payload.equals(lastPayload))return null;lastPayload=payload;return payload;
  }
 }

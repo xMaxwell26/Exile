@@ -38,6 +38,7 @@ checks=(TooltipContentCheck ArmourSurfaceCheck HeadlessLayoutCheck CourtyardEnvi
     DropTableCheck ConstructProfileCheck ConstructWindupCheck CustomNpcMeshCheck CustomBriarMeshCheck ExileBrandingCheck
     ExileThemeCheck ExileLoginCheck TutorialGemInstructionCheck UncutJewelCheck GemcraftCardsCheck ExileTypographyCheck
     OverlayViewportCheck GuidePresentationCheck ArsenalPanelPreview InterfaceStatesCheck InterfaceTextBoundsCheck ChatChromeLayoutCheck
+    PhysicalGemOwnershipCheck PanelNavigationCheck CharacterValueBoundsCheck GemInventoryMetadataCheck CacheConcurrencyCheck
 )
 for check in "${checks[@]}"; do
     echo "Running $check"
@@ -48,4 +49,4 @@ for npc in 15001 15007; do
     "$EXILE_JAVA8_HOME/bin/java" -Djava.awt.headless=true -Xmx1G -cp "$classpath" CustomNpcRigCheck "$npc" > "build/CustomNpcRigCheck-$npc.log" 2>&1 || { cat "build/CustomNpcRigCheck-$npc.log"; exit 1; }
     tail -1 "build/CustomNpcRigCheck-$npc.log"
 done
-echo 'Headless gate passed. ControlRoutingCheck/ViewportInputCheck and physical fullscreen acceptance require a local desktop.'
+echo 'Headless gate passed. ControlRoutingCheck/ViewportInputCheck/InventoryGemDragCheck and physical fullscreen acceptance require a local desktop.'

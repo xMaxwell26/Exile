@@ -864,6 +864,8 @@ public class Client extends RSApplet {
 						anInt989 = 0;
 						anInt1084 = j2;
 						itemFrom = l1;
+						int sourceId=class9.container!=null&&l1>=0&&l1<class9.container.length?class9.container[l1]-1:-1;
+						arpgInventoryGemId=arpgSkillsOpen&&j2==3214&&(sourceId==22411||sourceId==22412)?sourceId:0;
 						fromTab = class9.id;
 						activeInterfaceType = 2;
 						anInt1087 = super.saveClickX;
@@ -1516,9 +1518,10 @@ public class Client extends RSApplet {
                                 arpgHoverWidget=children.id;arpgHoverSlot=k2;
 								if (children.container[k2] > 0) {
 									ItemDefinition itemDef = ItemDefinition.forID(children.container[k2] - 1);
+									String inventoryName=arpgTooltips.inventoryName(children.id,k2,itemDef.id,itemDef.name);
 									if (itemSelected == 1 && children.isInventoryInterface) {
 										if (children.id != anInt1284 || k2 != anInt1283) {
-											menuActionName[menuActionRow] = "Use " + selectedItemName + " with @lre@" + itemDef.name;
+											menuActionName[menuActionRow] = "Use " + selectedItemName + " with @lre@" + inventoryName;
 											menuActionID[menuActionRow] = 870;
 											menuActionCmd1[menuActionRow] = itemDef.id;
 											menuActionCmd2[menuActionRow] = k2;
@@ -1527,7 +1530,7 @@ public class Client extends RSApplet {
 										}
 									} else if (spellSelected == 1 && children.isInventoryInterface) {
 										if ((spellUsableOn & 0x10) == 16) {
-											menuActionName[menuActionRow] = spellTooltip + " @lre@" + itemDef.name;
+											menuActionName[menuActionRow] = spellTooltip + " @lre@" + inventoryName;
 											menuActionID[menuActionRow] = 543;
 											menuActionCmd1[menuActionRow] = itemDef.id;
 											menuActionCmd2[menuActionRow] = k2;
@@ -1538,7 +1541,7 @@ public class Client extends RSApplet {
 										if (children.isInventoryInterface) {
 											for (int l3 = 4; l3 >= 3; l3--)
 												if (itemDef.itemActions != null && itemDef.itemActions[l3] != null) {
-													menuActionName[menuActionRow] = itemDef.itemActions[l3] + " @lre@" + itemDef.name + " "
+													menuActionName[menuActionRow] = itemDef.itemActions[l3] + " @lre@" + inventoryName + " "
 															+ (clientData ? ("id: " + itemDef.id + ", modelId: " + itemDef.modelID) : "");
 													if (l3 == 3)
 														menuActionID[menuActionRow] = 493;
@@ -1549,7 +1552,7 @@ public class Client extends RSApplet {
 													menuActionCmd3[menuActionRow] = children.id;
 													menuActionRow++;
 												} else if (l3 == 4) {
-													menuActionName[menuActionRow] = "Drop @lre@" + itemDef.name;
+													menuActionName[menuActionRow] = "Drop @lre@" + inventoryName;
 													menuActionID[menuActionRow] = 847;
 													menuActionCmd1[menuActionRow] = itemDef.id;
 													menuActionCmd2[menuActionRow] = k2;
@@ -1558,7 +1561,7 @@ public class Client extends RSApplet {
 												}
 										}
 										if (children.usableItemInterface) {
-											menuActionName[menuActionRow] = "Use @lre@" + itemDef.name;
+											menuActionName[menuActionRow] = "Use @lre@" + inventoryName;
 											menuActionID[menuActionRow] = 447;
 											menuActionCmd1[menuActionRow] = itemDef.id;
 											menuActionCmd2[menuActionRow] = k2;
@@ -1567,8 +1570,8 @@ public class Client extends RSApplet {
 										}
 										if (children.isInventoryInterface && itemDef.itemActions != null) {
 											for (int i4 = 2; i4 >= 0; i4--)
-												if (itemDef.itemActions[i4] != null) {
-													menuActionName[menuActionRow] = itemDef.itemActions[i4] + " @lre@" + itemDef.name;
+												if (itemDef.itemActions[i4] != null&&(!"Craft".equals(itemDef.itemActions[i4])||(itemDef.id!=22411&&itemDef.id!=22412)||arpgTooltips.canCraftGem(children.id,k2,itemDef.id))) {
+													menuActionName[menuActionRow] = itemDef.itemActions[i4] + " @lre@" + inventoryName;
 													if (i4 == 0)
 														menuActionID[menuActionRow] = 74;
 													if (i4 == 1)
@@ -1591,7 +1594,7 @@ public class Client extends RSApplet {
 													}
 												}
 												if (children.actions[actionIndex] != null) {
-													menuActionName[menuActionRow] = children.actions[actionIndex] + " @lre@" + itemDef.name;
+													menuActionName[menuActionRow] = children.actions[actionIndex] + " @lre@" + inventoryName;
 													if (actionIndex == 0)
 														menuActionID[menuActionRow] = 632;
 													if (actionIndex == 1)
@@ -1620,7 +1623,7 @@ public class Client extends RSApplet {
 											}
 
 										}
-										menuActionName[menuActionRow] = "Examine @lre@" + itemDef.name;
+										menuActionName[menuActionRow] = "Examine @lre@" + inventoryName;
 										menuActionID[menuActionRow] = 1125;
 										menuActionCmd1[menuActionRow] = itemDef.id;
 										menuActionCmd2[menuActionRow] = k2;
@@ -2666,7 +2669,7 @@ public class Client extends RSApplet {
 	}
 
 	private void resetLogout() {
-        chatFocus.close();arpgSkillsOpen=false;prototypeOpen=false;controlsPanel=null;controlActions.clear();bindingRequests.set(0);skillBindings=null;bindingUser="";bindingSignature="";mapObjective.clear();arpgHazardX=-1;battleEffects.clear();groundLoot.clear();skillDrag.cancel();
+        cancelArpgInventoryDrag();chatFocus.close();arpgSkillsOpen=false;prototypeOpen=false;controlsPanel=null;controlActions.clear();bindingRequests.set(0);skillBindings=null;bindingUser="";bindingSignature="";mapObjective.clear();arpgHazardX=-1;battleEffects.clear();groundLoot.clear();skillDrag.cancel();
         arpgTooltips.clear();arpgHoverWidget=-1;arpgHoverSlot=-1;
 		// Reset the screen mode
 		frameMode(ScreenMode.FIXED);
@@ -3617,18 +3620,10 @@ public class Client extends RSApplet {
 					inputTaken = true;
 				activeInterfaceType = 0;
 				// Gem sockets should accept a deliberate short drag as readily as a long one.
-				boolean draggingLoadoutGem=arpgSkillsOpen&&anInt1084==3214&&itemFrom>=0&&itemFrom<RSInterface.interfaceCache[3214].container.length&&(RSInterface.interfaceCache[3214].container[itemFrom]-1==22411||RSInterface.interfaceCache[3214].container[itemFrom]-1==22412);
+				boolean draggingLoadoutGem=arpgInventoryGemId!=0;
+                if(finishArpgInventoryDrag()){atInventoryLoopCycle=10;super.clickMode3=0;return;}
                 if(com.koios.client.arpg.QaClientHooks.enabled()&&arpgSkillsOpen)System.out.println("QA loadout release: gem="+draggingLoadoutGem+" frames="+anInt989+" moved="+aBoolean1242+" widget="+anInt1084+" slot="+itemFrom+" end="+super.releasedX+","+super.releasedY);
 				if (aBoolean1242 && anInt989 >= (draggingLoadoutGem?1:15)) {
-					// Support sockets own real gems. Route an inventory drag into the
-					// loadout before the legacy client treats it as a ground-item drop.
-					if(arpgSkillsOpen&&anInt1084==3214&&itemFrom>=0&&itemFrom<RSInterface.interfaceCache[3214].container.length&&(RSInterface.interfaceCache[3214].container[itemFrom]-1==22411||RSInterface.interfaceCache[3214].container[itemFrom]-1==22412)){
-						int px=overlayMouseX(super.releasedX),py=overlayMouseY(super.releasedY);
-						int loadoutSlot=com.koios.client.arpg.SkillPanel.loadoutSlotAt(px,py),socket=com.koios.client.arpg.SkillPanel.socketAt(px,py);
-						int draggedId=RSInterface.interfaceCache[3214].container[itemFrom]-1;
-						if(draggedId==22411&&com.koios.client.arpg.SkillPanel.activeSocketAt(px,py)>=0){sendArpgSkill("socketactive "+itemFrom+" "+loadoutSlot);atInventoryLoopCycle=10;super.clickMode3=0;return;}
-						if(draggedId==22412&&loadoutSlot>=0&&socket>=0){sendArpgSkill("socket "+itemFrom+" "+loadoutSlot+" "+socket);atInventoryLoopCycle=10;super.clickMode3=0;return;}
-					}
 					lastActiveInvInterface = -1;
 					processRightClick();
 
@@ -5030,7 +5025,7 @@ public class Client extends RSApplet {
 			anInt1283 = j;
 			anInt1284 = componentId;
 			anInt1285 = actionCommandTarget;
-			selectedItemName = ItemDefinition.forID(actionCommandTarget).name;
+			selectedItemName = arpgTooltips.inventoryName(componentId,j,actionCommandTarget,ItemDefinition.forID(actionCommandTarget).name);
 			spellSelected = 0;
 			return;
 		}
@@ -5386,7 +5381,7 @@ public class Client extends RSApplet {
      String[] full=new String[3],compact=new String[3];for(int slot=0;slot<3;slot++){full[slot]=skillBindings.label(slot);compact[slot]=full[slot].replace("Left mouse","LMB").replace("Middle mouse","MMB").replace("Right mouse","RMB").replace("Mouse ","M").replace(" + ","+");}
      com.koios.client.arpg.SkillPanel.setKeys(compact);String signature=String.join("|",full);if(!signature.equals(bindingSignature)){bindingSignature=signature;sendArpgSkill("bindings "+java.util.Base64.getEncoder().encodeToString(signature.getBytes(java.nio.charset.StandardCharsets.UTF_8)));}
     }
-    private void processArpgControls(){prepareBindings();for(Runnable action;(action=controlActions.poll())!=null;)action.run();if(controlsPanel!=null&&controlsPanel.isClosed()){controlsPanel=null;arpgSkillsOpen=true;}int bound=bindingRequests.getAndSet(0);if(gameplayBindingAllowed())for(int slot=0;slot<3;slot++)if((bound&1<<slot)!=0)sendArpgSkill("slot "+slot);}
+    private void processArpgControls(){prepareBindings();for(Runnable action;(action=controlActions.poll())!=null;)action.run();if(arpgInventoryGemId!=0&&!arpgInventoryDragAllowed())cancelArpgInventoryDrag();if(controlsPanel!=null&&controlsPanel.isClosed()){controlsPanel=null;arpgSkillsOpen=true;}int bound=bindingRequests.getAndSet(0);if(gameplayBindingAllowed())for(int slot=0;slot<3;slot++)if((bound&1<<slot)!=0)sendArpgSkill("slot "+slot);}
     private void openControls(){prepareBindings();if(skillBindings==null)return;controlsPanel=new com.koios.client.arpg.ControlsPanel(skillBindings);arpgSkillsOpen=false;prototypeOpen=false;skillDrag.cancel();inputTaken=true;}
     /** AWT callbacks only queue work; all network writes stay on the game thread. */
     public boolean routeArpgKey(java.awt.event.KeyEvent event){
@@ -5399,7 +5394,23 @@ public class Client extends RSApplet {
      if(panel!=null&&panel.isCapturing()&&!panel.hasConflict()){final int button=event.getButton(),mods=event.getModifiersEx();controlActions.add(()->{if(controlsPanel==panel)panel.captureMouse(button,mods);});return true;}
      if(skillBindings==null||!gameplayBindingAllowed()||!gameplayMousePoint(x,y))return false;int offset=frameMode==ScreenMode.FIXED?4:0;if(groundLoot.hit(x-offset,y-offset)!=null)return false;int slot=skillBindings.matchMouse(event.getButton(),event.getModifiersEx());if(slot<0)return false;bindingRequests.getAndUpdate(mask->mask|1<<slot);return true;
     }
-    public void arpgFocusLost(){bindingRequests.set(0);final com.koios.client.arpg.ControlsPanel panel=controlsPanel;if(panel!=null)controlActions.add(()->{if(controlsPanel==panel)panel.focusLost();});}
+    public void arpgFocusLost(){bindingRequests.set(0);controlActions.add(this::cancelArpgInventoryDrag);final com.koios.client.arpg.ControlsPanel panel=controlsPanel;if(panel!=null)controlActions.add(()->{if(controlsPanel==panel)panel.focusLost();});}
+    private boolean arpgInventoryDragAllowed(){return loggedIn&&awtFocus&&arpgSkillsOpen&&!prototypeOpen&&controlsPanel==null&&!isChatInputActive()&&backDialogID==-1&&openInterfaceID==-1&&tabID==3;}
+    private void cancelArpgInventoryDrag(){if(arpgInventoryGemId==0)return;arpgInventoryGemId=0;activeInterfaceType=0;aBoolean1242=false;super.clickMode2=super.clickMode3=0;inputTaken=true;}
+    /** Arsenal drags may socket or reorder a gem; a miss must never become a legacy ground drop. */
+    private boolean finishArpgInventoryDrag(){
+        if(arpgInventoryGemId==0)return false;
+        int id=arpgInventoryGemId;arpgInventoryGemId=0;
+        RSInterface bag=RSInterface.interfaceCache[3214];
+        if(!arpgInventoryDragAllowed()||bag==null||bag.container==null||itemFrom<0||itemFrom>=bag.container.length||bag.container[itemFrom]-1!=id)return true;
+        if(Math.abs(super.releasedX-anInt1087)>5||Math.abs(super.releasedY-anInt1088)>5)aBoolean1242=true;
+        if(!aBoolean1242||overSidebar(super.releasedX,super.releasedY))return false;
+        int x=overlayMouseX(super.releasedX),y=overlayMouseY(super.releasedY);
+        int slot=com.koios.client.arpg.SkillPanel.loadoutSlotAt(x,y),socket=com.koios.client.arpg.SkillPanel.socketAt(x,y);
+        if(id==22411&&com.koios.client.arpg.SkillPanel.activeSocketAt(x,y)>=0)sendArpgSkill("socketactive "+itemFrom+" "+slot);
+        else if(id==22412&&slot>=0&&socket>=0)sendArpgSkill("socket "+itemFrom+" "+slot+" "+socket);
+        return true;
+    }
     private void pickupLoot(com.koios.client.arpg.GroundLootLabels.Entry loot){int x=loot.worldX-baseX,y=loot.worldY-baseY;if(x<1||x>102||y<1||y>102||loot.plane!=plane)return;if(!doWalkTo(0,0,0,0,myPlayer.smallY[0],0,0,y,myPlayer.smallX[0],false,x)){pushMessage("No clear path to that drop.",0,"");return;}String command="arpgloot "+loot.key;stream.createFrame(103);stream.writeLEShort(command.length()+1);stream.writeString(command);}
     private boolean gameplayMousePoint(int x,int y){
      if(frameMode==ScreenMode.FIXED){if(x<4||x>=516||y<4||y>=338)return false;int top=com.koios.client.arpg.SkillPanel.barTop(512,334);return !(x>=16&&x<408&&y>=top+4&&y<top+82);}
@@ -12951,6 +12962,7 @@ public class Client extends RSApplet {
      calcEntityScreenPos(((arpgHazardX-baseX)<<7)+64,45,((arpgHazardY-baseY)<<7)+64);if(spriteDrawX>=0){String label="SLAM  "+String.format(java.util.Locale.ROOT,"%.1fs",Math.max(0,arpgHazardDuration-(System.currentTimeMillis()-arpgHazardStart))/1000.0);aTextDrawingArea_1271.method389(true,Math.max(4,spriteDrawX-aTextDrawingArea_1271.getTextWidth(label)/2),0xFFE2B0,label,spriteDrawY);}
     }
     private boolean arpgSkillsOpen,prototypeOpen;
+    private int arpgInventoryGemId;
     private final com.koios.client.arpg.PrototypePanel prototypePanel=new com.koios.client.arpg.PrototypePanel();
     private final com.koios.client.arpg.SkillDragState skillDrag=new com.koios.client.arpg.SkillDragState();
     private int arpgLife=100,arpgMaxLife=100;

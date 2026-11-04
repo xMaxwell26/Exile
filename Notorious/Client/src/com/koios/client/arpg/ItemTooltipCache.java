@@ -11,6 +11,27 @@ public final class ItemTooltipCache {
  private final Map<Integer,Map<Integer,Entry>> widgets=new HashMap<>();
  public void clear(){widgets.clear();}
  public Entry get(int widget,int slot,int baseId){Map<Integer,Entry> entries=widgets.get(widget);Entry e=entries==null?null:entries.get(slot);return e!=null&&e.baseId==baseId?e:null;}
+ /** Inventory names use only the server's public normal tooltip, never Ctrl-only affix details. */
+ public String inventoryName(int widget,int slot,int baseId,String fallback){
+  String safeFallback=baseId==22411?"Skill Gem":baseId==22412?"Support Gem":fallback;
+  Entry entry=get(widget,slot,baseId);
+  if(!gem(baseId)||entry==null||entry.normal.length==0||unidentified(entry))return safeFallback;
+  String name=entry.normal[0];
+  if(name.isEmpty()||name.length()>120)return safeFallback;
+  for(int i=0;i<name.length();i++)if(Character.isISOControl(name.charAt(i))||name.charAt(i)=='@')return safeFallback;
+  return name;
+ }
+ /** Missing or private metadata must not invent a Craft action for an already-cut gem. */
+ public boolean canCraftGem(int widget,int slot,int baseId){
+  Entry entry=get(widget,slot,baseId);
+  if(!gem(baseId)||entry==null||entry.normal.length==0||unidentified(entry))return false;
+  String prefix=baseId==22412?"Uncut Support Jewel / Level ":"Uncut Skill Jewel / Level ";
+  if(!entry.normal[0].startsWith(prefix))return false;
+  try{int level=Integer.parseInt(entry.normal[0].substring(prefix.length()));return level>=1&&level<=20;}
+  catch(NumberFormatException malformed){return false;}
+ }
+ private static boolean gem(int id){return id==22411||id==22412;}
+ private static boolean unidentified(Entry entry){for(String line:entry.normal)if(line.equalsIgnoreCase("Unidentified"))return true;return false;}
  public void accept(String payload){
   String[] f=payload.split("\\|",-1);int widget=Integer.parseInt(f[1]);
   if(f[0].equals("clear")){widgets.remove(widget);return;}

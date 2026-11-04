@@ -10,7 +10,15 @@ public final class Decompressor {
 		indexFile = randomaccessfile1;
 	}
 
-	public synchronized byte[] decompress(int i) {
+	public byte[] decompress(int i) {
+		// All archive indices use the same data-file handle. Its seek position must
+		// remain owned for the complete sector chain, not just one seek/read pair.
+		synchronized (dataFile) {
+			return readArchive(i);
+		}
+	}
+
+	private byte[] readArchive(int i) {
 		try {
 			seekTo(indexFile, i * 6);
 			int l;
@@ -62,14 +70,18 @@ public final class Decompressor {
 		}
 	}
 
-	public synchronized boolean method234(int i, byte abyte0[], int j) {
-		boolean flag = method235(true, j, i, abyte0);
-		if(!flag)
-			flag = method235(false, j, i, abyte0);
-		return flag;
+	public boolean method234(int i, byte abyte0[], int j) {
+		// Allocation, index update and both overwrite/fallback paths are atomic
+		// with respect to every other index sharing this cache data file.
+		synchronized (dataFile) {
+			boolean flag = method235(true, j, i, abyte0);
+			if(!flag)
+				flag = method235(false, j, i, abyte0);
+			return flag;
+		}
 	}
 
-	private synchronized boolean method235(boolean flag, int j, int k, byte abyte0[]) {
+	private boolean method235(boolean flag, int j, int k, byte abyte0[]) {
 		try {
 			int l;
 			if(flag) {
@@ -153,15 +165,13 @@ public final class Decompressor {
 		}
 	}
 
-	private synchronized void seekTo(RandomAccessFile randomaccessfile, int j) throws IOException {
-		try {
-			randomaccessfile.seek(j);
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
+	/** Only called inside a complete transaction holding dataFile's monitor. */
+	private void seekTo(RandomAccessFile randomaccessfile, int j) throws IOException {
+		randomaccessfile.seek(j);
 	}
 
-	private static final byte[] buffer = new byte[520];
+	// Separate cache handles may be used concurrently too; never share scratch bytes.
+	private final byte[] buffer = new byte[520];
 	private final RandomAccessFile dataFile;
 	private final RandomAccessFile indexFile;
 	private final int anInt311;
