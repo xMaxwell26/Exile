@@ -24,6 +24,6 @@ public final class ControlsPanel {
   button(font,28,276,131,"Reset to Q / W / E",ExileTheme.TEXT);int count=mouseButtonCount();text(font,176,292,count<0?"Mouse button count unavailable":"AWT reports "+count+" mouse buttons",ExileTheme.DIM);text(font,28,315,"Enter: chat / Escape: cancel / Mouse binds: world only",ExileTheme.DIM);
  }
  private static void button(TextDrawingArea f,int x,int y,int w,String s,int color){box(x,y,w,26,ExileTheme.BORDER,ExileTheme.OXBLOOD);text(f,x+8,y+18,s,color);}
- private static void box(int x,int y,int w,int h,int border,int fill){DrawingArea.drawPixels(h,y,x,fill,w);DrawingArea.fillPixels(x,w,h,border,y);}
- private static void text(TextDrawingArea f,int x,int y,String s,int color){f.method389(true,x,color,s,y);}
+ private static void box(int x,int y,int w,int h,int border,int fill){ExileTheme.panel(x,y,w,h,border,fill);}
+ private static void text(TextDrawingArea f,int x,int y,String s,int color){ExileTheme.label(f,x,y,s,color);}
 }

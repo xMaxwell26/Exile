@@ -16,7 +16,8 @@ public final class MapObjective {
   for(String line:lines)wrapped.addAll(ChatWrap.lines(line,width-16,font::getTextWidth));
   int height=14+wrapped.size()*15;
   int accent=lines[0].startsWith("MAP COMPLETE")?0x93DB9B:0xE3C486;
-  DrawingArea.drawPixels(height,y,x,ExileTheme.PANEL,width);DrawingArea.fillPixels(x,width,height,accent,y);
-  for(int i=0;i<wrapped.size();i++)font.method389(true,x+8,i==0?accent:ExileTheme.TEXT,wrapped.get(i),y+17+i*15);
+  ExileTheme.panel(x,y,width,height,accent,ExileTheme.PANEL);
+  DrawingArea.drawPixels(Math.max(1,height-6),y+3,x+3,accent,2);
+  for(int i=0;i<wrapped.size();i++)ExileTheme.label(font,x+10,y+17+i*15,wrapped.get(i),i==0?accent:ExileTheme.TEXT);
  }
 }

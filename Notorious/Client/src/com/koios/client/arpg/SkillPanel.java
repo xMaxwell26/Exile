@@ -42,8 +42,8 @@ public final class SkillPanel {
  public static void drawBar(TextDrawingArea font,String[] state,String[] character){int y=barTop(DrawingArea.width,DrawingArea.height),ox=barOffset(DrawingArea.width);box(ox+12,y,392,78,ExileTheme.BORDER,ExileTheme.PANEL);String life="Life: 100 / 100",es="Energy Shield: 0 / 0";for(String line:character){if(line.startsWith("Life:"))life=line;if(line.startsWith("Energy Shield:"))es=line;}text(font,ox+22,y+14,life+"   "+es,ExileTheme.TEXT);text(font,ox+22,y+29,"Mana "+state[0]+"/"+state[1]+"  /  Skills & controls: K or mana orb",0x8DC5FF);for(int slot=0;slot<3;slot++){int skill=assignment(state,slot);box(ox+18+slot*127,y+35,123,37,ExileTheme.BORDER,ExileTheme.SURFACE);text(font,ox+24+slot*127,y+49,fit(font,KEYS[slot]+(skill<0?"":" / "+cooldown(state,skill)+"s"),111),ExileTheme.MUTED);text(font,ox+24+slot*127,y+65,name(skill),color(skill));}}
  private static void glyph(TextDrawingArea font,int id,boolean support,int x,int y,int size){int color=support?SUPPORT_COLORS[id]:COLORS[id];box(x,y,size,size,color,ExileTheme.SURFACE);SkillGlyphs.icon(id,support,size-4).drawSprite(x+2,y+2);}
 
- private static void box(int x,int y,int width,int height,int border,int fill){DrawingArea.drawPixels(height,y,x,fill,width);DrawingArea.fillPixels(x,width,height,border,y);}
- private static void text(TextDrawingArea font,int x,int y,String value,int color){font.method389(true,x,color,value,y);}
+ private static void box(int x,int y,int width,int height,int border,int fill){ExileTheme.panel(x,y,width,height,border,fill);}
+ private static void text(TextDrawingArea font,int x,int y,String value,int color){ExileTheme.label(font,x,y,value,color);}
 }
 
 

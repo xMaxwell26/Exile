@@ -9,6 +9,7 @@ import com.koios.client.graphic.*;
 /** Present original item art at device resolution while retaining software UI occlusion. */
 public final class HighDpiArt {
     private static final Map<int[],Map<Long,Stamp>> SURFACES=new WeakHashMap<>();
+    private static final Map<Sprite,BufferedImage> ALIGNED=new WeakHashMap<>();
     public static final class Stamp {
         final java.lang.ref.WeakReference<int[]> raster;
         final int[] before,after;
@@ -27,6 +28,19 @@ public final class HighDpiArt {
         SURFACES.computeIfAbsent(stamp.raster.get(),key->new LinkedHashMap<>()).put(((long)stamp.x<<32)|stamp.y,stamp);
     }
     public static void clear(int[] raster){SURFACES.remove(raster);}
+    /**
+     * Derive the device-scale presentation from the exact software sprite.
+     * The former source artwork could have a slightly different crop, so a
+     * repaint alternating between the two looked like the icon was bouncing.
+     */
+    private static BufferedImage aligned(Sprite sprite){
+        BufferedImage cached=ALIGNED.get(sprite);if(cached!=null)return cached;
+        BufferedImage logical=new BufferedImage(sprite.myWidth,sprite.myHeight,BufferedImage.TYPE_INT_ARGB);
+        int[] rgba=new int[sprite.myPixels.length];for(int i=0;i<rgba.length;i++){int color=sprite.myPixels[i];rgba[i]=color==0?0:0xFF000000|color;}
+        logical.setRGB(0,0,sprite.myWidth,sprite.myHeight,rgba,0,sprite.myWidth);
+        BufferedImage result=new BufferedImage(sprite.myWidth*4,sprite.myHeight*4,BufferedImage.TYPE_INT_ARGB);Graphics2D g=result.createGraphics();
+        g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,RenderingHints.VALUE_INTERPOLATION_BICUBIC);g.drawImage(logical,0,0,result.getWidth(),result.getHeight(),null);g.dispose();ALIGNED.put(sprite,result);return result;
+    }
     /** Call before repainting a slot, including an empty slot, so removed art cannot persist. */
     public static void invalidate(int x,int y,int width,int height){
         Map<Long,Stamp> stamps=SURFACES.get(DrawingArea.pixels);
@@ -60,7 +74,7 @@ public final class HighDpiArt {
             background.setRGB(0,0,stamp.w,stamp.h,stamp.before,0,stamp.w);
             g.drawImage(background,xOffset+stamp.x,yOffset+stamp.y,null);
             g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-            g.drawImage(stamp.sprite.highResolutionArt,xOffset+stamp.x,yOffset+stamp.y,stamp.w,stamp.h,null);
+            g.drawImage(aligned(stamp.sprite),xOffset+stamp.x,yOffset+stamp.y,stamp.w,stamp.h,null);
             g.dispose();
         }
     }
