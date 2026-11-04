@@ -39,6 +39,7 @@ public final class QaFixtures {
                 }
                 if (!found) throw new IllegalArgumentException("Unknown equipment base");
             } else if (args.length == 2 && args[1].equals("gems")) {
+                // Ordinary drops are uncut: QA must exercise right-click Craft before socketing.
                 MapRuns.grant(player, MapRuns.gem(1, false));
                 MapRuns.grant(player, MapRuns.gem(1, false));
                 MapRuns.grant(player, MapRuns.gem(1, true));

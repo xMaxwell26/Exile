@@ -27,11 +27,12 @@ public final class ItemRoll {
   public MapData(int tier,int mods){this.tier=tier;this.mods=mods;validate();}
   public void validate(){if(tier<1||tier>10||mods<0||mods>7)throw new IllegalArgumentException("Invalid map");}
  }
- public static final class GemData {public final int level,kind;public final boolean support;public GemData(int level,boolean support){this(level,support,0);}public GemData(int level,boolean support,int kind){this.level=level;this.support=support;this.kind=kind;validate();}public void validate(){if(level<1||level>20||kind<0||kind>=(support?3:5))throw new IllegalArgumentException("Invalid gem");}}
+ public static final class GemData {public final int level,kind;public final boolean support;public GemData(int level,boolean support){this(level,support,-1);}public GemData(int level,boolean support,int kind){this.level=level;this.support=support;this.kind=kind;validate();}public void validate(){if(level<1||level>20||kind< -1||kind>=(support?3:5))throw new IllegalArgumentException("Invalid gem");}}
  private final GemData gem;
  public GemData getGem(){return gem;}
  public ItemRoll withGemLevel(int level){if(gem==null)throw new IllegalArgumentException("Not a gem");GemData next=new GemData(level,gem.support,gem.kind);return new ItemRoll(instanceId,rarity,Math.max(1,level*4-3),Math.max(1,level*4-3),identified,corruption,affixes,map,next);}
- public static ItemRoll gem(int level,boolean support){return gem(level,support,0);}
+ public ItemRoll withGemKind(int kind){if(gem==null||gem.kind>=0)throw new IllegalArgumentException("Only an uncut gem can be crafted");GemData next=new GemData(gem.level,gem.support,kind);return new ItemRoll(instanceId,rarity,itemLevel,requiredLevel,identified,corruption,affixes,map,next);}
+ public static ItemRoll gem(int level,boolean support){return gem(level,support,-1);}
  public static ItemRoll gem(int level,boolean support,int kind){return new ItemRoll(UUID.randomUUID().toString(),Rarity.NORMAL,Math.max(1,level*4-3),Math.max(1,level*4-3),true,0,Collections.emptyList(),null,new GemData(level,support,kind));}
  private final MapData map;
  public MapData getMap(){return map;}

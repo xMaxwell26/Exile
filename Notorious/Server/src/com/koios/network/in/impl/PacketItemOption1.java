@@ -76,7 +76,7 @@ public class PacketItemOption1 implements IncomingPacketDecoder {
 
         if(player.isDead()||player.isTeleporting()||player.isTrading()||player.getBankField().isBanking())return;
         if(com.koios.game.arpg.MapRuns.useScroll(player,slot))return;
-        if(com.koios.game.arpg.MapRuns.isGem(player.getInventory().get(slot))){com.koios.game.arpg.PrototypePanel.handle(player,"arpgproto select "+slot);com.koios.game.arpg.PrototypePanel.show(player,"craft");return;}
+        if(com.koios.game.arpg.MapRuns.isGem(player.getInventory().get(slot))){try{com.koios.game.arpg.PrototypePanel.openGemCraft(player,slot);}catch(IllegalArgumentException ex){player.sendMessage(ex.getMessage());}return;}
         if(player.getInventory().contains(i -> i.hasRoll())){player.sendMessage("Legacy item actions are disabled while carrying prototype rolled gear.");return;}
 		if (player.dialogue().isActive()) {
 			player.getSession().send(new SendRemoveInterfacePacket());

@@ -13,7 +13,7 @@ public final class GemCrafting {
    if(source==target||a==b||a.getRoll().getInstanceId().equals(b.getRoll().getInstanceId()))throw new IllegalArgumentException("Choose two distinct gems.");
    if(a.getCount()!=1||b.getCount()!=1)throw new IllegalArgumentException("Choose individual gems.");
    ItemRoll.GemData first=a.getRoll().getGem(),second=b.getRoll().getGem();
-   if(first.support||second.support)throw new IllegalArgumentException("Only active skill gems can be fused.");
+   if(first.support||second.support||first.kind<0||second.kind<0)throw new IllegalArgumentException("Craft active skill gems before fusing them.");
    if(first.kind!=second.kind)throw new IllegalArgumentException("Both gems must grant the same skill.");
    if(first.level!=second.level)throw new IllegalArgumentException("Both active gems must have the same level.");
    if(first.level>=20)throw new IllegalArgumentException("This gem is already level 20.");

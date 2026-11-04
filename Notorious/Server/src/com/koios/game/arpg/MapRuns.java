@@ -18,10 +18,10 @@ public final class MapRuns {
  public static Item map(int tier,int mods){return map(tier,mods,0);}
  public static Item map(int tier,int mods,int layout){Item item=new Item(layout==1?22413:layout==2?22414:MAP_BASE);item.setRoll(ItemRoll.map(tier,mods));return item;}
  public static boolean isGem(Item item){return item!=null&&item.hasRoll()&&item.getRoll().getGem()!=null;}
- public static Item gem(int level,boolean support){return gem(level,support,java.util.concurrent.ThreadLocalRandom.current().nextInt(support?3:5));}
+ public static Item gem(int level,boolean support){return gem(level,support,-1);}
  public static Item gem(int level,boolean support,int kind){Item item=new Item(support?22412:22411);item.setRoll(ItemRoll.gem(level,support,kind));return item;}
  public static boolean isMap(Item item){return item!=null&&item.hasRoll()&&item.getRoll().getMap()!=null;}
- public static String name(Item item){if(isGem(item)){ItemRoll.GemData gem=item.getRoll().getGem();String[] names=gem.support?new String[]{"Splash","Faster Attacks","Brutality"}:new String[]{"Heavy Strike","Cleave","Whirlwind","Ground Slam","Execute"};return names[gem.kind]+" Gem / Level "+gem.level;}return isMap(item)?AuthoredMaps.name(item.getId()==22413?1:item.getId()==22414?2:0)+" / T"+item.getRoll().getMap().tier:EquipmentBases.name(item);}
+ public static String name(Item item){if(isGem(item)){ItemRoll.GemData gem=item.getRoll().getGem();if(gem.kind<0)return (gem.support?"Uncut Support Jewel":"Uncut Skill Jewel")+" / Level "+gem.level;String[] names=gem.support?new String[]{"Splash","Faster Attacks","Brutality"}:new String[]{"Heavy Strike","Cleave","Whirlwind","Ground Slam","Execute"};return names[gem.kind]+" Gem / Level "+gem.level;}return isMap(item)?AuthoredMaps.name(item.getId()==22413?1:item.getId()==22414?2:0)+" / T"+item.getRoll().getMap().tier:EquipmentBases.name(item);}
  public static void grant(Player p,Item item){if(p.getInventory().hasRoomFor(item)&&p.getInventory().add(item))return;if(!Bank.addToBank(p,item)){p.getArpgRewards().add(item);p.sendMessage("Containers full: reward saved in your mailbox (P / Guide).");}else p.sendMessage("Reward sent to your stash.");}
  public static void home(Player p){
   TestArena.cleanup(p);clearStrikes(p);Base base=HOMES.get(p);
