@@ -16,3 +16,9 @@ $env:EXILE_VOTE_TOKEN='use-a-random-32-character-secret'
 ```
 
 The server accepts authenticated `POST /vote` JSON with `player`, `site`, and `id`, stores it in `exile_votes`, and grants no game rewards. Use a reverse proxy for public HTTPS callbacks; do not expose the raw Java callback directly to the internet.
+
+## Distributable client
+
+Build a release with `powershell -ExecutionPolicy Bypass -File tools\BuildExileRelease.ps1 -Version 0.1.0 -HostAddress your.external.address`. Upload the generated ZIP and `manifest.json` to Dropbox or another HTTPS static host. Users run `java -jar ExileLauncher.jar` after setting `EXILE_MANIFEST_URL` to the hosted manifest URL.
+
+The launcher validates SHA-256 before extracting and keeps each version in the user's `.exile` directory. Changing hosts only requires updating the manifest. Optional ProGuard configuration is provided in `tools\proguard-release.pro`; review it before publishing because aggressive obfuscation can break legacy reflective code.
