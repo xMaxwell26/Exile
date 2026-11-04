@@ -38,6 +38,15 @@ public enum ClientStatus {
 	 */
 	private static final ClientStatus[] values = values();
 
+	static {
+		// The admin panel can launch a client against a local, LAN, or beta host
+		// without requiring a separate client build or source edit.
+		String host = System.getProperty("arpg.serverHost");
+		String portValue = System.getProperty("arpg.serverPort");
+		if (host != null && !host.trim().isEmpty()) LOCAL.address = host.trim();
+		if (portValue != null) try { LOCAL.port = Integer.parseInt(portValue.trim()); } catch (NumberFormatException ignored) { }
+	}
+
 	/**
 	 * Constructs a new {@link ClientStatus} to know where to connect the client too
 	 * 

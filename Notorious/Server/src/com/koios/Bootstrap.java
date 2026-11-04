@@ -12,6 +12,7 @@ import com.koios.game.model.player.io.PlayerSaver;
 import com.koios.game.model.player.io.StoreUtils;
 import com.koios.network.InboundChannelHandler;
 import com.koios.network.Session;
+import com.koios.network.mysql.VoteCallbackServer;
 import com.koios.network.codec.LoginDecoder;
 import com.koios.task.Task;
 
@@ -194,6 +195,7 @@ public final class Bootstrap {
 		initializeDefinitions(onlineMode);
 		initializeTasks(onlineMode);
 		initializeDatabase(onlineMode);
+		VoteCallbackServer.start(onlineMode);
 		bind(host, servicePort);
 	}
 
