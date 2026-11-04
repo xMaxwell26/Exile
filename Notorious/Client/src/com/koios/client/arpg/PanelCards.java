@@ -18,7 +18,8 @@ public final class PanelCards {
    String[] effects={"Normal > rare","Reroll rare","Add rare affix","Normal > magic","Identify","Reroll magic","Add magic affix","Magic > rare","Remove affixes","Remove one affix","Corrupt"};
    int top=selected?124:92;
    for(int i=0;i<ids.length;i++){Card card=new Card("",labels[i],28+i%3*153,top+i/3*49,145,40);card.mapId=ids[i];card.detail=effects[i];cards.add(card);}
-   if(!selected)detail="Drag a material onto an item. Currency is only spent when the craft succeeds.";
+   if(!selected)detail="Use a material on an inventory item. Failed crafts spend nothing.";
+   cards.add(new Card("reference","Full crafting rules",selected?181:28,selected?84:286,selected?298:452,selected?30:22));
    return true;
   }
   int utilityCount=Math.min(3,utility.size());for(int i=0;i<utilityCount;i++){String[] f=utility.get(i);cards.add(new Card(f[0],shorten(f[1]),28+i*153,84,145,30));}
@@ -27,6 +28,7 @@ public final class PanelCards {
   }else{
    for(int i=0;i<main.size()&&i<6;i++){String[] f=main.get(i);Card card=new Card(f[0],f[1],28+(i%2)*232,(crafting?96:124)+(i/2)*52,220,44);if(gem){int value=Integer.parseInt(f[0].substring(6));card.support=f[1].contains("support")||f[1].contains("gem");card.glyph=card.support?value-2:value<2?value:value-3;}else if(crafting){card.mapId=f[1].contains("Support")?22412:22411;int at=f[1].lastIndexOf(" / ");if(at>=0){card.label=f[1].substring(0,at).replace("Uncut ","");card.detail=f[1].substring(at+3);}}else if(supplies){card.mapId=f[0].endsWith("portals")?22406:f[0].endsWith("wisdom")?22405:22410;int at=f[1].lastIndexOf(" / ");if(at>=0){card.label=f[1].substring(0,at);card.detail=f[1].substring(at+3);}}else{card.mapId=f[1].contains("Ashen Foundry")?22413:f[1].contains("Thornwild")?22414:22410;card.detail=f.length>2?f[2]:"";}cards.add(card);}
   }
+  if(crafting)cards.add(new Card("reference","Full crafting rules",28,252,452,26));
   for(int i=0;i<pages.size()&&i<2;i++){String[] f=pages.get(i);cards.add(new Card(f[0],f[1],f[1].startsWith("Next")?260:28,286,220,22));}return true;
  }
  private static String shorten(String label){if(label.startsWith("Return to"))return "Return to base";if(label.startsWith("Create a basic"))return "Map / 25 coins";if(label.startsWith("Start or resume"))return "Guided introduction";if(label.equals("Choose a different item"))return "Other gems";return label;}

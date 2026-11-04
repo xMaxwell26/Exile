@@ -10,8 +10,11 @@ public final class PrototypePanel {
   }else{
    rows.add(tab);
    if(tab.equals("guide")){
-    row(rows,"exchange","Exchange old rune materials for crafting currency");row(rows,"scrolls","Buy 5 Portal Scrolls - 25 coins");row(rows,"claim","Claim overflow rewards: "+p.getArpgRewards().size());row(rows,"kit","Claim starter sword, armour and crafting supplies (once)");row(rows,"home","Enter your private house base");row(rows,"intro","Start or resume the guided tutorial");row(rows,"tree","Spend passive points: click a node; Ctrl-click to refund");row(rows,"craft","Crafting: use a material directly on an inventory item");row(rows,"maps","Map device: consume a dropped map to open an instance");row(rows,"","Q Heavy Strike / W Cleave / K Supports / P Prototype hub");row(rows,"","Enter opens chat. All keyboard skills pause while typing.");row(rows,"","After level 10: limited map entries and death XP penalties.");row(rows,"","Monster loot drops on the ground. Pick it up before closing a map.");
+    row(rows,"exchange","Exchange old rune materials for crafting currency");row(rows,"scrolls","Buy 5 Portal Scrolls - 25 coins");row(rows,"claim","Claim overflow rewards: "+p.getArpgRewards().size());row(rows,"kit","Claim starter sword, armour and crafting supplies (once)");row(rows,"home","Enter your private house base");row(rows,"intro","Start or resume the guided tutorial");row(rows,"tree","Spend passive points: click a node; Ctrl-click to refund");row(rows,"craft","Crafting: use a material directly on an inventory item");row(rows,"maps","Map device: consume a dropped map to open an instance");row(rows,"","K: skills, loadout and controls / P: field guide");row(rows,"","Enter opens chat. All keyboard skills pause while typing.");row(rows,"","After level 10: limited map entries and death XP penalties.");row(rows,"","Monster loot drops on the ground. Pick it up before closing a map.");
+   }else if(tab.equals("reference")){
+    craftingReference(p,rows);
    }else if(tab.equals("craft")){
+    row(rows,"reference","Crafting reference: all eleven materials and their rules");
     int slot=p.getAttribute("craft-slot",-1);Item selected=p.getInventory().get(slot);
     if(selected!=null&&selected.hasRoll()&&selected.getRoll().getInstanceId().equals(p.getAttribute("craft-uuid",""))){
      row(rows,"items","Selected: "+MapRuns.name(selected)+" / "+selected.getRoll().getRarity());
@@ -35,6 +38,34 @@ public final class PrototypePanel {
   }
   p.setAttribute("prototype-tab",tab);send(p,String.join("\n",rows));
  }
+ /**
+  * Browse recipes without spending currency or changing the selected gem.
+  * Three recipes per page leave room for full descriptions, restrictions and
+  * navigation on the fixed 512x334 canvas. Names/descriptions use the same
+  * catalog as item tooltips; adding a currency automatically extends the guide.
+  */
+ private static void craftingReference(Player p,List<String> rows){
+  int perPage=3,last=(CraftingCurrency.IDS.length-1)/perPage;
+  int page=Math.max(0,Math.min(last,p.getAttribute("prototype-page",0)));
+  p.setAttribute("prototype-page",page);
+  row(rows,"craft","Back to crafting and gems");
+  row(rows,"","MATERIAL REFERENCE / "+(page+1)+" of "+(last+1));
+  for(int i=page*perPage;i<Math.min(CraftingCurrency.IDS.length,(page+1)*perPage);i++){
+   row(rows,"",new Item(CraftingCurrency.IDS[i]).getDefinition().getName());
+   // Word-wrap instead of allowing the legacy row renderer to truncate rules.
+   String line="";
+   for(String word:CraftingCurrency.description(i).split(" ")){
+    if(line.length()+word.length()+1>66){row(rows,"",line);line="";}
+    line+=(line.isEmpty()?"":" ")+word;
+   }
+   row(rows,"",line);
+  }
+  row(rows,"","Use a material on equipment or a map; gems cannot be crafted.");
+  row(rows,"","Corrupted: only Wisdom or another Vaal (maximum twice).");
+  row(rows,"","One material per success. Rejected crafts consume nothing.");
+  if(page>0)row(rows,"page "+(page-1),"Previous materials");
+  if(page<last)row(rows,"page "+(page+1),"Next materials");
+ }
  private static void inventory(Player p,List<String> rows,boolean maps){
   List<Integer> slots=new ArrayList<>();for(int i=0;i<p.getInventory().getCapacity();i++){Item item=p.getInventory().get(i);if(item!=null&&item.hasRoll()&&(!maps||MapRuns.isMap(item)))slots.add(i);}
   int last=Math.max(0,(slots.size()-1)/6),page=Math.max(0,Math.min(last,p.getAttribute("prototype-page",0)));p.setAttribute("prototype-page",page);
@@ -49,7 +80,7 @@ public final class PrototypePanel {
   String action=input.substring(10);String[] args=action.split(" ");
   try{
    switch(args[0]){
-    case "guide":case "tree":case "craft":case "maps":p.setAttribute("prototype-page",0);if(args.length==1){show(p,args[0]);return true;}if(args[0].equals("craft"))craft(p,args[1]);break;
+    case "guide":case "tree":case "craft":case "maps":case "reference":p.setAttribute("prototype-page",0);if(args.length==1){show(p,args[0]);return true;}if(args[0].equals("craft"))craft(p,args[1]);break;
     case "exchange":CraftingCurrency.exchange(p);show(p,"guide");return true;
     case "items":p.setAttribute("craft-slot",-1);show(p,"craft");return true;
     case "page":p.setAttribute("prototype-page",Math.max(0,Math.min(10,Integer.parseInt(args[1]))));show(p,p.getAttribute("prototype-tab","craft"));return true;
