@@ -26,22 +26,49 @@ public final class SkillPanel {
  public static int barSlotAt(int x,int y,int height){return barSlotAt(x,y,512,height);}
  public static int barSlotAt(int x,int y,int width,int height){int top=barTop(width,height),ox=barOffset(width);if(y<top+35||y>=top+72)return -1;for(int slot=0;slot<3;slot++)if(x>=ox+18+slot*127&&x<ox+141+slot*127)return slot;return -1;}
  public static int barTop(int width,int height){return height-(width>765&&width<1500?253:87);}
- public static int barOffset(int width){return width>765?(width-392)/2-12:0;}
+ /** Compact resizable mode reserves204px for the inventory sidebar. */
+ public static int barOffset(int width){int playWidth=width>765&&width<1500?width-204:width;return width>765?(playWidth-392)/2-12:0;}
  public static void draw(TextDrawingArea font,int selected,String[] state){SkillDragState drag=new SkillDragState();drag.selected=selected;draw(font,drag,state,-1,-1);}
  public static void draw(TextDrawingArea font,SkillDragState drag,String[] state,int mouseX,int mouseY){
-  box(16,16,480,306,ExileTheme.GOLD,ExileTheme.PANEL);text(font,28,37,"SKILLS & LOADOUT",ExileTheme.HEADING);text(font,476,37,"X",0xC5CCD2);text(font,28,54,"Drag gems between inventory and the three sockets.",ExileTheme.MUTED);
+  font=ExileTheme.body();box(16,16,480,306,ExileTheme.GOLD,ExileTheme.PANEL);ExileTheme.heading(28,38,"Arsenal");text(font,476,37,"X",0xC5CCD2);text(font,28,54,"Craft jewels, then drag gems into your loadout.",ExileTheme.MUTED);
+  DrawingArea.drawHorizontalLine(28,59,456,ExileTheme.BORDER_SUBTLE);
   int hoverSlot=loadoutSlotAt(mouseX,mouseY);
   box(200,23,90,22,ExileTheme.BORDER,ExileTheme.OXBLOOD);text(font,216,38,"Controls",ExileTheme.TEXT);
-  for(int row=0;row<3;row++){int skill=assignment(state,row),y=66+row*64;int border=hoverSlot==row?ExileTheme.GOLD:ExileTheme.BORDER;box(28,y,292,58,border,ExileTheme.SURFACE);if(skill>=0)glyph(font,skill,false,36,y+11,36);else{box(36,y+11,36,36,ExileTheme.BORDER,ExileTheme.PANEL);text(font,48,y+35,"+",ExileTheme.MUTED);}text(font,80,y+18,skill<0?"Empty active socket":name(skill),skill<0?ExileTheme.DIM:color(skill));if(skill>=0){int power=(int)Math.round(new int[]{180,90,115,130,200}[skill]*(1+0.05*(level(state,skill)-1))*((mask(state,skill)&4)!=0?1.3+0.01*(value(state,10,1)-1):1));text(font,80,y+34,"L"+level(state,skill)+" / "+power+"% damage",ExileTheme.TEXT);text(font,80,y+49,String.format(java.util.Locale.ROOT,"%.1f",new int[]{12,18,24,20,16}[skill]*(1+0.03*(level(state,skill)-1))*((mask(state,skill)&4)!=0?1.4:1)*((mask(state,skill)&1)!=0?1.2:1))+" mana / "+cooldown(state,skill)+"s",ExileTheme.MUTED);}else{text(font,80,y+39,"Drag an active gem here",ExileTheme.MUTED);}
+  for(int row=0;row<3;row++){int skill=assignment(state,row),y=66+row*64;int border=hoverSlot==row?ExileTheme.GOLD:ExileTheme.BORDER;box(28,y,292,58,border,hoverSlot==row?ExileTheme.HOVER:ExileTheme.SURFACE);DrawingArea.drawPixels(54,y+2,30,skill<0?ExileTheme.BORDER:color(skill),2);if(skill>=0)glyph(font,skill,false,36,y+11,36);else{box(36,y+11,36,36,ExileTheme.BORDER,ExileTheme.PANEL);text(font,48,y+35,"+",ExileTheme.MUTED);}text(font,80,y+18,fit(font,skill<0?"Choose a skill":name(skill),110),skill<0?ExileTheme.DIM:color(skill));if(skill>=0){int power=(int)Math.round(new int[]{180,90,115,130,200}[skill]*(1+0.05*(level(state,skill)-1))*((mask(state,skill)&4)!=0?1.3+0.01*(value(state,10,1)-1):1));text(font,80,y+34,fit(font,"L"+level(state,skill)+" / "+power+"% damage",110),ExileTheme.TEXT);text(font,80,y+49,String.format(java.util.Locale.ROOT,"%.1f",new int[]{12,18,24,20,16}[skill]*(1+0.03*(level(state,skill)-1))*((mask(state,skill)&4)!=0?1.4:1)*((mask(state,skill)&1)!=0?1.2:1))+" mana / "+cooldown(state,skill)+"s",ExileTheme.MUTED);}else{text(font,80,y+39,"Drag a gem here",ExileTheme.MUTED);}
    int equipped=skill<0?0:mask(state,skill);for(int support=0;support<3;support++){int x=198+support*37;boolean on=(equipped&(1<<support))!=0;box(x,y+14,30,29,on?SUPPORT_COLORS[support]:ExileTheme.BORDER,on?ExileTheme.SELECTED:ExileTheme.PANEL);if(on)SkillGlyphs.icon(support,true,22).drawSprite(x+4,y+17);else text(font,x+10,y+34,"+",0x637884);}
   }
-  box(336,70,148,174,ExileTheme.BORDER,ExileTheme.SURFACE_DARK);text(font,348,91,"GEM SOCKETING",ExileTheme.GOLD);text(font,348,116,"1. Drag a support",ExileTheme.TEXT);text(font,348,132,"gem from inventory",ExileTheme.TEXT);text(font,348,156,"2. Drop it into any",ExileTheme.TEXT);text(font,348,172,"open skill socket",ExileTheme.TEXT);text(font,348,196,"3. Drag it back to",ExileTheme.TEXT);text(font,348,212,"inventory to remove",ExileTheme.TEXT);text(font,348,232,"Gems remain items",ExileTheme.MUTED);
-  int described=hoverSlot>=0?assignment(state,hoverSlot):-1;String detail=described<0?"Three active sockets define your entire combat loadout.":new String[]{"Heavy Strike: a powerful hit against one enemy.","Cleave: sweep enemies in a forward cone.","Whirlwind: strike nearby enemies around your character.","Ground Slam: hit a cluster around your selected enemy.","Execute: double damage against enemies below 35% life."}[described];text(font,28,266,detail,ExileTheme.MUTED);
+  box(336,70,148,174,ExileTheme.BORDER,ExileTheme.SURFACE_DARK);ExileTheme.heading(348,91,"Gemcraft",ExileTheme.GOLD);text(font,348,116,"Craft an uncut jewel",ExileTheme.TEXT);text(font,348,132,"to choose its power.",ExileTheme.TEXT);text(font,348,156,"Drag a skill to the",ExileTheme.TEXT);text(font,348,172,"large socket at left.",ExileTheme.TEXT);text(font,348,196,"Small sockets accept",ExileTheme.TEXT);text(font,348,212,"support gems.",ExileTheme.TEXT);text(font,348,232,"Drag back to remove",ExileTheme.MUTED);
+  int described=hoverSlot>=0?assignment(state,hoverSlot):-1;String detail=described<0?"Three active sockets define your entire combat loadout.":new String[]{"Heavy Strike: a powerful hit against one enemy.","Cleave: sweep enemies in a forward cone.","Whirlwind: strike nearby enemies around your character.","Ground Slam: hit a cluster around your selected enemy.","Execute: double damage against enemies below 35% life."}[described];text(font,28,266,fit(font,detail,456),ExileTheme.MUTED);
   for(int slot=0;slot<3;slot++){int x=28+slot*153,skill=assignment(state,slot);box(x,276,144,31,0x7C7053,ExileTheme.OXBLOOD);text(font,x+8,288,fit(font,KEYS[slot],128),ExileTheme.MUTED);text(font,x+8,302,name(skill),color(skill));}
-  text(font,28,317,"Drag out to clear   |   K close   |   Enter chat",ExileTheme.DIM);
+  text(font,28,317,"K  Close arsenal     /     Enter  Chat",ExileTheme.DIM);
   if(drag.dragging()){String label=drag.kind==5?NAMES[drag.skill]:SUPPORTS[drag.support];int gx=Math.max(20,Math.min(DrawingArea.width-110,mouseX+12)),gy=Math.max(20,Math.min(DrawingArea.height-30,mouseY+10));box(gx,gy,106,26,0xA4E3D4,0x263C43);text(font,gx+8,gy+18,label,0xE3F4EF);}
  }
- public static void drawBar(TextDrawingArea font,String[] state,String[] character){int y=barTop(DrawingArea.width,DrawingArea.height),ox=barOffset(DrawingArea.width);box(ox+12,y,392,78,ExileTheme.BORDER,ExileTheme.PANEL);String life="Life: 100 / 100",es="Energy Shield: 0 / 0";for(String line:character){if(line.startsWith("Life:"))life=line;if(line.startsWith("Energy Shield:"))es=line;}text(font,ox+22,y+14,life+"   "+es,ExileTheme.TEXT);text(font,ox+22,y+29,"MANA  "+state[0]+" / "+state[1]+"        K  SKILLS",0x8DC5FF);for(int slot=0;slot<3;slot++){int skill=assignment(state,slot);ExileTheme.inset(ox+18+slot*127,y+35,123,37,ExileTheme.BORDER,ExileTheme.SURFACE_DARK);text(font,ox+24+slot*127,y+49,fit(font,KEYS[slot]+(skill<0?"":"   "+cooldown(state,skill)+"s"),111),ExileTheme.MUTED);text(font,ox+24+slot*127,y+65,name(skill),color(skill));}}
+ /** Resource fills report authoritative values; skill rectangles retain their input contract. */
+ public static void drawBar(TextDrawingArea font,String[] state,String[] character){
+  font=ExileTheme.small();int y=barTop(DrawingArea.width,DrawingArea.height),ox=barOffset(DrawingArea.width);
+  box(ox+12,y,392,78,ExileTheme.BORDER,ExileTheme.PANEL);
+  double[] life={100,100},shield={0,0};
+  for(String line:character){if(line.startsWith("Life:"))life=resource(line.substring(5));if(line.startsWith("Energy Shield:"))shield=resource(line.substring(14));}
+  resourceBar(font,ox+18,y+5,123,"Life",life,0x8D303B);
+  resourceBar(font,ox+145,y+5,123,"Mana",resource((state.length>0?state[0]:"0")+"/"+(state.length>1?state[1]:"0")),0x315B91);
+  resourceBar(font,ox+272,y+5,123,"Shield",shield,0x6A91A0);
+  for(int slot=0;slot<3;slot++){
+   int skill=assignment(state,slot),x=ox+18+slot*127;
+   ExileTheme.inset(x,y+35,123,37,ExileTheme.BORDER,ExileTheme.SURFACE_DARK);
+   if(skill>=0)SkillGlyphs.icon(skill,false,26).drawSprite(x+4,y+40);
+   String remaining=skill<0?"":cooldown(state,skill);boolean cooling=!remaining.isEmpty()&&!remaining.equals("0.0")&&!remaining.equals("0");
+   text(font,x+34,y+49,fit(font,KEYS[slot],cooling?46:82),ExileTheme.HEADING);
+   text(font,x+34,y+64,fit(font,name(skill),82),color(skill));
+   if(cooling)text(font,x+84,y+49,fit(font,remaining+"s",34),ExileTheme.TEXT);
+  }
+ }
+ private static double[] resource(String text){try{String[] pair=text.trim().split("/");return new double[]{Double.parseDouble(pair[0].trim()),Double.parseDouble(pair[1].trim())};}catch(Exception malformed){return new double[]{0,0};}}
+ private static void resourceBar(TextDrawingArea font,int x,int y,int width,String label,double[] amount,int fill){
+  ExileTheme.inset(x,y,width,24,ExileTheme.BORDER,ExileTheme.SURFACE_DARK);
+  int pixels=amount[1]<=0?0:(int)Math.round((width-4)*Math.max(0,Math.min(1,amount[0]/amount[1])));
+  if(pixels>0){DrawingArea.drawPixels(20,y+2,x+2,fill,pixels);DrawingArea.drawHorizontalLine(x+2,y+2,pixels,ExileTheme.EDGE_LIGHT);}
+  String caption=label+" "+(int)amount[0]+" / "+(int)amount[1];text(font,x+5,y+16,fit(font,caption,width-10),ExileTheme.TEXT);
+ }
  private static void glyph(TextDrawingArea font,int id,boolean support,int x,int y,int size){int color=support?SUPPORT_COLORS[id]:COLORS[id];box(x,y,size,size,color,ExileTheme.SURFACE);SkillGlyphs.icon(id,support,size-4).drawSprite(x+2,y+2);}
 
  private static void box(int x,int y,int width,int height,int border,int fill){ExileTheme.panel(x,y,width,height,border,fill);}

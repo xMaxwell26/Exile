@@ -16,6 +16,10 @@ public final class HighDpiArt {
         final int width,x,y,w,h;
         final Sprite sprite;
         Stamp(Sprite sprite,int x,int y){this.sprite=sprite;this.x=x;this.y=y;w=sprite.myWidth;h=sprite.myHeight;raster=new java.lang.ref.WeakReference<>(DrawingArea.pixels);width=DrawingArea.width;before=snapshot();after=new int[w*h];}
+        Stamp(Stamp source,int[] destination,int destinationWidth,int dx,int dy){
+            sprite=source.sprite;x=source.x+dx;y=source.y+dy;w=source.w;h=source.h;width=destinationWidth;
+            raster=new java.lang.ref.WeakReference<>(destination);before=source.before.clone();after=source.after.clone();
+        }
         int[] snapshot(){int[] result=new int[w*h];for(int row=0;row<h;row++)System.arraycopy(raster.get(),(y+row)*width+x,result,row*w,w);return result;}
     }
     public static Stamp begin(Sprite sprite,int x,int y){
@@ -49,6 +53,18 @@ public final class HighDpiArt {
         while(iterator.hasNext()){
             Stamp stamp=iterator.next();
             if(stamp.x<x+width&&stamp.x+stamp.w>x&&stamp.y<y+height&&stamp.y+stamp.h>y)iterator.remove();
+        }
+    }
+    /** Transfer device-resolution art with a composited modal, retaining software occlusion checks. */
+    public static void copySurface(int[] source,int[] destination,int dx,int dy){
+        if(DrawingArea.pixels!=destination)throw new IllegalArgumentException("Restore the destination drawing surface before transferring art");
+        Map<Long,Stamp> originals=SURFACES.get(source);if(originals==null)return;
+        Map<Long,Stamp> target=SURFACES.computeIfAbsent(destination,key->new LinkedHashMap<>());
+        for(Stamp stamp:new ArrayList<>(originals.values())){
+            int x=stamp.x+dx,y=stamp.y+dy;
+            if(x<DrawingArea.topX||y<DrawingArea.topY||x+stamp.w>DrawingArea.bottomX||y+stamp.h>DrawingArea.bottomY)continue;
+            Stamp translated=new Stamp(stamp,destination,DrawingArea.width,dx,dy);
+            target.put(((long)x<<32)|y,translated);
         }
     }
     public static void draw(Graphics graphics,int[] raster,int xOffset,int yOffset){

@@ -66,7 +66,7 @@ public final class PrototypePanel {
    }
    row(rows,"",line);
   }
-  row(rows,"","Use a material on equipment or a map; gems cannot be crafted.");
+  row(rows,"","Use materials on equipment or maps. Right-click uncut jewels to Craft.");
   row(rows,"","Corrupted: only Wisdom or another Vaal (maximum twice).");
   row(rows,"","One material per success. Rejected crafts consume nothing.");
   if(page>0)row(rows,"page "+(page-1),"Previous materials");

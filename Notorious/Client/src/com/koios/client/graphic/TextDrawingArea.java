@@ -7,6 +7,23 @@ import com.koios.client.stream.Stream;
 import com.koios.client.stream.StreamLoader;
 
 public final class TextDrawingArea extends DrawingArea {
+    private com.koios.client.arpg.ExileTypography.Face exileFace;
+    private static final class ExileFonts {
+        static final TextDrawingArea BODY=new TextDrawingArea(com.koios.client.arpg.ExileTypography.Style.BODY);
+        static final TextDrawingArea SMALL=new TextDrawingArea(com.koios.client.arpg.ExileTypography.Style.SMALL);
+        static final TextDrawingArea HEADING=new TextDrawingArea(com.koios.client.arpg.ExileTypography.Style.HEADING);
+    }
+    private TextDrawingArea(com.koios.client.arpg.ExileTypography.Style style) {
+        exileFace=com.koios.client.arpg.ExileTypography.face(style);
+        anInt1497=exileFace.ascent;
+        CHARACTER_WIDTH_VALUES=new int[256];
+        for(int i=0;i<256;i++)CHARACTER_WIDTH_VALUES[i]=com.koios.client.arpg.ExileTypography.width(exileFace,Character.toString((char)i));
+    }
+    public static TextDrawingArea exileBody(){return ExileFonts.BODY;}
+    public static TextDrawingArea exileSmall(){return ExileFonts.SMALL;}
+    public static TextDrawingArea exileHeading(){return ExileFonts.HEADING;}
+    public boolean isExile(){return exileFace!=null;}
+    public int lineHeight(){return exileFace==null?anInt1497+2:exileFace.lineHeight;}
 
 	public TextDrawingArea(boolean flag, String s, StreamLoader streamLoader) {
 		aByteArrayArray1491 = new byte[256][];
@@ -81,6 +98,7 @@ public final class TextDrawingArea extends DrawingArea {
 	}
 
 	public int getTextWidth(String text) {
+		if(exileFace!=null)return com.koios.client.arpg.ExileTypography.width(exileFace,text);
 		if (text == null)
 			return 0;
 		int width = 0;
@@ -93,6 +111,7 @@ public final class TextDrawingArea extends DrawingArea {
 	}
 
 	public int getRealTextWidth(String text) {
+		if(exileFace!=null)return com.koios.client.arpg.ExileTypography.width(exileFace,text);
 		if (text == null)
 			return 0;
 		int width = 0;
@@ -102,6 +121,7 @@ public final class TextDrawingArea extends DrawingArea {
 	}
 
 	public void method385(int i, String s, int j, int l) {
+		if(exileFace!=null){com.koios.client.arpg.ExileTypography.draw(exileFace,l,j,s,i,false);return;}
 		if (s == null)
 			return;
 		j -= anInt1497;
@@ -160,6 +180,7 @@ public final class TextDrawingArea extends DrawingArea {
 	}
 
 	public void drawLeftAlignedString(int x, int y, String text, int color, boolean shadow) {
+		if(exileFace!=null){com.koios.client.arpg.ExileTypography.draw(exileFace,x,y,text,color,shadow);return;}
 		aBoolean1499 = false;
 		final int l = x;
 
@@ -199,6 +220,7 @@ public final class TextDrawingArea extends DrawingArea {
 	}
 
 	public void method389(boolean shadowText, int xPos, int color, String text, int yPos) {
+		if(exileFace!=null){com.koios.client.arpg.ExileTypography.draw(exileFace,xPos,yPos,text,color,shadowText);return;}
 		aBoolean1499 = false;
 		int l = xPos;
 		if (text == null)

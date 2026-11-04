@@ -91,6 +91,7 @@ public class DrawingArea extends NodeSub {
 
 	public static void setAllPixelsToZero() {
         com.koios.client.arpg.HighDpiArt.clear(pixels);
+        com.koios.client.arpg.ExileTypography.clear(pixels);
 		int i = width * height;
 		for (int j = 0; j < i; j++)
 			pixels[j] = 0;

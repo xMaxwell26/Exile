@@ -27,7 +27,7 @@ public final class QaClientHooks {
   if(scale<.5||scale>4)scale=1;
   BufferedImage frame=new BufferedImage(Math.max(1,(int)Math.round(Client.frameWidth*scale)),Math.max(1,(int)Math.round(Client.frameHeight*scale)),BufferedImage.TYPE_INT_RGB);
   Graphics2D g=frame.createGraphics();g.scale(scale,scale);
-  for(Pane pane:panes.values()){g.drawImage(pane.image,pane.x,pane.y,null);HighDpiArt.draw(g,pane.pixels,pane.x,pane.y);}
+  for(Pane pane:panes.values()){g.drawImage(pane.image,pane.x,pane.y,null);HighDpiArt.draw(g,pane.pixels,pane.x,pane.y);ExileTypography.present(g,pane.pixels,pane.x,pane.y);}
   g.dispose();try{Files.createDirectories(directory());Path temporary=directory().resolve(System.getProperty("arpg.qaCharacter")+".frame.tmp.png"),target=directory().resolve(System.getProperty("arpg.qaCharacter")+".frame.png");ImageIO.write(frame,"png",temporary.toFile());Files.move(temporary,target,StandardCopyOption.REPLACE_EXISTING);if(eventFrame){Files.copy(target,directory().resolve(System.getProperty("arpg.qaCharacter")+".event-"+(eventSequence++%12)+"-"+eventLabel+".png"),StandardCopyOption.REPLACE_EXISTING);eventCaptureAt=0;}}catch(Exception failure){System.err.println("QA frame export: "+failure);}
  }
 }

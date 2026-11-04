@@ -5,12 +5,20 @@ public final class PrototypePanel {
  private static void circle(int x,int y,int radius,int color){for(int dy=-radius;dy<=radius;dy++)for(int dx=-radius;dx<=radius;dx++)if(dx*dx+dy*dy<=radius*radius)pixel(x+dx,y+dy,color);}
  private static void pixel(int x,int y,int color){if(x>=DrawingArea.topX&&y>=DrawingArea.topY&&x<DrawingArea.bottomX&&y<DrawingArea.bottomY)DrawingArea.pixels[x+y*DrawingArea.width]=color;}
  private static void line(int x,int y,int tx,int ty,int color){int steps=Math.max(Math.abs(tx-x),Math.abs(ty-y));for(int i=0;i<=steps;i++)pixel(x+(tx-x)*i/Math.max(1,steps),y+(ty-y)*i/Math.max(1,steps),color);}
+ /** Guide cards keep presentation short while retaining the server-owned action and explanation. */
+ private static final class GuideCard {
+  final String action,title,detail;final int x,y;
+  GuideCard(String action,String title,String detail,int index){this.action=action;this.title=title;this.detail=detail;x=28+index%2*232;y=90+index/2*40;}
+  boolean contains(int px,int py){return px>=x&&px<x+220&&py>=y&&py<y+34;}
+ }
+ private final java.util.List<GuideCard> guideCards=new java.util.ArrayList<>();
  private String[] lines={"guide"};
  private final PanelCards cards=new PanelCards();private boolean cardLayout;
- public void accept(String payload){lines=new String(java.util.Base64.getDecoder().decode(payload),java.nio.charset.StandardCharsets.UTF_8).split("\n");cardLayout=cards.accept(lines);}
+ public void accept(String payload){lines=new String(java.util.Base64.getDecoder().decode(payload),java.nio.charset.StandardCharsets.UTF_8).split("\n");cardLayout=cards.accept(lines);guideCards.clear();if(lines[0].equals("guide"))buildGuide();}
  public String actionAt(int x,int y,boolean control){
   if(x<16||x>496||y<16||y>322)return null;
-  if(y<46){int tab=Math.min(4,Math.max(0,(x-24)/92));return new String[]{"guide","tree","craft","maps","home"}[tab];}
+  if(y<46){for(int tab=0;tab<5;tab++)if(x>=22+tab*93&&x<111+tab*93&&y>=20&&y<44)return new String[]{"guide","tree","craft","maps","home"}[tab];return null;}
+  if(lines[0].equals("guide")){for(GuideCard card:guideCards)if(card.contains(x,y))return card.action;return null;}
   if(cardLayout)return cards.actionAt(x,y);
   if(lines[0].startsWith("tree|")){
    if(y>295&&x>335)return "free";
@@ -21,26 +29,69 @@ public final class PrototypePanel {
  public int hoverInventorySlot(int x,int y){if(!cardLayout)return -1;String action=cards.actionAt(x,y);if(action==null||!action.startsWith("open "))return -1;try{return Integer.parseInt(action.substring(5));}catch(NumberFormatException ex){return -1;}}
  public void draw(TextDrawingArea font,int mouseX,int mouseY){
   ExileTheme.panel(16,16,480,306,ExileTheme.GOLD,ExileTheme.PANEL);
-  String[] tabs={"GUIDE","PASSIVES","CRAFTING","MAPS","BASE"};int active=lines[0].startsWith("tree|")?1:lines[0].startsWith("craft")?2:lines[0].startsWith("maps")?3:lines[0].startsWith("home")?4:0;for(int i=0;i<tabs.length;i++){ExileTheme.inset(22+i*93,20,89,24,i==active?ExileTheme.GOLD:ExileTheme.BORDER_SUBTLE,i==active?ExileTheme.SELECTED:ExileTheme.SURFACE_DARK);text(font,29+i*93,36,tabs[i],i==active?ExileTheme.HEADING:ExileTheme.MUTED);}
+  String[] tabs={"Guide","Passives","Crafting","Maps","Refuge"};int active=lines[0].startsWith("tree|")?1:(lines[0].startsWith("craft")||lines[0].equals("gemcraft")||lines[0].equals("reference"))?2:lines[0].startsWith("maps")?3:lines[0].startsWith("home")?4:0;for(int i=0;i<tabs.length;i++){ExileTheme.inset(22+i*93,20,89,24,i==active?ExileTheme.GOLD:ExileTheme.BORDER_SUBTLE,i==active?ExileTheme.SELECTED:ExileTheme.SURFACE_DARK);text(font,29+i*93,36,tabs[i],i==active?ExileTheme.HEADING:ExileTheme.MUTED);}
   if(cardLayout){cards.draw(font,mouseX,mouseY);return;}
+  if(lines[0].equals("guide")){drawGuide(font,mouseX,mouseY);return;}
   if(lines[0].startsWith("tree|")){
    String[] head=lines[0].split("\\|");String[][] nodes=new String[22][];boolean[] owned=new boolean[22];
    for(int i=1;i<lines.length;i++){String[] f=lines[i].split("\\|",5);if(f.length<5)continue;int id=Integer.parseInt(f[0]);nodes[id]=f;owned[id]=Boolean.parseBoolean(f[2]);}
-   text(font,92,57,"BLADE",ExileTheme.HEADING);text(font,365,57,"SURVIVAL",ExileTheme.HEADING);text(font,281,220,"ENERGY",0x9CAFD1);
+   text(font,92,57,"Blade",ExileTheme.HEADING);text(font,365,57,"Survival",ExileTheme.HEADING);text(font,281,220,"Energy",0x9CAFD1);
    for(int id=1;id<=21;id++){if(nodes[id]==null)continue;int parent=Integer.parseInt(nodes[id][1]);int[] a=POS[parent],b=POS[id];line(a[0],a[1],b[0],b[1],owned[id]?ExileTheme.GOLD:ExileTheme.BORDER);}
-   circle(256,155,16,0x80683C);circle(256,155,13,ExileTheme.OXBLOOD);text(font,252,160,"S",ExileTheme.HEADING);
+   circle(256,155,16,0x80683C);circle(256,155,13,ExileTheme.OXBLOOD);nodeGlyph(256,155,0,ExileTheme.HEADING);
    int hovered=0;
    for(int id=1;id<=21;id++){if(nodes[id]==null)continue;int[] at=POS[id];int parent=Integer.parseInt(nodes[id][1]);boolean available=(parent==0||owned[parent])&&!owned[id]&&Integer.parseInt(head[1])>0;int color=owned[id]?0xE4C779:available?0xA1B7C8:0x45515C;
-    circle(at[0],at[1],11,color);circle(at[0],at[1],8,owned[id]?0x62754C:ExileTheme.SURFACE_DARK);text(font,at[0]-3,at[1]+4,nodes[id][3].substring(0,1),color);
+    circle(at[0],at[1],11,color);circle(at[0],at[1],8,owned[id]?0x62754C:ExileTheme.SURFACE_DARK);nodeGlyph(at[0],at[1],id<=7?0:id<=14?1:2,color);
     if((mouseX-at[0])*(mouseX-at[0])+(mouseY-at[1])*(mouseY-at[1])<=169){hovered=id;circle(at[0],at[1],3,0xFFF0BC);}
    }
-   if(hovered>0){String[] f=nodes[hovered];text(font,27,285,f[3]+(owned[hovered]?" / Allocated":" / 1 point"),ExileTheme.HEADING);String detail=f[4];text(font,27,297,detail.length()>75?detail.substring(0,75):detail,ExileTheme.TEXT);}
+   if(hovered>0){String[] f=nodes[hovered];text(font,27,285,f[3]+(owned[hovered]?" / Allocated":" / 1 point"),ExileTheme.HEADING);String detail=f[4];text(font,27,297,fit(font,detail,444),ExileTheme.TEXT);}
    else{text(font,27,285,"Follow a connected path. Hover a node to see its upgrade.",ExileTheme.MUTED);text(font,27,297,"Click to allocate / Ctrl-click to refund a leaf node.",ExileTheme.MUTED);}
-   text(font,27,314,"Points: "+head[1],ExileTheme.HEADING);text(font,337,314,"Free test refunds: "+head[2],ExileTheme.MUTED);
+   text(font,27,314,head[1]+" point"+(head[1].equals("1")?"":"s")+" available",ExileTheme.HEADING);text(font,337,314,Boolean.parseBoolean(head[2])?"Free refunds: on":"Free refunds: off",ExileTheme.MUTED);
   }else{
-   for(int i=1;i<lines.length&&i<=20;i++){String[] row=lines[i].split("\t",2);String label=row.length==2?row[1]:row[0];if(label.length()>78)label=label.substring(0,78);text(font,27,66+(i-1)*12,label,row.length==2&&!row[0].isEmpty()?ExileTheme.HEADING:ExileTheme.TEXT);}
-   text(font,27,309,"Click an option. P / Escape closes. Enter opens chat.",ExileTheme.MUTED);
+   TextDrawingArea listFont=ExileTheme.small();
+   for(int i=1;i<lines.length&&i<=20;i++){String[] row=lines[i].split("\t",2);String label=(row.length==2?row[1]:row[0]).replace("MATERIAL REFERENCE","Crafting rules");text(listFont,27,66+(i-1)*12,fit(listFont,label,444),row.length==2&&!row[0].isEmpty()?ExileTheme.HEADING:ExileTheme.TEXT);}
+   text(listFont,27,309,"Choose an option. Escape returns to the world.",ExileTheme.MUTED);
   }
+ }
+ private void buildGuide(){
+  for(int i=1;i<lines.length;i++){
+   String[] row=lines[i].split("\t",2);if(row.length<2||row[0].isEmpty())continue;
+   String title=row[1];
+   switch(row[0]){
+    case "exchange":title="Exchange old materials";break;
+    case "scrolls":title="Portal scrolls  /  25 coins";break;
+    case "claim":title="Collect stored rewards";break;
+    case "kit":title="Starter equipment";break;
+    case "home":title="Return to your refuge";break;
+    case "intro":title="Guided introduction";break;
+    case "tree":title="Grow your passive tree";break;
+    case "craft":title="Crafting materials & gems";break;
+    case "maps":title="Open the map device";break;
+   }
+   if(guideCards.size()<10)guideCards.add(new GuideCard(row[0],title,row[1],guideCards.size()));
+  }
+ }
+ private void drawGuide(TextDrawingArea font,int mx,int my){
+  ExileTheme.heading(28,64,"Your next expedition",ExileTheme.HEADING);
+  text(font,28,80,"Prepare in your refuge. Adventure begins with a map.",ExileTheme.MUTED);
+  GuideCard hovered=null;
+  for(GuideCard card:guideCards){
+   boolean hover=card.contains(mx,my);if(hover)hovered=card;
+   ExileTheme.inset(card.x,card.y,220,34,hover?ExileTheme.GOLD:ExileTheme.BORDER,hover?ExileTheme.HOVER:ExileTheme.SURFACE);
+   // A small engraved diamond signals an action without filling the panel with debug glyphs.
+   line(card.x+12,card.y+13,card.x+16,card.y+17,ExileTheme.GOLD);line(card.x+16,card.y+17,card.x+12,card.y+21,ExileTheme.GOLD);
+   text(font,card.x+25,card.y+22,fit(font,card.title,186),hover?ExileTheme.HEADING:ExileTheme.TEXT);
+  }
+  text(font,28,305,fit(font,hovered==null?"K opens your loadout. Enter opens chat. Escape returns to the world.":hovered.detail,444),ExileTheme.MUTED);
+ }
+ private static String fit(TextDrawingArea font,String text,int width){
+  if(font.getTextWidth(text)<=width)return text;
+  String result=text;while(!result.isEmpty()&&font.getTextWidth(result+"...")>width)result=result.substring(0,result.length()-1);return result+"...";
+ }
+ /** Small stat motifs remain legible even before a node is allocated. */
+ private static void nodeGlyph(int x,int y,int branch,int color){
+  if(branch==0){line(x-3,y+4,x+3,y-4,color);line(x-4,y,x,y+3,color);}
+  else if(branch==1){line(x-4,y-4,x+4,y-4,color);line(x-4,y-4,x-3,y+2,color);line(x+4,y-4,x+3,y+2,color);line(x-3,y+2,x,y+5,color);line(x+3,y+2,x,y+5,color);}
+  else{line(x,y-5,x+4,y,color);line(x+4,y,x,y+5,color);line(x,y+5,x-4,y,color);line(x-4,y,x,y-5,color);}
  }
  private void text(TextDrawingArea font,int x,int y,String text,int color){ExileTheme.label(font,x,y,text,color);}
 }

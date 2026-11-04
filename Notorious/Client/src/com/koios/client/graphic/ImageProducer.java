@@ -21,6 +21,7 @@ public final class ImageProducer {
 	public void drawGraphics(int x, Graphics graphics, int y) {
 		graphics.drawImage(bufferedImage, y, x, null);
         com.koios.client.arpg.HighDpiArt.draw(graphics,canvasRaster,y,x);
+        com.koios.client.arpg.ExileTypography.present(graphics,canvasRaster,y,x);
         com.koios.client.arpg.QaClientHooks.present(bufferedImage,canvasRaster,y,x,graphics);
 	}
 

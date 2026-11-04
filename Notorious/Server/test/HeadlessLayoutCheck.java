@@ -19,10 +19,9 @@ public final class HeadlessLayoutCheck {
     public static void main(String[] args) throws Exception {
         try (RandomAccessFile data = new RandomAccessFile("../koios-cache/main_file_cache.dat", "r");
              RandomAccessFile index = new RandomAccessFile("../koios-cache/main_file_cache.idx0", "r")) {
-            TextDrawingArea font = new TextDrawingArea(false, "p12_full",
-                    new StreamLoader(new Decompressor(data, index, 1).decompress(1)));
+            TextDrawingArea font = ExileTheme.body();
             // Include scale breakpoints, portrait displays and odd physical sizes.
-            int[][] sizes = {{512,334},{800,600},{1024,650},{1280,720},{1499,900},{1500,900},
+            int[][] sizes = {{512,334},{766,563},{767,564},{800,600},{1024,650},{1280,720},{1499,900},{1500,900},
                     {1599,900},{1600,900},{1919,1080},{1920,1080},{2533,1407},
                     {2559,1440},{2560,1440},{3440,1440},{3840,2160},{1080,1920}};
             for (int[] size : sizes) {
@@ -36,6 +35,7 @@ public final class HeadlessLayoutCheck {
                 int left = SkillPanel.barOffset(width) + 12, top = SkillPanel.barTop(width,height);
                 Rectangle bar = new Rectangle(left,top,392,78);
                 check(new Rectangle(0,0,width,height).contains(bar), "Entire hotbar fits " + Arrays.toString(size));
+                if(width>765&&width<1500){check(bar.x+bar.width<=width-204,"HUD clears compact inventory at "+width);check(Math.abs((bar.x*2+bar.width)-(width-204))<=1,"HUD centers in playable area at "+width);check(!bar.intersects(new Rectangle(width-204,0,204,height)),"HUD never paints under compact sidebar at "+width);}
                 if (!fixed) check(!bar.intersects(new Rectangle(0,height-165,519,165)), "Hotbar clears chat " + width);
                 for (int slot = 0; slot < 3; slot++) {
                     int x = left + 6 + slot * 127, y = top + 35;
@@ -58,7 +58,8 @@ public final class HeadlessLayoutCheck {
                 Rectangle tracker = objective.bounds(font);
                 check(new Rectangle(0,0,width,height).contains(tracker), "Objective remains visible");
                 if (!fixed) {
-                    check(tracker.y>=184, "Objective clears minimap");
+                    check(!tracker.intersects(new Rectangle(width-250,0,250,184)), "Objective clears minimap");
+                    check(!tracker.intersects(new Rectangle(width-204,height-(width>=1000?311:348),204,274)), "Objective clears compact inventory");
                     check(!tracker.intersects(bar), "Objective clears skill bar");
                     check(!tracker.intersects(new Rectangle(0,height-165,519,165)), "Objective clears chat");
                 }

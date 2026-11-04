@@ -64,15 +64,15 @@ public final class Bootstrap {
 			bootstrap.channel(NioServerSocketChannel.class);
 			bootstrap.group(new NioEventLoopGroup());
 			if (host.isPresent()) {
-				bootstrap.bind(host.get(), servicePort);
+				bootstrap.bind(host.get(), servicePort).syncUninterruptibly();
 			} else {
-				bootstrap.bind(servicePort);
+				bootstrap.bind(servicePort).syncUninterruptibly();
 			}
 
 			System.out.println(String.format("Success! Listening at port %d...", servicePort));
 		} catch (Throwable t) {
 			t.printStackTrace();
-			System.exit(0);
+			System.exit(1);
 		}
 	}
 

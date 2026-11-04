@@ -7,6 +7,19 @@ import com.koios.client.stream.StreamLoader;
 import com.koios.client.ui.ScreenMode;
 
 public class RSFont extends DrawingArea {
+    private TextDrawingArea exileDelegate;
+    private static final class ExileFonts {
+        static final RSFont BODY=new RSFont(TextDrawingArea.exileBody());
+        static final RSFont SMALL=new RSFont(TextDrawingArea.exileSmall());
+    }
+    private RSFont(TextDrawingArea delegate) {
+        exileDelegate=delegate;baseCharacterHeight=delegate.anInt1497;
+        characterScreenWidths=new int[256];
+        for(int i=0;i<256;i++)characterScreenWidths[i]=delegate.getTextWidth(Character.toString((char)i));
+    }
+    /** Explicit adapters for chat/login; ordinary archive-backed RSFont instances are unchanged. */
+    public static RSFont exileBody(){return ExileFonts.BODY;}
+    public static RSFont exileSmall(){return ExileFonts.SMALL;}
 
     public int baseCharacterHeight = 0;
     public int anInt4142;
@@ -229,6 +242,7 @@ public class RSFont extends DrawingArea {
     }
 
     public void drawBasicString(String string, int drawX, int drawY) {
+        if(exileDelegate!=null){exileDelegate.method389(textShadowColor!=-1,drawX,textColor,string,drawY);return;}
         drawY -= baseCharacterHeight;
         int startIndex = -1;
         string = handleOldSyntax(string);
@@ -515,6 +529,7 @@ public class RSFont extends DrawingArea {
     }
 
     public int getTextWidth(String string) {
+        if(exileDelegate!=null)return exileDelegate.getTextWidth(string);
         if (string == null) {
             return 0;
         }

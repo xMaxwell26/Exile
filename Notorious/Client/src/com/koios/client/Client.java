@@ -509,7 +509,7 @@ public class Client extends RSApplet {
 
 	public void drawChannelButtons() {
         int yOffset=frameMode==ScreenMode.FIXED?0:frameHeight-165;
-        com.koios.client.arpg.ChatChrome.channels(smallText,yOffset,cButtonCPos,cButtonHPos,new int[]{publicChatMode,privateChatMode,clanChatMode,tradeMode});
+        com.koios.client.arpg.ChatChrome.channels(com.koios.client.arpg.ExileTheme.small(),yOffset,cButtonCPos,cButtonHPos,new int[]{publicChatMode,privateChatMode,clanChatMode,tradeMode});
     }
 
 	private boolean chatStateCheck() {
@@ -561,7 +561,7 @@ public class Client extends RSApplet {
 			for (int k = 0; k < 500; k++) {
 				if (chatMessages[k] != null) {
 					int chatType = chatTypes[k];
-					int yPos = (70 - j77 * 14) + anInt1089 + 5;
+					int yPos = 117 - (j77 + 3) * 16 + anInt1089;
 					String s1 = chatNames[k];
 					byte rights = 0;
 					for (int i = 1; i <= modIcons.length; i++) {
@@ -587,7 +587,7 @@ public class Client extends RSApplet {
 								xPos += 14;
 							}
 							newRegularFont.drawBasicString(s1 + ":", xPos, yPos + yOffset, 0xCBD5DD, shadow);
-							xPos += textDrawingArea.getTextWidth(s1) + 8;
+							xPos += newRegularFont.getTextWidth(s1) + 8;
 							newRegularFont.drawBasicString(com.koios.client.arpg.ChatChrome.readable(chatMessages[k]), xPos, yPos + yOffset, 0xA5C7DF, 0);
 							j++;
 							j77++;
@@ -597,13 +597,13 @@ public class Client extends RSApplet {
 						if (chatTypeView == 2 || chatTypeView == 0) {
 							int k1 = 11;
 							newRegularFont.drawBasicString("From", k1, yPos + yOffset, 0xD4BB87, shadow);
-							k1 += textDrawingArea.getTextWidth("From ");
+							k1 += newRegularFont.getTextWidth("From ");
 							if (rights > 0) {
 								modIcons[rights - 1].drawBackground(k1, yPos - 12 + yOffset);
 								k1 += 12;
 							}
 							newRegularFont.drawBasicString(s1 + ":", k1, yPos + yOffset, 0xCBD5DD, shadow);
-							k1 += textDrawingArea.getTextWidth(s1) + 8;
+							k1 += newRegularFont.getTextWidth(s1) + 8;
 							newRegularFont.drawBasicString(com.koios.client.arpg.ChatChrome.readable(chatMessages[k]), k1, yPos + yOffset, 0xBAACD1, shadow);
 							j++;
 							j77++;
@@ -626,7 +626,7 @@ public class Client extends RSApplet {
 					if (chatType == 6 && (splitPrivateChat == 0 || chatTypeView == 2) && privateChatMode < 2) {
 						if (chatTypeView == 2 || chatTypeView == 0) {
 							newRegularFont.drawBasicString("To " + s1 + ":", 11, yPos + yOffset, 0xD4BB87, 0);
-							newRegularFont.drawBasicString(com.koios.client.arpg.ChatChrome.readable(chatMessages[k]), 15 + textDrawingArea.getTextWidth("To :" + s1), yPos + yOffset, 0xBAACD1, shadow);
+							newRegularFont.drawBasicString(com.koios.client.arpg.ChatChrome.readable(chatMessages[k]), 15 + newRegularFont.getTextWidth("To :" + s1), yPos + yOffset, 0xBAACD1, shadow);
 							j++;
 							j77++;
 						}
@@ -651,7 +651,7 @@ public class Client extends RSApplet {
 					}
 					if (chatType == 16) {
 						int j2 = 40;
-						int clanNameWidth = textDrawingArea.getTextWidth(clanname);
+						int clanNameWidth = newRegularFont.getTextWidth(clanname);
 						if (chatTypeView == 11 || chatTypeView == 0) {
 							if (chatRights[k] > 0) {
 								j2 += clanNameWidth;
@@ -665,7 +665,7 @@ public class Client extends RSApplet {
 							newRegularFont.drawBasicString(clanname, 14, yPos + yOffset, 0xA5C7DF, shadow);
 							newRegularFont.drawBasicString("]", clanNameWidth + 14, yPos + yOffset, 0xCBD5DD, shadow);
 							newRegularFont.drawBasicString(chatNames[k] + ":", j2 - 17, yPos + yOffset, 0xCBD5DD, shadow);
-							j2 += textDrawingArea.getTextWidth(chatNames[k]) + 7;
+							j2 += newRegularFont.getTextWidth(chatNames[k]) + 7;
 							newRegularFont.drawBasicString(com.koios.client.arpg.ChatChrome.readable(chatMessages[k]), j2 - 16, yPos + yOffset, 0xBAACD1, shadow);
 							j++;
 							j77++;
@@ -674,7 +674,7 @@ public class Client extends RSApplet {
 				}
 			}
 			DrawingArea.defaultDrawingAreaSize();
-			anInt1211 = j * 14 + 7 + 5;
+			anInt1211 = j * 16 + 12;
 			if (anInt1211 < 111) {
 				anInt1211 = 111;
 			}
@@ -696,7 +696,7 @@ public class Client extends RSApplet {
 				xOffset += 14;
 			}
 			newRegularFont.drawBasicString(s + ":", xOffset + 11, 133 + yOffset, 0xCBD5DD, shadow);
-			newRegularFont.drawBasicString((chatFocus.isEditing()?inputString+"*":"Press Enter or click to chat"), xOffset + 12 + textDrawingArea.getTextWidth(s + ": "), 133 + yOffset, 0xA5C7DF, shadow);
+			newRegularFont.drawBasicString((chatFocus.isEditing()?inputString+"*":"Press Enter or click to chat"), xOffset + 12 + newRegularFont.getTextWidth(s + ": "), 133 + yOffset, 0xA5C7DF, shadow);
 			DrawingArea.method339(121 + yOffset, 0x35434D, 506, 7);
 			DrawingArea.defaultDrawingAreaSize();
 		}
@@ -710,7 +710,7 @@ public class Client extends RSApplet {
 		}
 		
         if((prototypeOpen||arpgSkillsOpen)&&backDialogID==-1&&!messagePromptRaised&&inputDialogState==0){
-            DrawingArea.defaultDrawingAreaSize();mapObjective.drawInChat(aTextDrawingArea_1271,yOffset);
+            DrawingArea.defaultDrawingAreaSize();mapObjective.drawInChat(com.koios.client.arpg.ExileTheme.body(),yOffset);
         }
 		if (menuOpen) {
 			drawMenu(0, frameMode == ScreenMode.FIXED ? 338 : 0);
@@ -853,6 +853,7 @@ public class Client extends RSApplet {
 		} else {
 			if (j == 1 && menuActionRow > 0) {
 				int i1 = menuActionID[menuActionRow - 1];
+                if(com.koios.client.arpg.QaClientHooks.enabled()&&arpgSkillsOpen)System.out.println("QA loadout press: action="+i1+" slot="+menuActionCmd2[menuActionRow-1]+" widget="+menuActionCmd3[menuActionRow-1]);
 				if (i1 == 632 || i1 == 78 || i1 == 867 || i1 == 431 || i1 == 53 || i1 == 74 || i1 == 454 || i1 == 539 || i1 == 493 || i1 == 847 || i1 == 447 || i1 == 1125) {
 					int l1 = menuActionCmd2[menuActionRow - 1];
 					int j2 = menuActionCmd3[menuActionRow - 1];
@@ -2399,10 +2400,10 @@ public class Client extends RSApplet {
 			if (invOverlayInterfaceID != -1) {
 				drawInterface(0, x, RSInterface.interfaceCache[invOverlayInterfaceID], y);
 			} else if (com.koios.client.arpg.ArpgTabs.owns(tabID)) {
-                com.koios.client.arpg.ArpgTabs.draw(smallText,tabID,x,y,arpgSkillState);
+                com.koios.client.arpg.ArpgTabs.draw(com.koios.client.arpg.ExileTheme.body(),tabID,x,y,arpgSkillState);
 			} else if (tabInterfaceIDs[tabID] != -1) {
 				drawInterface(0, x, RSInterface.interfaceCache[tabInterfaceIDs[tabID]], y);
-                if(tabID==3){RSInterface bag=RSInterface.interfaceCache[3214];int used=0;if(bag!=null&&bag.container!=null)for(int id:bag.container)if(id>0)used++;com.koios.client.arpg.SidebarChrome.footer(smallText,x,y,used);}
+                if(tabID==3){RSInterface bag=RSInterface.interfaceCache[3214];int used=0;if(bag!=null&&bag.container!=null)for(int id:bag.container)if(id>0)used++;com.koios.client.arpg.SidebarChrome.footer(com.koios.client.arpg.ExileTheme.small(),x,y,used);}
 			}
 		}
 		if (menuOpen) {
@@ -2582,21 +2583,20 @@ public class Client extends RSApplet {
 		int h = menuHeight + 1;
 		inputTaken = true;
 		tabAreaAltered = true;
-		int menuColor = 0x5d5447;
-		DrawingArea.drawPixels(h, yPos, xPos, menuColor, w);
-		DrawingArea.drawPixels(16, yPos + 1, xPos + 1, 0, w - 2);
-		DrawingArea.fillPixels(xPos + 1, w - 2, h - 19, 0, yPos + 18);
-		chatTextDrawingArea.method385(menuColor, "Choose Option", yPos + 14, xPos + 3);
+		TextDrawingArea menuFont=com.koios.client.arpg.ExileTheme.body();
+		com.koios.client.arpg.ExileTheme.panel(xPos,yPos,w,h,com.koios.client.arpg.ExileTheme.BORDER,com.koios.client.arpg.ExileTheme.PANEL);
+		DrawingArea.drawHorizontalLine(xPos+4,yPos+18,w-8,com.koios.client.arpg.ExileTheme.BORDER_SUBTLE);
+		com.koios.client.arpg.ExileTheme.label(menuFont,xPos+6,yPos+14,"Choose option",com.koios.client.arpg.ExileTheme.MUTED);
 		int mouseX = super.mouseX - (x);
 		int mouseY = (-y) + super.mouseY;
 		for (int i = 0; i < menuActionRow; i++) {
 			int textY = yPos + 31 + (menuActionRow - 1 - i) * 15;
-			int textColor = 0xffffff;
+			int textColor = com.koios.client.arpg.ExileTheme.TEXT;
 			if (mouseX > xPos && mouseX < xPos + w && mouseY > textY - 13 && mouseY < textY + 3) {
-				DrawingArea.drawPixels(15, textY - 11, xPos + 3, 0x6f695d, menuWidth - 6);
-				textColor = 0xffff00;
+				DrawingArea.drawPixels(15, textY - 12, xPos + 3, com.koios.client.arpg.ExileTheme.SELECTED, menuWidth - 6);
+				textColor = com.koios.client.arpg.ExileTheme.HEADING;
 			}
-			chatTextDrawingArea.method389(true, xPos + 3, textColor, menuActionName[i], textY);
+			com.koios.client.arpg.ExileTheme.label(menuFont,xPos+6,textY,menuActionName[i],textColor);
 		}
 	}
 
@@ -3432,7 +3432,7 @@ public class Client extends RSApplet {
         if(!qaScreenApplied&&loadingStage==2&&clientStatus==ClientStatus.LOCAL&&isQaFixture()&&Boolean.getBoolean("arpg.qaFullscreen")){qaScreenApplied=true;frameMode(ScreenMode.FULLSCREEN);}
         if(!qaMapsGranted&&clientStatus==ClientStatus.LOCAL&&isQaFixture()&&Boolean.getBoolean("arpg.qaMaps")){qaMapsGranted=true;String command="arpgmaps";stream.createFrame(103);stream.writeLEShort(command.length()+1);stream.writeString(command);}
 
-        if(controlsPanel!=null&&super.clickMode3!=0){int offset=frameMode==ScreenMode.FIXED?4:0;if(super.clickMode3==1)controlsPanel.click(super.saveClickX-offset,super.saveClickY-offset);super.clickMode3=super.clickMode2=0;inputTaken=true;}
+        if(controlsPanel!=null&&super.clickMode3!=0){if(super.clickMode3==1)controlsPanel.click(overlayMouseX(super.saveClickX),overlayMouseY(super.saveClickY));super.clickMode3=super.clickMode2=0;inputTaken=true;}
         if(super.clickMode3==1&&!menuOpen&&controlsPanel==null&&!prototypeOpen&&!arpgSkillsOpen&&openInterfaceID==-1&&gameplayMousePoint(super.saveClickX,super.saveClickY)){int offset=frameMode==ScreenMode.FIXED?4:0;com.koios.client.arpg.GroundLootLabels.Entry loot=groundLoot.hit(super.saveClickX-offset,super.saveClickY-offset);if(loot!=null){chatFocus.close();pickupLoot(loot);super.clickMode3=0;}}
         // Keep an in-progress chat draft owned by chat across transient focus changes.
         if(super.clickMode3==1 && !menuOpen && !messagePromptRaised && inputDialogState==0 && backDialogID==-1){
@@ -3445,10 +3445,10 @@ public class Client extends RSApplet {
                 String destination=com.koios.client.arpg.ArpgTabs.action(tabID,super.saveClickX,super.saveClickY,tx,ty);
                 if(destination!=null){if(destination.equals("tree"))sendPrototype("tree");else{arpgSkillsOpen=true;prototypeOpen=false;sendArpgSkill("status");}super.clickMode3=0;}
             }
-            if(prototypeOpen&&super.clickMode3==1&&!overSidebar(super.saveClickX,super.saveClickY)){int px=super.saveClickX-(frameMode==ScreenMode.FIXED?4:0),py=super.saveClickY-(frameMode==ScreenMode.FIXED?4:0);String action=prototypePanel.actionAt(px,py,arpgControlDown);if(action!=null){sendPrototype(action);if(action.startsWith("open ")||action.equals("intro")||action.equals("resume"))prototypeOpen=false;}super.clickMode3=0;}
+            if(prototypeOpen&&super.clickMode3==1&&!overSidebar(super.saveClickX,super.saveClickY)){int px=overlayMouseX(super.saveClickX),py=overlayMouseY(super.saveClickY);String action=prototypePanel.actionAt(px,py,arpgControlDown);if(action!=null){sendPrototype(action);if(action.startsWith("open ")||action.equals("intro")||action.equals("resume"))prototypeOpen=false;}super.clickMode3=0;}
             if(!arpgSkillsOpen&&!prototypeOpen&&openInterfaceID==-1&&super.clickMode3==1){int offset=frameMode==ScreenMode.FIXED?4:0;int slot=com.koios.client.arpg.SkillPanel.barSlotAt(super.saveClickX-offset,super.saveClickY-offset,frameMode==ScreenMode.FIXED?512:frameWidth,frameMode==ScreenMode.FIXED?334:frameHeight);if(slot>=0){sendArpgSkill("slot "+slot);super.clickMode3=0;}}
             if(arpgSkillsOpen && super.clickMode3==1&&!overSidebar(super.saveClickX,super.saveClickY)){
-                int px=super.saveClickX-(frameMode==ScreenMode.FIXED?4:0),py=super.saveClickY-(frameMode==ScreenMode.FIXED?4:0);
+                int px=overlayMouseX(super.saveClickX),py=overlayMouseY(super.saveClickY);
                 if(px>=200&&px<290&&py>=22&&py<45)openControls();
                 else if(px>=460&&px<=496&&py>=16&&py<48){arpgSkillsOpen=false;skillDrag.cancel();}
                 else if(awtFocus)skillDrag.begin(px,py,arpgSkillState);
@@ -3457,8 +3457,7 @@ public class Client extends RSApplet {
         }
 
         if(arpgSkillsOpen&&!menuOpen&&awtFocus&&!chatFocus.isEditing()&&!messagePromptRaised&&inputDialogState==0&&backDialogID==-1&&openInterfaceID==-1){
-            int offset=frameMode==ScreenMode.FIXED?4:0;
-            if(skillDrag.active()){if(super.clickMode2==1)skillDrag.move(mouseX-offset,mouseY-offset);else if(super.clickMode2==0){if(tabID==3&&overSidebar(super.releasedX,super.releasedY)&&skillDrag.kind==3){sendArpgSkill("unsocket "+skillDrag.skill+" "+skillDrag.support);skillDrag.cancel();}else if(tabID==3&&overSidebar(super.releasedX,super.releasedY)&&skillDrag.kind==5){sendArpgSkill("unsocketactive "+skillDrag.origin);skillDrag.cancel();}else skillDrag.release(super.releasedX-offset,super.releasedY-offset);}else skillDrag.cancel();}
+            if(skillDrag.active()){if(super.clickMode2==1)skillDrag.move(overlayMouseX(mouseX),overlayMouseY(mouseY));else if(super.clickMode2==0){if(tabID==3&&overSidebar(super.releasedX,super.releasedY)&&skillDrag.kind==3){sendArpgSkill("unsocket "+skillDrag.skill+" "+skillDrag.support);skillDrag.cancel();}else if(tabID==3&&overSidebar(super.releasedX,super.releasedY)&&skillDrag.kind==5){sendArpgSkill("unsocketactive "+skillDrag.origin);skillDrag.cancel();}else skillDrag.release(overlayMouseX(super.releasedX),overlayMouseY(super.releasedY));}else skillDrag.cancel();}
         }else skillDrag.cancel();
 
 		refreshFrameSize();
@@ -3617,11 +3616,14 @@ public class Client extends RSApplet {
 				if (activeInterfaceType == 3)
 					inputTaken = true;
 				activeInterfaceType = 0;
-				if (aBoolean1242 && anInt989 >= 15) {
+				// Gem sockets should accept a deliberate short drag as readily as a long one.
+				boolean draggingLoadoutGem=arpgSkillsOpen&&anInt1084==3214&&itemFrom>=0&&itemFrom<RSInterface.interfaceCache[3214].container.length&&(RSInterface.interfaceCache[3214].container[itemFrom]-1==22411||RSInterface.interfaceCache[3214].container[itemFrom]-1==22412);
+                if(com.koios.client.arpg.QaClientHooks.enabled()&&arpgSkillsOpen)System.out.println("QA loadout release: gem="+draggingLoadoutGem+" frames="+anInt989+" moved="+aBoolean1242+" widget="+anInt1084+" slot="+itemFrom+" end="+super.releasedX+","+super.releasedY);
+				if (aBoolean1242 && anInt989 >= (draggingLoadoutGem?1:15)) {
 					// Support sockets own real gems. Route an inventory drag into the
 					// loadout before the legacy client treats it as a ground-item drop.
 					if(arpgSkillsOpen&&anInt1084==3214&&itemFrom>=0&&itemFrom<RSInterface.interfaceCache[3214].container.length&&(RSInterface.interfaceCache[3214].container[itemFrom]-1==22411||RSInterface.interfaceCache[3214].container[itemFrom]-1==22412)){
-						int px=super.mouseX-(frameMode==ScreenMode.FIXED?4:0),py=super.mouseY-(frameMode==ScreenMode.FIXED?4:0);
+						int px=overlayMouseX(super.releasedX),py=overlayMouseY(super.releasedY);
 						int loadoutSlot=com.koios.client.arpg.SkillPanel.loadoutSlotAt(px,py),socket=com.koios.client.arpg.SkillPanel.socketAt(px,py);
 						int draggedId=RSInterface.interfaceCache[3214].container[itemFrom]-1;
 						if(draggedId==22411&&com.koios.client.arpg.SkillPanel.activeSocketAt(px,py)>=0){sendArpgSkill("socketactive "+itemFrom+" "+loadoutSlot);atInventoryLoopCycle=10;super.clickMode3=0;return;}
@@ -3790,6 +3792,13 @@ public class Client extends RSApplet {
 			inputTaken = true;
 			super.clickMode3 = 0;
 		}
+        // Resolve the press location before a fast drag leaves the inventory.
+        // The previous rendered hover menu may already belong to the modal panel.
+        if(arpgSkillsOpen&&super.clickMode3==1&&activeInterfaceType==0&&!menuOpen&&overSidebar(super.saveClickX,super.saveClickY)){
+            int pointerX=mouseX,pointerY=mouseY;
+            try{mouseX=super.saveClickX;mouseY=super.saveClickY;processRightClick();}
+            finally{mouseX=pointerX;mouseY=pointerY;}
+        }
         processMenuClick();
 		if (super.clickMode2 == 1 || super.clickMode3 == 1)
 			anInt1213++;
@@ -5807,7 +5816,7 @@ public class Client extends RSApplet {
 				continue;
 			int j1 = chatTypes[i1];
 			String s = chatNames[i1];
-			int k1 = (70 - l * 14 + 42) + anInt1089 + 4 + 5;
+			int k1 = 121 - l * 16 + anInt1089;
 			if (k1 < -23)
 				break;
 			for (int i = 1; i <= modIcons.length; i++) {
@@ -5843,7 +5852,7 @@ public class Client extends RSApplet {
 				continue;
 			int j1 = chatTypes[i1];
 			String s = chatNames[i1];
-			int k1 = (70 - l * 14 + 42) + anInt1089 + 4 + 5;
+			int k1 = 121 - l * 16 + anInt1089;
 			if (k1 < -23)
 				break;
 			for (int i = 1; i <= modIcons.length; i++) {
@@ -5881,7 +5890,7 @@ public class Client extends RSApplet {
 				continue;
 			int j1 = chatTypes[i1];
 			String s = chatNames[i1];
-			int k1 = (70 - l * 14 + 42) + anInt1089 + 4 + 5;
+			int k1 = 121 - l * 16 + anInt1089;
 			if (k1 < -23)
 				break;
 			for (int i = 1; i <= modIcons.length; i++) {
@@ -5922,7 +5931,7 @@ public class Client extends RSApplet {
 			if (chatMessages[i1] == null)
 				continue;
 			int j1 = chatTypes[i1];
-			int k1 = (70 - l * 14 + 42) + anInt1089 + 4 + 5;
+			int k1 = 121 - l * 16 + anInt1089;
 			String s = chatNames[i1];
 			if (chatTypeView == 1) {
 				buildPublicChat(j);
@@ -7681,9 +7690,9 @@ public class Client extends RSApplet {
 			aTextDrawingArea_1271 = new TextDrawingArea(false, "p12_full", titleStreamLoader);
 			chatTextDrawingArea = new TextDrawingArea(false, "b12_full", titleStreamLoader);
 			TextDrawingArea aTextDrawingArea_1273 = new TextDrawingArea(true, "q8_full", titleStreamLoader);
-			newSmallFont = new RSFont(false, "p11_full", titleStreamLoader);
-			newRegularFont = new RSFont(false, "p12_full", titleStreamLoader);
-			newBoldFont = new RSFont(false, "b12_full", titleStreamLoader);
+			newSmallFont = RSFont.exileSmall();
+			newRegularFont = RSFont.exileBody();
+			newBoldFont = RSFont.exileBody();
 			newFancyFont = new RSFont(true, "q8_full", titleStreamLoader);
 			drawLogo();
 			loadTitleScreen();
@@ -8565,7 +8574,7 @@ public class Client extends RSApplet {
 	}
 
 	private void drawInterface(int scrollPosition, int xPosition, RSInterface rsInterface, int yPosition) {
-        if(rsInterface.id==3917){com.koios.client.arpg.CharacterPanel.draw(aTextDrawingArea_1271,xPosition,yPosition,arpgCharacterLines);return;}
+        if(rsInterface.id==3917){com.koios.client.arpg.CharacterPanel.draw(com.koios.client.arpg.ExileTheme.body(),xPosition,yPosition,arpgCharacterLines);return;}
 		if (rsInterface == null)
 			rsInterface = RSInterface.interfaceCache[21356];
 		if (rsInterface.type != 0 || rsInterface.children == null)
@@ -9442,7 +9451,7 @@ public class Client extends RSApplet {
 		}
         drawMapHazard();
         battleEffects.draw((wx,wy,h)->{calcEntityScreenPos(wx-(baseX<<7),h,wy-(baseY<<7));return new int[]{spriteDrawX,spriteDrawY};},System.currentTimeMillis());
-        if(!prototypeOpen&&!arpgSkillsOpen&&controlsPanel==null&&openInterfaceID==-1&&!menuOpen&&myPlayer!=null){int offset=frameMode==ScreenMode.FIXED?4:0;java.util.List<java.awt.Rectangle> reserved=new java.util.ArrayList<>();if(mapObjective.isVisible())reserved.add(mapObjective.bounds(aTextDrawingArea_1271));reserved.add(new java.awt.Rectangle(com.koios.client.arpg.SkillPanel.barOffset(DrawingArea.width)+12,com.koios.client.arpg.SkillPanel.barTop(DrawingArea.width,DrawingArea.height),392,78));if(frameMode!=ScreenMode.FIXED){reserved.add(new java.awt.Rectangle(frameWidth-250,0,250,184));reserved.add(new java.awt.Rectangle(0,frameHeight-175-extendChatArea,519,175+extendChatArea));reserved.add(new java.awt.Rectangle(frameWidth-247,frameHeight-336,247,336));}groundLoot.setExclusions(reserved);groundLoot.draw(aTextDrawingArea_1271,(wx,wy,h)->{calcEntityScreenPos(wx-(baseX<<7),h,wy-(baseY<<7));return new int[]{spriteDrawX,spriteDrawY};},plane,baseX+(myPlayer.x>>7),baseY+(myPlayer.y>>7),arpgAltDown,mouseX-offset,mouseY-offset);}else groundLoot.clearHits();
+        if(!prototypeOpen&&!arpgSkillsOpen&&controlsPanel==null&&openInterfaceID==-1&&!menuOpen&&myPlayer!=null){int offset=frameMode==ScreenMode.FIXED?4:0;java.util.List<java.awt.Rectangle> reserved=new java.util.ArrayList<>();if(mapObjective.isVisible())reserved.add(mapObjective.bounds(com.koios.client.arpg.ExileTheme.body()));reserved.add(new java.awt.Rectangle(com.koios.client.arpg.SkillPanel.barOffset(DrawingArea.width)+12,com.koios.client.arpg.SkillPanel.barTop(DrawingArea.width,DrawingArea.height),392,78));if(frameMode!=ScreenMode.FIXED){reserved.add(new java.awt.Rectangle(frameWidth-250,0,250,184));reserved.add(new java.awt.Rectangle(0,frameHeight-175-extendChatArea,519,175+extendChatArea));reserved.add(new java.awt.Rectangle(frameWidth-247,frameHeight-336,247,336));}groundLoot.setExclusions(reserved);groundLoot.draw(com.koios.client.arpg.ExileTheme.body(),(wx,wy,h)->{calcEntityScreenPos(wx-(baseX<<7),h,wy-(baseY<<7));return new int[]{spriteDrawX,spriteDrawY};},plane,baseX+(myPlayer.x>>7),baseY+(myPlayer.y>>7),arpgAltDown,mouseX-offset,mouseY-offset);}else groundLoot.clearHits();
 		if (!menuOpen) {
 			processRightClick();
 			drawTooltip();
@@ -9727,9 +9736,9 @@ public class Client extends RSApplet {
 	}
 
 	private void determineMenuSize() {
-		int boxLength = chatTextDrawingArea.getTextWidth("Choose option");
+		int boxLength = com.koios.client.arpg.ExileTheme.body().getTextWidth("Choose option")+4;
 		for (int row = 0; row < menuActionRow; row++) {
-			int actionLength = chatTextDrawingArea.getTextWidth(menuActionName[row]);
+			int actionLength = com.koios.client.arpg.ExileTheme.body().getTextWidth(menuActionName[row])+4;
 			if (actionLength > boxLength)
 				boxLength = actionLength;
 		}
@@ -10130,12 +10139,15 @@ public class Client extends RSApplet {
 
 	private void sendPrototype(String action){if(!loggedIn||openInterfaceID!=-1)return;String command=action.startsWith("hub ")?action:"arpgproto "+action;stream.createFrame(103);stream.writeLEShort(command.length()+1);stream.writeString(command);}
     private boolean overSidebar(int x,int y){return com.koios.client.arpg.SidebarChrome.contains(x,y,frameWidth,frameHeight,frameMode==ScreenMode.FIXED,changeTabArea);}
+    private int overlayMouseX(int x){return x-(frameMode==ScreenMode.FIXED?4:com.koios.client.arpg.OverlayViewport.originX(frameWidth,frameHeight,false));}
+    private int overlayMouseY(int y){return y-(frameMode==ScreenMode.FIXED?4:com.koios.client.arpg.OverlayViewport.originY(frameWidth,frameHeight,false));}
+    private void drawArpgOverlay(Runnable painter){com.koios.client.arpg.OverlayViewport.draw(frameWidth,frameHeight,frameMode==ScreenMode.FIXED,painter);}
     private void sendArpgSkill(String action){
         if(!loggedIn || openInterfaceID!=-1 || messagePromptRaised || inputDialogState!=0 || backDialogID!=-1)return;
         String command="arpgskill "+action;stream.createFrame(103);stream.writeLEShort(command.length()+1);stream.writeString(command);
     }
     private void drawArpgSkills(){
-        com.koios.client.arpg.SkillPanel.draw(aTextDrawingArea_1271,skillDrag,arpgSkillState,mouseX-(frameMode==ScreenMode.FIXED?4:0),mouseY-(frameMode==ScreenMode.FIXED?4:0));
+        drawArpgOverlay(()->com.koios.client.arpg.SkillPanel.draw(com.koios.client.arpg.ExileTheme.body(),skillDrag,arpgSkillState,overlayMouseX(mouseX),overlayMouseY(mouseY)));
     }
     private boolean drawArpgTooltip(){
         if(menuOpen || activeInterfaceType!=0 || arpgHoverWidget<0 || arpgHoverSlot<0)return false;
@@ -10143,15 +10155,15 @@ public class Client extends RSApplet {
         if(widget==null || widget.container==null || arpgHoverSlot>=widget.container.length)return false;
         com.koios.client.arpg.ItemTooltipCache.Entry entry=arpgTooltips.get(arpgHoverWidget,arpgHoverSlot,widget.container[arpgHoverSlot]-1);
         if(entry==null)return false;
-        com.koios.client.arpg.ItemTooltipRenderer.draw(aTextDrawingArea_1271,entry,arpgControlDown,mouseX,mouseY);
+        com.koios.client.arpg.ItemTooltipRenderer.draw(com.koios.client.arpg.ExileTheme.body(),entry,arpgControlDown,mouseX,mouseY);
         return true;
     }
 
     private void drawTooltip() {
-        if(prototypeOpen){int ox=frameMode==ScreenMode.FIXED?4:0;prototypePanel.draw(aTextDrawingArea_1271,mouseX-ox,mouseY-ox);if(overSidebar(mouseX,mouseY))drawArpgTooltip();else{int slot=prototypePanel.hoverInventorySlot(mouseX-ox,mouseY-ox);RSInterface bag=RSInterface.interfaceCache[3214];if(slot>=0&&bag!=null&&slot<bag.container.length){com.koios.client.arpg.ItemTooltipCache.Entry entry=arpgTooltips.get(3214,slot,bag.container[slot]-1);if(entry!=null)com.koios.client.arpg.ItemTooltipRenderer.draw(aTextDrawingArea_1271,entry,arpgControlDown,mouseX,mouseY);}}return;}
-        if(controlsPanel!=null){controlsPanel.draw(aTextDrawingArea_1271);return;}
+        if(prototypeOpen){drawArpgOverlay(()->prototypePanel.draw(com.koios.client.arpg.ExileTheme.body(),overlayMouseX(mouseX),overlayMouseY(mouseY)));if(overSidebar(mouseX,mouseY))drawArpgTooltip();else{int slot=prototypePanel.hoverInventorySlot(overlayMouseX(mouseX),overlayMouseY(mouseY));RSInterface bag=RSInterface.interfaceCache[3214];if(slot>=0&&bag!=null&&slot<bag.container.length){com.koios.client.arpg.ItemTooltipCache.Entry entry=arpgTooltips.get(3214,slot,bag.container[slot]-1);if(entry!=null)com.koios.client.arpg.ItemTooltipRenderer.draw(com.koios.client.arpg.ExileTheme.body(),entry,arpgControlDown,mouseX,mouseY);}}return;}
+        if(controlsPanel!=null){drawArpgOverlay(()->controlsPanel.draw(com.koios.client.arpg.ExileTheme.body()));return;}
         if(arpgSkillsOpen){drawArpgSkills();if(overSidebar(mouseX,mouseY))drawArpgTooltip();return;}
-        if(openInterfaceID==-1){com.koios.client.arpg.SkillPanel.drawBar(aTextDrawingArea_1271,arpgSkillState,arpgCharacterLines);mapObjective.draw(aTextDrawingArea_1271);}
+        if(openInterfaceID==-1){com.koios.client.arpg.SkillPanel.drawBar(com.koios.client.arpg.ExileTheme.body(),arpgSkillState,arpgCharacterLines);mapObjective.draw(com.koios.client.arpg.ExileTheme.body());}
         if(drawArpgTooltip())return;
 		if (menuActionRow < 2 && itemSelected == 0 && spellSelected == 0)
 			return;
@@ -10164,7 +10176,7 @@ public class Client extends RSApplet {
 			s = menuActionName[menuActionRow - 1];
 		if (menuActionRow > 2)
 			s = s + "@whi@ / " + (menuActionRow - 2) + " more options";
-		chatTextDrawingArea.method390(4, 0xffffff, s, loopCycle / 1000, 15);
+		com.koios.client.arpg.ExileTheme.label(com.koios.client.arpg.ExileTheme.body(),4,15,s,com.koios.client.arpg.ExileTheme.TEXT);
 	}
 
 	private void markMinimap(Sprite sprite, int x, int y) {
@@ -10565,7 +10577,7 @@ public class Client extends RSApplet {
 		com.koios.client.arpg.ExileLogin.Layout exileLayout=com.koios.client.arpg.ExileLogin.layout(frameWidth,frameHeight);
         final int boxX=exileLayout.x,boxY=exileLayout.y;
         com.koios.client.arpg.ExileLogin.background();
-        com.koios.client.arpg.ExileLogin.chrome(aTextDrawingArea_1271,exileLayout,mouseX,mouseY,rememberMe,loginScreenCursorPos);
+        com.koios.client.arpg.ExileLogin.chrome(com.koios.client.arpg.ExileTheme.body(),exileLayout,mouseX,mouseY,rememberMe,loginScreenCursorPos);
 
 		/*
 		 * Handles the cursor flashing

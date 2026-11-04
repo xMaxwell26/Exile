@@ -47,17 +47,18 @@ public final class GemcraftCardsCheck {
         target(cards,28,124,220,44,"hub buy portals");
         try(RandomAccessFile data=new RandomAccessFile("../koios-cache/main_file_cache.dat","r");
             RandomAccessFile index=new RandomAccessFile("../koios-cache/main_file_cache.idx0","r")) {
-            TextDrawingArea font=new TextDrawingArea(false,"p12_full",new StreamLoader(new Decompressor(data,index,1).decompress(1)));
+            TextDrawingArea font=ExileTheme.body();
             for(boolean support:new boolean[]{false,true}) {
                 cards.accept(payload(support));
                 BufferedImage image=new BufferedImage(512,334,BufferedImage.TYPE_INT_RGB);
                 int[] pixels=((DataBufferInt)image.getRaster().getDataBuffer()).getData();
                 Arrays.fill(pixels,ExileTheme.BACKGROUND);DrawingArea.initDrawingArea(334,512,pixels);
                 ExileTheme.panel(16,16,480,306,ExileTheme.GOLD,ExileTheme.PANEL);
+                int[] underlay=pixels.clone();
                 cards.draw(font,270,support?195:145);
                 // Description baselines and glyphs must not leak into the four-pixel row gaps.
                 for(int y:new int[]{124,125,126,127,128,129,180,181,182,183,230,231,232,233,280,281,282,283})
-                    for(int x=28;x<480;x++)check(pixels[x+y*512]==ExileTheme.PANEL,"No text/glyph overlaps card gaps");
+                    for(int x=28;x<480;x++)check(pixels[x+y*512]==underlay[x+y*512],"No text/glyph overlaps card gaps");
                 ImageIO.write(image,"png",new File("build/gemcraft-"+(support?"support":"active")+".png"));
             }
         }

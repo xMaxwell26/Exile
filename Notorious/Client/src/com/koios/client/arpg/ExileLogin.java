@@ -44,10 +44,10 @@ public final class ExileLogin {
  public static void background(){BACKDROP.frame(DrawingArea.width,DrawingArea.height).drawSprite(0,0);}
  public static void chrome(TextDrawingArea font,Layout l,int mx,int my,boolean remember,int cursor){
   ExileTheme.panel(l.x,l.y,389,213,ExileTheme.BORDER,ExileTheme.PANEL);DrawingArea.fillPixels(l.x+3,383,207,ExileTheme.BORDER_SUBTLE,l.y+3);DrawingArea.drawPixels(2,l.y+3,l.x+2,ExileTheme.CRIMSON,385);
-  ExileTheme.label(font,l.account.x,l.account.y-6,"ACCOUNT",ExileTheme.MUTED);ExileTheme.label(font,l.password.x,l.password.y-6,"PASSWORD",ExileTheme.MUTED);
+  ExileTheme.label(font,l.account.x,l.account.y-6,"Account",ExileTheme.MUTED);ExileTheme.label(font,l.password.x,l.password.y-6,"Password",ExileTheme.MUTED);
   field(l.account,cursor==0||l.account.contains(mx,my));field(l.password,cursor==1||l.password.contains(mx,my));
   ExileTheme.inset(l.remember.x,l.remember.y,24,25,ExileTheme.BORDER,ExileTheme.SURFACE_DARK);if(remember){tick(l.remember.x+5,l.remember.y+13,l.remember.x+10,l.remember.y+18);tick(l.remember.x+10,l.remember.y+18,l.remember.x+19,l.remember.y+7);}ExileTheme.label(font,l.remember.x+34,l.remember.y+17,"Remember account",ExileTheme.MUTED);
-  boolean hover=l.submit.contains(mx,my);ExileTheme.panel(l.submit.x,l.submit.y,l.submit.width,l.submit.height,hover?ExileTheme.GOLD:ExileTheme.CRIMSON,hover?ExileTheme.SELECTED:ExileTheme.OXBLOOD);font.drawText(ExileTheme.HEADING,l.submit.x+l.submit.width/2,"ENTER EXILE",l.submit.y+27,true);
+  boolean hover=l.submit.contains(mx,my);ExileTheme.panel(l.submit.x,l.submit.y,l.submit.width,l.submit.height,hover?ExileTheme.GOLD:ExileTheme.CRIMSON,hover?ExileTheme.SELECTED:ExileTheme.OXBLOOD);ExileTheme.heading(l.submit.x+(l.submit.width-ExileTheme.headingWidth("Enter Exile"))/2,l.submit.y+27,"Enter Exile",ExileTheme.HEADING);
  }
  private static void tick(int x,int y,int tx,int ty){int steps=Math.max(Math.abs(tx-x),Math.abs(ty-y));for(int i=0;i<=steps;i++)DrawingArea.drawPixels(2,y+(ty-y)*i/steps-1,x+(tx-x)*i/steps,ExileTheme.GOLD,2);}
  private static void field(Rectangle r,boolean active){ExileTheme.inset(r.x,r.y,r.width,r.height,active?ExileTheme.GOLD:ExileTheme.BORDER,ExileTheme.SURFACE_DARK);}

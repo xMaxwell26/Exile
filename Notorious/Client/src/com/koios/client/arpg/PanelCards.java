@@ -5,11 +5,11 @@ public final class PanelCards {
  private static final class Card {String action,label,detail="";int x,y,w,h,glyph=-1,mapId=-1;boolean support,selected;Card(String action,String label,int x,int y,int w,int h){this.action=action;this.label=label;this.x=x;this.y=y;this.w=w;this.h=h;}}
  private final java.util.List<Card> cards=new ArrayList<>();private String title="",detail="";private boolean active,gemCraft;private String secondary="";
  public boolean accept(String[] lines){
-  cards.clear();active=false;gemCraft=false;secondary="";if(lines.length==0)return false;if(lines[0].equals("gemcraft"))return acceptGemCraft(lines);boolean maps=lines[0].equals("maps"),supplies=lines[0].equals("supplies"),gem=false;for(String line:lines)if(line.startsWith("learn "))gem=true;boolean crafting=lines[0].equals("craft")&&!gem;if(!maps&&!gem&&!supplies&&!crafting)return false;active=true;title=maps?"MAP DEVICE":supplies?"QUARTERMASTER":crafting?"CRAFTING & GEMS":"GEM WORKSHOP";detail=maps?"Choose a map to open a private encounter.":supplies?"Basic expedition supplies, purchased with coins.":crafting?"Use materials on items in inventory. Select a gem to learn.":"Choose the ability this gem will upgrade.";
+  cards.clear();active=false;gemCraft=false;secondary="";if(lines.length==0)return false;if(lines[0].equals("gemcraft"))return acceptGemCraft(lines);boolean maps=lines[0].equals("maps"),supplies=lines[0].equals("supplies"),gem=false;for(String line:lines)if(line.startsWith("learn "))gem=true;boolean crafting=lines[0].equals("craft")&&!gem;if(!maps&&!gem&&!supplies&&!crafting)return false;active=true;title=maps?"Map device":supplies?"Expedition supplies":crafting?"Crafting & gems":"Gem workshop";detail=maps?"Choose a map to open a private encounter.":supplies?"Basic expedition supplies, purchased with coins.":crafting?"Use materials on your equipment, or craft an uncut jewel.":"Give this jewel a skill or support identity.";
   java.util.List<String[]> main=new ArrayList<>(),utility=new ArrayList<>(),pages=new ArrayList<>();
   for(int i=1;i<lines.length;i++){String[] f=lines[i].split("\t",3);if(f.length<2||f[0].isEmpty())continue;if(f[0].startsWith("page "))pages.add(f);else if(maps&&f[0].startsWith("open ")||gem&&f[0].startsWith("learn ")||supplies&&f[0].startsWith("hub buy ")||crafting&&f[0].startsWith("select "))main.add(f);else if(gem&&f[1].startsWith("Selected:")){detail=f[1].substring(10);}else if(!crafting)utility.add(f);}
   if(crafting&&main.isEmpty()){
-   title="MATERIAL REFERENCE";boolean selected=false;
+   title="Crafting materials";boolean selected=false;
    for(String line:lines)if(line.startsWith("items\tSelected:")){selected=true;detail=line.substring(line.indexOf("Selected:")+10);cards.add(new Card("items","Choose another item",28,84,145,30));break;}
    // Keep this list in the same deliberate order as the crafting vocabulary:
    // broad rarity changes, magic-item refinement, then destructive finishing.
@@ -33,8 +33,8 @@ public final class PanelCards {
  }
  /** Gem cutting is a separate layout so changes cannot move map/supply/learning targets. */
  private boolean acceptGemCraft(String[] lines) {
-  active=true;gemCraft=true;title="GEMCUTTING";
-  detail="Choose what to cut from your uncut jewel.";
+  active=true;gemCraft=true;title="Cut a jewel";
+  detail="Choose a skill or support for your jewel.";
   secondary="Filters show compatible skills and support gems.";
   int headers=0,choices=0,pages=0;boolean supportBase=false,activeBase=false;
   for(String line:lines){if(line.contains("UNCUT SUPPORT JEWEL"))supportBase=true;if(line.contains("UNCUT SKILL JEWEL"))activeBase=true;}
@@ -50,6 +50,7 @@ public final class PanelCards {
     int index=Arrays.asList("all","sword","dagger","mace","support").indexOf(kind);
     if(index<0)continue;
     Card filter=new Card(action,label.replace("[","").replace("]",""),28+index*92,100,84,24);
+    if(!filter.label.isEmpty())filter.label=Character.toUpperCase(filter.label.charAt(0))+filter.label.substring(1);
     filter.selected=label.startsWith("[")&&label.endsWith("]");
     if(supportBase&&!kind.equals("support")||activeBase&&kind.equals("support")){filter.action="";filter.selected=false;}cards.add(filter);
    } else if(action.startsWith("gemmake ")&&choices<6) {
@@ -78,9 +79,9 @@ public final class PanelCards {
  }
 
  private void drawGemCraft(TextDrawingArea font,int mouseX,int mouseY) {
-  text(font,28,62,title,ExileTheme.HEADING);
-  text(font,28,77,fit(font,detail,444),ExileTheme.TEXT);
-  text(font,28,92,fit(font,secondary,444),ExileTheme.MUTED);
+  ExileTheme.heading(28,63,title,ExileTheme.HEADING);
+  text(font,28,79,fit(font,humanDetail(detail),444),ExileTheme.TEXT);
+  text(font,28,94,fit(font,secondary,444),ExileTheme.MUTED);
   for(Card card:cards) {
    boolean enabled=!card.action.isEmpty();boolean hover=enabled&&mouseX>=card.x&&mouseX<card.x+card.w&&mouseY>=card.y&&mouseY<card.y+card.h;
    int border=!enabled?ExileTheme.BORDER_SUBTLE:hover||card.selected?ExileTheme.GOLD:ExileTheme.BORDER;
@@ -98,19 +99,24 @@ public final class PanelCards {
    for(int line=0;line<wrapped.size()&&line<2;line++) {
     String value=wrapped.get(line);
     if(line==1&&wrapped.size()>2)value=fit(font,value+"...",width);
-    text(font,x,card.y+29+line*12,value,ExileTheme.MUTED);
+    text(font,x,card.y+28+line*13,value,ExileTheme.MUTED);
    }
   }
  }
 
+ /** Server metadata remains authoritative; only its typographic casing is presentation-owned. */
+ private static String humanDetail(String value){
+  return value.replace("UNCUT SUPPORT JEWEL","Uncut support jewel").replace("UNCUT SKILL JEWEL","Uncut skill jewel")
+   .replace("LEVEL","Level").replace("RARE","Rare").replace("MAGIC","Magic").replace("NORMAL","Normal");
+ }
  private static String shorten(String label){if(label.startsWith("Return to"))return "Return to base";if(label.startsWith("Create a basic"))return "Map / 25 coins";if(label.startsWith("Start or resume"))return "Guided introduction";if(label.equals("Choose a different item"))return "Other gems";return label;}
  public String actionAt(int x,int y){if(!active)return null;for(Card c:cards)if(x>=c.x&&x<c.x+c.w&&y>=c.y&&y<c.y+c.h)return c.action.isEmpty()?null:c.action;return null;}
  public void draw(TextDrawingArea font,int mouseX,int mouseY){
   if(gemCraft){drawGemCraft(font,mouseX,mouseY);return;}
-  text(font,28,62,title,ExileTheme.HEADING);String d=detail;while(font.getTextWidth(d)>444&&d.length()>3)d=d.substring(0,d.length()-4)+"...";text(font,28,77,d,ExileTheme.MUTED);
+  ExileTheme.heading(28,63,title,ExileTheme.HEADING);String d=detail;while(font.getTextWidth(d)>444&&d.length()>3)d=d.substring(0,d.length()-4)+"...";text(font,28,79,d,ExileTheme.MUTED);
   for(Card c:cards){boolean hover=!c.action.isEmpty()&&mouseX>=c.x&&mouseX<c.x+c.w&&mouseY>=c.y&&mouseY<c.y+c.h;ExileTheme.inset(c.x,c.y,c.w,c.h,hover?ExileTheme.GOLD:c.action.isEmpty()?ExileTheme.BORDER_SUBTLE:ExileTheme.BORDER,hover?ExileTheme.HOVER:c.action.isEmpty()?ExileTheme.SURFACE_DARK:ExileTheme.SURFACE);int x=c.x+10;if(c.glyph>=0){Sprite icon=SkillGlyphs.icon(c.glyph,c.support,28);if(icon!=null)icon.drawSprite(x,c.y+8);x+=36;}
    String label=c.label;if(c.action.startsWith("open ")){int at=label.indexOf(": ");if(at>=0)label=label.substring(at+2);}if(c.action.startsWith("learn ")){label=label.replace("Upgrade ","").replace("Claim a ","").replace(" support gem","").replace(" gem","");}
-   if(c.mapId>=0){Sprite icon=ArtSprites.icon(c.mapId);if(icon!=null)icon.drawSprite(c.x+6,c.y+6);x=c.x+43;String title=label;while(font.getTextWidth(title)>c.w-51&&title.length()>3)title=title.substring(0,title.length()-4)+"...";int color=c.detail.startsWith("RARE")?0xE6CD84:c.detail.startsWith("MAGIC")?0xA5A5E8:0xB7CBD8;text(font,x,c.y+18,title,color);text(font,x,c.y+33,c.detail,ExileTheme.MUTED);}
+   if(c.mapId>=0){Sprite icon=ArtSprites.icon(c.mapId);if(icon!=null)icon.drawSprite(c.x+6,c.y+6);x=c.x+43;String title=label;while(font.getTextWidth(title)>c.w-51&&title.length()>3)title=title.substring(0,title.length()-4)+"...";int color=c.detail.startsWith("RARE")?0xE6CD84:c.detail.startsWith("MAGIC")?0xA5A5E8:0xB7CBD8;text(font,x,c.y+18,title,color);text(font,x,c.y+33,fit(font,humanDetail(c.detail),c.w-51),ExileTheme.MUTED);}
    else{java.util.List<String> wrapped=ChatWrap.lines(label,c.w-(x-c.x)-8,font::getTextWidth);int baseline=c.y+(c.h<=30?19:wrapped.size()>1?18:27);for(int i=0;i<wrapped.size()&&i<2;i++)text(font,x,baseline+i*13,wrapped.get(i),hover?0xF0DEB2:0xB7CBD8);}
   }
  }
