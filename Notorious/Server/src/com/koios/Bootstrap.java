@@ -85,13 +85,19 @@ public final class Bootstrap {
 	private static void initializeDatabase(boolean onlineMode) {
 		if (onlineMode) {
 			ServiceConfiguration conf = GameService.getConfiguration();
-			String sqlAddress = conf.getString(Constants.MYSQL_ADDRESS);
-			String sqlDatabase = conf.getString(Constants.MYSQL_DATABASE);
-			String sqlUsername = conf.getString(Constants.MYSQL_USERNAME);
-			String sqlPassword = conf.getString(Constants.MYSQL_PASSWORD);
-			Sql2o database = new Sql2o(sqlAddress + "/" + sqlDatabase, sqlUsername, sqlPassword);
+			String sqlAddress = environment("EXILE_DB_URL", conf.getString(Constants.MYSQL_ADDRESS));
+			String sqlDatabase = environment("EXILE_DB_DATABASE", conf.getString(Constants.MYSQL_DATABASE));
+			String sqlUsername = environment("EXILE_DB_USERNAME", conf.getString(Constants.MYSQL_USERNAME));
+			String sqlPassword = environment("EXILE_DB_PASSWORD", conf.getString(Constants.MYSQL_PASSWORD));
+			String jdbcUrl = sqlAddress.startsWith("jdbc:") ? sqlAddress : sqlAddress + "/" + sqlDatabase;
+			Sql2o database = new Sql2o(jdbcUrl, sqlUsername, sqlPassword);
 			GameService.setDatabase(database);
 		}
+	}
+
+	private static String environment(String name, String fallback) {
+		String value = System.getenv(name);
+		return value == null || value.trim().isEmpty() ? fallback : value.trim();
 	}
 
 	/**
