@@ -13,7 +13,8 @@ public final class ExileLauncher {
     private static final String DEFAULT_MANIFEST = "https://YOUR-DOMAIN.example/exile/manifest.json";
     private static final Path HOME = Paths.get(System.getProperty("user.home"), ".exile");
     public static void main(String[] args) throws Exception {
-        String manifestUrl = System.getProperty("exile.manifest", env("EXILE_MANIFEST_URL", DEFAULT_MANIFEST));
+        String embedded = embeddedManifest();
+        String manifestUrl = System.getProperty("exile.manifest", env("EXILE_MANIFEST_URL", embedded));
         if (manifestUrl.contains("YOUR-DOMAIN")) throw new IllegalStateException("Set EXILE_MANIFEST_URL or -Dexile.manifest");
         String json = read(new URL(manifestUrl));
         String version = required(json, "version"), host = required(json, "host"), sha = required(json, "sha256");
@@ -31,6 +32,12 @@ public final class ExileLauncher {
         if (Boolean.getBoolean("exile.wait")) process.waitFor();
     }
     private static String env(String key,String fallback){String v=System.getenv(key);return v==null||v.trim().isEmpty()?fallback:v.trim();}
+    private static String embeddedManifest() {
+        try (InputStream in = ExileLauncher.class.getResourceAsStream("/launcher.properties")) {
+            if (in == null) return DEFAULT_MANIFEST;
+            Properties p = new Properties(); p.load(in); return p.getProperty("manifest", DEFAULT_MANIFEST).trim();
+        } catch (IOException ignored) { return DEFAULT_MANIFEST; }
+    }
     private static String required(String json,String key){String marker="\""+key+"\"";int p=json.indexOf(marker);if(p<0)throw new IllegalArgumentException("Manifest missing "+key);int c=json.indexOf(':',p);int q=json.indexOf('"',c);if(q>=0){int e=json.indexOf('"',q+1);return json.substring(q+1,e);}int e=c+1;while(e<json.length()&&",}\r\n ".indexOf(json.charAt(e))>=0)e++;int end=e;while(end<json.length()&&",}\r\n ".indexOf(json.charAt(end))<0)end++;return json.substring(e,end);}
     private static void download(URL url,Path target)throws IOException{HttpURLConnection c=(HttpURLConnection)url.openConnection();c.setConnectTimeout(10000);c.setReadTimeout(120000);c.setRequestProperty("User-Agent","ExileLauncher/1");try(InputStream in=c.getInputStream();OutputStream out=Files.newOutputStream(target)){byte[] b=new byte[8192];int n;while((n=in.read(b))>=0)out.write(b,0,n);}}
     private static String read(URL url)throws IOException{ByteArrayOutputStream out=new ByteArrayOutputStream();try(InputStream in=url.openStream()){byte[] b=new byte[4096];int n;while((n=in.read(b))>=0)out.write(b,0,n);}return new String(out.toByteArray(),StandardCharsets.UTF_8);}
