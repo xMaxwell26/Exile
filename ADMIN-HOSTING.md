@@ -1,6 +1,6 @@
 # Exile administration and vote callback
 
-Run `powershell -ExecutionPolicy Bypass -File tools\ExileAdmin.ps1` to open the local control panel. It can start/stop the Java server, launch a client, show the machine's external address, and display the configured game port.
+Run `powershell -ExecutionPolicy Bypass -File C:\Users\mmuir\OneDrive\Documents\ChatGPT\POERSPS\tools\ExileAdmin.ps1` to open the local control panel. It can start/stop the Java server, launch a client, show the machine's external address, and display the configured game port.
 
 The panel binds to `127.0.0.1` by default. Only use a LAN/WAN bind after configuring Windows Firewall and router port forwarding. The external address shown by the panel is not automatically published anywhere.
 
