@@ -8,6 +8,7 @@ public final class SkillState {
  public int owned(int support){return ownedSupports[support];}
  public int available(int support){int used=0;for(int mask:supports)if((mask&(1<<support))!=0)used++;return Math.max(0,ownedSupports[support]-used);}
  public void learnSupport(int support,int level,int character){if(support<0||support>2||level<1||level>20||character<Math.max(1,level*4-3))throw new IllegalArgumentException("Support gem level is too high");if(ownedSupports[support]>=1000000)throw new IllegalArgumentException("Support collection is full");ownedSupports[support]++;gemLevels[2+support]=Math.max(gemLevels[2+support],level);active=true;}
+ public int removeSupport(int support){if(support<0||support>2||ownedSupports[support]<=0)throw new IllegalArgumentException("No socketed support gem");ownedSupports[support]--;active=true;return gemLevels[2+support];}
  public String saveOwned(){return ownedSupports[0]+","+ownedSupports[1]+","+ownedSupports[2];}
  public void loadOwned(String value){String[] fields=value.split(",");if(fields.length!=3)throw new IllegalArgumentException("Invalid support stock");int[] next=new int[3];for(int i=0;i<3;i++){next[i]=Integer.parseInt(fields[i]);if(next[i]<0||next[i]>1000000)throw new IllegalArgumentException("Invalid support stock");}System.arraycopy(next,0,ownedSupports,0,3);}
  public void reconcileOwnership(){for(int support=0;support<3;support++){int left=ownedSupports[support];for(int skill=0;skill<SKILLS;skill++)if((supports[skill]&(1<<support))!=0){if(left>0)left--;else supports[skill]&=~(1<<support);}}}
@@ -18,7 +19,10 @@ public final class SkillState {
  public String saveLevels(){StringBuilder s=new StringBuilder();for(int level:gemLevels){if(s.length()>0)s.append(',');s.append(level);}return s.toString();}
  public void loadLevels(String value){String[] f=value.split(",");if(f.length!=5&&f.length!=6&&f.length!=8)throw new IllegalArgumentException("Invalid gem save");int[] next={1,1,1,1,1,1,1,1};for(int i=0;i<f.length;i++){next[i]=Integer.parseInt(f[i]);if(next[i]<1||next[i]>20)throw new IllegalArgumentException("Invalid gem level");}System.arraycopy(next,0,gemLevels,0,8);}
  private final int[] cooldowns=new int[SKILLS],supports=new int[SKILLS];
- private final int[] hotbar={0,1,2};
+ private final int[] hotbar={-1,-1,-1};
+ private int levelIndex(int skill){if(skill<0||skill>=SKILLS)throw new IllegalArgumentException("Invalid skill");return skill>=2?skill+3:skill;}
+ public void socketActive(int slot,int skill,int level,int character){if(slot<0||slot>=3||skill<0||skill>=SKILLS||hotbar[slot]>=0)throw new IllegalArgumentException("That active socket is occupied");if(level<1||level>20||character<Math.max(1,level*4-3))throw new IllegalArgumentException("Skill gem level is too high");for(int equipped:hotbar)if(equipped==skill)throw new IllegalArgumentException("That skill is already socketed");gemLevels[levelIndex(skill)]=Math.max(gemLevels[levelIndex(skill)],level);hotbar[slot]=skill;active=true;}
+ public int unsocketActive(int slot){if(slot<0||slot>=3||hotbar[slot]<0)throw new IllegalArgumentException("That active socket is empty");int skill=hotbar[slot];hotbar[slot]=-1;active=true;return skill;}
  public int assigned(int slot){if(slot<0||slot>=3)throw new IllegalArgumentException("Invalid hotbar slot");return hotbar[slot];}
  public void assign(int slot,int skill){if(slot<0||slot>=3||skill<0||skill>=SKILLS)throw new IllegalArgumentException("Invalid skill assignment");int old=hotbar[slot];for(int i=0;i<3;i++)if(hotbar[i]==skill){hotbar[i]=old;break;}hotbar[slot]=skill;active=true;}
  public String keyFor(int skill){for(int i=0;i<3;i++)if(hotbar[i]==skill)return new String[]{"Q","W","E"}[i];return "?";}

@@ -3458,7 +3458,7 @@ public class Client extends RSApplet {
 
         if(arpgSkillsOpen&&!menuOpen&&awtFocus&&!chatFocus.isEditing()&&!messagePromptRaised&&inputDialogState==0&&backDialogID==-1&&openInterfaceID==-1){
             int offset=frameMode==ScreenMode.FIXED?4:0;
-            if(skillDrag.active()){if(super.clickMode2==1)skillDrag.move(mouseX-offset,mouseY-offset);else if(super.clickMode2==0){String change=skillDrag.release(super.releasedX-offset,super.releasedY-offset);if(change!=null)sendArpgSkill(change);}else skillDrag.cancel();}
+            if(skillDrag.active()){if(super.clickMode2==1)skillDrag.move(mouseX-offset,mouseY-offset);else if(super.clickMode2==0){if(tabID==3&&overSidebar(super.releasedX,super.releasedY)&&skillDrag.kind==3){sendArpgSkill("unsocket "+skillDrag.skill+" "+skillDrag.support);skillDrag.cancel();}else if(tabID==3&&overSidebar(super.releasedX,super.releasedY)&&skillDrag.kind==5){sendArpgSkill("unsocketactive "+skillDrag.origin);skillDrag.cancel();}else skillDrag.release(super.releasedX-offset,super.releasedY-offset);}else skillDrag.cancel();}
         }else skillDrag.cancel();
 
 		refreshFrameSize();
@@ -3618,6 +3618,15 @@ public class Client extends RSApplet {
 					inputTaken = true;
 				activeInterfaceType = 0;
 				if (aBoolean1242 && anInt989 >= 15) {
+					// Support sockets own real gems. Route an inventory drag into the
+					// loadout before the legacy client treats it as a ground-item drop.
+					if(arpgSkillsOpen&&anInt1084==3214&&itemFrom>=0&&itemFrom<RSInterface.interfaceCache[3214].container.length&&(RSInterface.interfaceCache[3214].container[itemFrom]-1==22411||RSInterface.interfaceCache[3214].container[itemFrom]-1==22412)){
+						int px=super.mouseX-(frameMode==ScreenMode.FIXED?4:0),py=super.mouseY-(frameMode==ScreenMode.FIXED?4:0);
+						int loadoutSlot=com.koios.client.arpg.SkillPanel.loadoutSlotAt(px,py),socket=com.koios.client.arpg.SkillPanel.socketAt(px,py);
+						int draggedId=RSInterface.interfaceCache[3214].container[itemFrom]-1;
+						if(draggedId==22411&&com.koios.client.arpg.SkillPanel.activeSocketAt(px,py)>=0){sendArpgSkill("socketactive "+itemFrom+" "+loadoutSlot);atInventoryLoopCycle=10;super.clickMode3=0;return;}
+						if(draggedId==22412&&loadoutSlot>=0&&socket>=0){sendArpgSkill("socket "+itemFrom+" "+loadoutSlot+" "+socket);atInventoryLoopCycle=10;super.clickMode3=0;return;}
+					}
 					lastActiveInvInterface = -1;
 					processRightClick();
 

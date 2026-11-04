@@ -3,7 +3,7 @@ import com.koios.game.model.item.Item;
 import com.koios.game.model.player.Player;
 public final class GemFusionCheck {
  static int checks;static void check(boolean ok,String label){checks++;if(!ok)throw new AssertionError(label);}
- static Player fixture(int level,int coins){Player p=PrototypeIntegrationCheck.player("gemfusion",45);PrototypeIntegrationCheck.idle(p);p.getInventory().set(0,MapRuns.gem(level,false));p.getInventory().set(1,MapRuns.gem(level,false));if(coins>0)p.getInventory().set(2,new Item(995,coins));return p;}
+ static Player fixture(int level,int coins){Player p=PrototypeIntegrationCheck.player("gemfusion",45);PrototypeIntegrationCheck.idle(p);p.getInventory().set(0,MapRuns.gem(level,false,0));p.getInventory().set(1,MapRuns.gem(level,false,0));if(coins>0)p.getInventory().set(2,new Item(995,coins));return p;}
  static void unchanged(Player p,int a,int b,String label){String first=ItemRollCodec.encode(p.getInventory().get(0)),second=ItemRollCodec.encode(p.getInventory().get(1));int coins=p.getInventory().getCount(995);GemCrafting.use(p,a,b);check(first.equals(ItemRollCodec.encode(p.getInventory().get(0)))&&second.equals(ItemRollCodec.encode(p.getInventory().get(1)))&&coins==p.getInventory().getCount(995),label);}
  public static void main(String[] args)throws Exception{
   PrototypeIntegrationCheck.loaded();

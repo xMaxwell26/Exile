@@ -852,7 +852,7 @@ public final class ItemDefinition {
 		}
 
   if(com.koios.client.arpg.CurrencyIcons.supports(i)){itemDef.name=com.koios.client.arpg.CurrencyIcons.name(i);itemDef.description=com.koios.client.arpg.CurrencyIcons.help(i)+(i==22406?"":" Use it on the item.");itemDef.stackable=true;itemDef.stackIDs=null;itemDef.stackAmounts=null;itemDef.certID=-1;itemDef.certTemplateID=-1;itemDef.lendID=-1;itemDef.lendTemplateID=-1;itemDef.itemActions=new String[]{i==22406?"Read":null,null,null,null,"Drop"};itemDef.groundActions=new String[]{null,null,"Take",null,null};}
-  if(com.koios.client.arpg.CustomEquipment.isCustom(i)){itemDef.name=com.koios.client.arpg.CustomEquipment.name(i);itemDef.description="An artifact from the forsaken lands.";itemDef.stackable=false;itemDef.stackIDs=null;itemDef.stackAmounts=null;itemDef.certID=-1;itemDef.certTemplateID=-1;itemDef.lendID=-1;itemDef.lendTemplateID=-1;itemDef.groundActions=new String[]{null,null,"Take",null,null};itemDef.itemActions=new String[]{i==22411||i==22412?"Learn":null,i>=22420?(com.koios.client.arpg.CustomEquipment.weapon(i)?"Wield":"Wear"):null,null,null,"Drop"};}
+  if(com.koios.client.arpg.CustomEquipment.isCustom(i)){itemDef.name=com.koios.client.arpg.CustomEquipment.name(i);itemDef.description="An artifact from the forsaken lands.";itemDef.stackable=false;itemDef.stackIDs=null;itemDef.stackAmounts=null;itemDef.certID=-1;itemDef.certTemplateID=-1;itemDef.lendID=-1;itemDef.lendTemplateID=-1;itemDef.groundActions=new String[]{null,null,"Take",null,null};itemDef.itemActions=new String[]{null,i>=22420?(com.koios.client.arpg.CustomEquipment.weapon(i)?"Wield":"Wear"):null,null,null,"Drop"};}
 		return itemDef;
 	}
 

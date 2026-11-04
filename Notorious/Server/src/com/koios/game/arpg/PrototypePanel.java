@@ -19,7 +19,7 @@ public final class PrototypePanel {
     if(selected!=null&&selected.hasRoll()&&selected.getRoll().getInstanceId().equals(p.getAttribute("craft-uuid",""))){
      row(rows,"items","Selected: "+MapRuns.name(selected)+" / "+selected.getRoll().getRarity());
      if(MapRuns.isGem(selected)){
-      boolean support=selected.getRoll().getGem().support;row(rows,"learn "+(support?2:0),support?"Claim a Splash support gem":"Upgrade Heavy Strike");row(rows,"learn "+(support?3:1),support?"Claim a Faster Attacks gem":"Upgrade Cleave");if(support)row(rows,"learn 4","Claim a Brutality support gem");else{row(rows,"learn 5","Upgrade Whirlwind");row(rows,"learn 6","Upgrade Ground Slam");row(rows,"learn 7","Upgrade Execute");}row(rows,"items","Choose a different item");
+      boolean support=selected.getRoll().getGem().support;row(rows,"",support?"Support gems modify one socketed active skill.":"Active gems occupy one of three loadout slots.");row(rows,"","Open K, then drag this gem into an open socket.");row(rows,"","Drag a socketed gem back to inventory to remove it.");row(rows,"items","Choose a different item");
      }else{row(rows,"","Close this panel; use a crafting material on the item in inventory.");row(rows,"","Wisdom: identify / Transmutation: normal to magic");row(rows,"","Alchemy: normal to rare / Chaos: reroll");row(rows,"","Exalted: add an affix / Vaal: corrupt");row(rows,"items","Choose a different item");}
     }else{
      row(rows,"","Use a crafting material on equipment or a map in your inventory.");
@@ -27,7 +27,7 @@ public final class PrototypePanel {
      row(rows,"","Alchemy: normal to rare / Chaos: reroll modifiers");
      row(rows,"","Exalted: add a modifier / Vaal: corrupt (up to twice)");
 
-     row(rows,"","Learn support gems to gain socketable copies.");
+     row(rows,"","Active and support gems drag directly into the K loadout.");
      gemInventory(p,rows);
     }
    }else if(tab.equals("maps")){
@@ -97,14 +97,14 @@ public final class PrototypePanel {
     case "refund":{int id=Integer.parseInt(args[1]);if(!p.getAttribute("free-refunds",false)&&p.getInventory().getCount(995)<100)throw new IllegalArgumentException("Refund needs 100 coins");p.getArpgPassives().refund(id);if(!p.getAttribute("free-refunds",false))p.getInventory().remove(995,100);show(p,"tree");return true;}
     case "free":if(!GameService.isOnlineMode()){p.setAttribute("free-refunds",!p.getAttribute("free-refunds",false));show(p,"tree");}return true;
     case "claim":p.getArpgRewards().claim(p);show(p,"guide");return true;
-    case "kit":if(p.getAttribute("starter-claimed",false))throw new IllegalArgumentException("Starter kit already claimed");if(p.getInventory().freeSlots()<10)throw new IllegalArgumentException("Make ten inventory spaces first");
+    case "kit":if(p.getAttribute("starter-claimed",false))throw new IllegalArgumentException("Starter kit already claimed");if(p.getInventory().freeSlots()<13)throw new IllegalArgumentException("Make thirteen inventory spaces first");
      starter(p);show(p,"guide");return true;
    }
    show(p,p.getAttribute("prototype-tab","craft"));
   }catch(RuntimeException e){p.sendMessage(e.getMessage()==null?"Prototype action failed":e.getMessage());}
   return true;
  }
- public static void starter(Player p){     MapRuns.grant(p,AffixCatalog.starter(true));MapRuns.grant(p,AffixCatalog.starter(false));MapRuns.grant(p,new Item(995,500));MapRuns.grant(p,new Item(MapRuns.PORTAL_SCROLL,5));for(int i=0;i<CraftingCurrency.LEGACY.length;i++)MapRuns.grant(p,new Item(CraftingCurrency.IDS[i],5));p.setAttribute("starter-claimed",true);}
+ public static void starter(Player p){MapRuns.grant(p,AffixCatalog.starter(true));MapRuns.grant(p,AffixCatalog.starter(false));MapRuns.grant(p,MapRuns.gem(1,false,0));MapRuns.grant(p,MapRuns.gem(1,false,1));MapRuns.grant(p,MapRuns.gem(1,false,2));MapRuns.grant(p,new Item(995,500));MapRuns.grant(p,new Item(MapRuns.PORTAL_SCROLL,5));for(int i=0;i<CraftingCurrency.LEGACY.length;i++)MapRuns.grant(p,new Item(CraftingCurrency.IDS[i],5));p.setAttribute("starter-claimed",true);}
  private static void craft(Player p,String action){
   if(!MapRuns.isHome(p))throw new IllegalArgumentException("Craft at your private base");int slot=p.getAttribute("craft-slot",-1);Item item=p.getInventory().get(slot);
   if(item==null||!item.hasRoll()||!item.getRoll().getInstanceId().equals(p.getAttribute("craft-uuid","")))throw new IllegalArgumentException("Choose the item again");
