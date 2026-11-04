@@ -14,7 +14,7 @@ public class MySQLValidationResponseSupplier implements ValidationResponseSuppli
 	private static final String SQL_INSERT_LOGS = "INSERT INTO connection_logs " + "(username, host_address, host_name, client_hash) "
 			+ "VALUES (:username, :host_address, :host_name, :client_hash)";
 
-	private static final String SQL_SELECT_SANCTIONS = "SELECT UNIX_TIMESTAMP() as now, id, type, UNIX_TIMESTAMP(expire) as expire " + "FROM sanctions "
+	private static final String SQL_SELECT_SANCTIONS = "SELECT EXTRACT(EPOCH FROM CURRENT_TIMESTAMP)::bigint as now, id, type, EXTRACT(EPOCH FROM expire)::bigint as expire " + "FROM sanctions "
 			+ "WHERE ((name = :name) OR (ipaddress IS NOT NULL AND ipaddress = :ipaddress)) " + "AND closed = 0 " + "ORDER BY id DESC";
 
 	@Override

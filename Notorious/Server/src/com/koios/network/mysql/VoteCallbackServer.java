@@ -63,7 +63,7 @@ public final class VoteCallbackServer {
         String externalId = field(body, "id");
         if (player.isEmpty() || site.isEmpty() || externalId.isEmpty()) { respond(exchange, 400, "player, site and id are required"); return; }
         try (Connection connection = GameService.getConnection()) {
-            connection.createQuery("INSERT INTO exile_votes (player_name, site, external_id, payload) VALUES (:player, :site, :id, :payload) ON DUPLICATE KEY UPDATE last_seen_at=CURRENT_TIMESTAMP, payload=:payload")
+            connection.createQuery("INSERT INTO exile_votes (player_name, site, external_id, payload) VALUES (:player, :site, :id, CAST(:payload AS jsonb)) ON CONFLICT (site, external_id) DO UPDATE SET last_seen_at=CURRENT_TIMESTAMP, payload=EXCLUDED.payload")
                     .addParameter("player", player).addParameter("site", site).addParameter("id", externalId).addParameter("payload", body).executeUpdate();
             respond(exchange, 202, "Recorded");
         } catch (Exception ex) {

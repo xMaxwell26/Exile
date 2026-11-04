@@ -16,7 +16,7 @@ public class PlayersOnlineDatabaseQuery implements SQLJob {
 	/**
 	 * The query to update the total players online
 	 */
-	private static final String UPDATE_QUERY = "UPDATE playersonline SET `currentlyOnline` = ?;";
+	private static final String UPDATE_QUERY = "UPDATE playersonline SET currentlyOnline = :currentlyOnline;";
 
 	@Override
 	public void executeQuery() {
